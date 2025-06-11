@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Reservas - Painel do Guia - Passeios da Serra</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/animation.css">
+    <link rel="stylesheet" href="css/guia-painel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+<body class="guide-panel-body">
+
+    <nav class="admin-sidebar guide-sidebar" id="guideSidebar">
+        <div class="admin-sidebar-content">
+            <div class="admin-sidebar-profile guide-sidebar-profile">
+                <img src="../assets/images/DonoPasseio.jpg" alt="Foto do Guia Yohan">
+                <h4>Yohan Montanhista</h4>
+                <p><span class="badge badge-guide">Guia Verificado</span></p>
+            </div>
+            <ul class="admin-sidebar-menu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Painel Inicial</span></a></li>
+                <li><a href="meus-passeios.html"><i class="fas fa-map-signs"></i><span>Meus Passeios</span></a></li>
+                <li class="active"><a href="minhas-reservas.html"><i class="fas fa-calendar-alt"></i><span>Minhas Reservas</span></a></li>
+                <li><a href="calendario-guia.html"><i class="fas fa-calendar-day"></i><span>Meu Calendário</span></a></li>
+                <li><a href="meu-financeiro.html"><i class="fas fa-wallet"></i><span>Meu Financeiro</span></a></li>
+                <li><a href="minhas-avaliacoes-guia.html"><i class="fas fa-star-half-alt"></i><span>Minhas Avaliações</span></a></li>
+                <li><a href="mensagens-guia.html"><i class="fas fa-comments"></i><span>Mensagens <span class="notification-badge-inline">2</span></span></a></li>
+                <li><a href="editar-perfil-guia.html"><i class="fas fa-user-edit"></i><span>Editar Perfil de Guia</span></a></li>
+            </ul>
+            <div class="admin-sidebar-footer">
+                <a href="../index.html" class="btn btn-outline" target="_blank"><i class="fas fa-globe"></i><span>Ver Site</span></a>
+                <a href="../login.html" id="guideLogoutButton" class="btn btn-outline"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="guide-panel-header">
+        <button class="menu-toggle guide-menu-toggle" id="guideMenuToggle" aria-label="Abrir menu do guia">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="guide-header-title">
+            Minhas Reservas
+        </div>
+        <div class="guide-header-actions">
+            <a href="mensagens-guia.html" class="notification-btn" aria-label="Mensagens"><i class="fas fa-comments"></i><span class="notification-badge">2</span></a>
+            <div class="guide-profile-dropdown">
+                <img src="../assets/images/DonoPasseio.jpg" alt="Guia Yohan" class="guide-avatar-sm">
+                <span>Yohan M.</span> <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main guide-main-content" id="guideMainContent">
+        <div class="container-fluid">
+            <div class="admin-page-header">
+                <h1>Gerenciar Minhas Reservas</h1>
+                <p class="text-muted">Acompanhe e gerencie as reservas para seus passeios.</p>
+            </div>
+
+            <div class="admin-kpi-grid guide-kpi-grid short-kpi-grid">
+                 <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Reservas Hoje</h3>
+                        <div class="kpi-value" id="kpiBookingsToday">0</div>
+                    </div>
+                    <div class="kpi-icon" style="background-color: rgba(var(--admin-info-rgb), 0.1); color: var(--admin-info);"><i class="fas fa-calendar-day"></i></div>
+                </div>
+                <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Próximas (7 dias)</h3>
+                        <div class="kpi-value" id="kpiBookingsNext7Days">0</div>
+                    </div>
+                     <div class="kpi-icon" style="background-color: rgba(var(--admin-success-rgb),0.1); color: var(--admin-success);"><i class="fas fa-calendar-alt"></i></div>
+                </div>
+                <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Pendentes de Confirmação</h3>
+                        <div class="kpi-value" id="kpiBookingsPending">0</div>
+                    </div>
+                    <div class="kpi-icon" style="background-color: rgba(var(--admin-warning-rgb),0.1); color: var(--admin-warning);"><i class="fas fa-hourglass-start"></i></div>
+                </div>
+                 <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Total de Participantes (Próx. 7 dias)</h3>
+                        <div class="kpi-value" id="kpiParticipantsNext7Days">0</div>
+                    </div>
+                     <div class="kpi-icon" style="color: var(--guide-primary); background-color: rgba(var(--guide-primary-rgb),0.1);"><i class="fas fa-users"></i></div>
+                </div>
+            </div>
+
+
+            <div class="admin-actions-bar guide-actions-bar">
+                <div class="filter-group">
+                    <label for="filterGuideBookingPasseio">Passeio:</label>
+                    <select id="filterGuideBookingPasseio" class="form-control">
+                        <option value="all">Todos os Meus Passeios</option>
+                        </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterGuideBookingStatus">Status:</label>
+                    <select id="filterGuideBookingStatus" class="form-control">
+                        <option value="all">Todos os Status</option>
+                        <option value="confirmed">Confirmada</option>
+                        <option value="pending">Pendente</option>
+                        <option value="completed">Concluída</option>
+                        <option value="cancelled_user">Cancelada (Usuário)</option>
+                        <option value="cancelled_guide">Cancelada (Guia)</option>
+                        <option value="no_show">Não Compareceu</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterGuideBookingDateRange">Período do Passeio:</label>
+                    <input type="text" id="filterGuideBookingDateRange" class="form-control" placeholder="Selecione o período">
+                </div>
+                <button class="btn btn-secondary" id="clearGuideBookingFilters"><i class="fas fa-times"></i> Limpar Filtros</button>
+                <button class="btn btn-primary" id="exportGuideBookings"><i class="fas fa-download"></i> Exportar CSV</button>
+            </div>
+
+            <div class="admin-table-card guide-table-card">
+                <div class="table-header">
+                    <h3 id="guideBookingsTableTitle">Lista de Reservas</h3>
+                    <div class="table-actions">
+                        <span id="guideBookingsCount">0 reservas encontradas</span>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table guide-my-bookings-table">
+                        <thead>
+                            <tr>
+                                <th>Cód. Reserva</th>
+                                <th>Data do Passeio</th>
+                                <th>Passeio</th>
+                                <th>Cliente</th>
+                                <th>Participantes</th>
+                                <th>Valor Recebido (Est.)</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="guideBookingsTableBody">
+                            </tbody>
+                    </table>
+                </div>
+                 <div id="emptyGuideBookingsStateTable" class="empty-state" style="display:none; padding: var(--space-xl); border-top: 1px solid var(--admin-gray);">
+                     <div class="empty-state-icon"><i class="fas fa-calendar-times" style="font-size: 3rem;"></i></div>
+                     <h2 class="empty-state-title">Nenhuma reserva encontrada</h2>
+                     <p class="empty-state-text">Ajuste os filtros ou aguarde novas reservas para seus passeios.</p>
+                </div>
+                <div class="table-pagination guide-bookings-pagination" style="display:none;">
+                    </div>
+            </div>
+        </div> </main>
+
+    <div class="modal" id="bookingDetailsModal">
+        <div class="modal-content medium-modal animate-on-scroll" data-animation="fadeInDown">
+            <span class="close-modal-btn">&times;</span>
+            <h2 id="modalBookingTitle">Detalhes da Reserva #<span id="modalBookingCode"></span></h2>
+            <div id="modalBookingDetailsContent">
+                </div>
+            <div class="modal-actions">
+                <button class="btn btn-secondary close-modal-btn">Fechar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/passeios.js"></script>
+    <script src="js/guia-painel.js"></script> <script src="js/guia-minhas-reservas.js"></script> </body>
+</html>

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre Nós - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <nav class="sidebar-menu" id="sidebarMenu">
+        <button class="close-btn" id="closeMenuBtn" aria-label="Fechar menu">&times;</button>
+        <div class="profile-section">
+            <img src="assets/images/ImagemUsuario.jpg" alt="Perfil do Usuário">
+            <h4>Nome do Usuário</h4>
+            <p>usuario@email.com</p>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar</a></li>
+            <li><a href="perfil.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+            <li><a href="criar-passeio.html" class="protected-creator-link"><i class="fas fa-plus-circle"></i> Criar Passeio</a></li>
+            <li><a href="avaliacoes.html"><i class="fas fa-star"></i> Avaliações</a></li>
+            <li><a href="favoritos.html"><i class="fas fa-heart"></i> Favoritos</a></li>
+            <li><a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a></li>
+            <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            <li><a href="sobre.html" class="active"><i class="fas fa-info-circle"></i> Sobre Nós</a></li>
+            <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+    </nav>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main id="main-content">
+        <section class="about-hero-section">
+            <div class="hero-background-image" style="background-image: url('assets/images/BannerPasseiosDaMantiqueira.jpg');"></div>
+            <div class="hero-overlay"></div>
+            <div class="container">
+                <div class="about-hero-content">
+                    <h1 class="animate-on-scroll" data-animation="fadeInDown">Conectando Você à Alma da Serra da Mantiqueira</h1>
+                    <p class="animate-on-scroll" data-animation="fadeInUp" data-delay="0.1s">Descubra quem somos, nossa paixão e nosso compromisso em oferecer experiências autênticas e inesquecíveis.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-story-mission section-padding">
+            <div class="container">
+                <div class="section-header-alternative animate-on-scroll" data-animation="fadeInUp">
+                    <h2>Nossa Essência</h2>
+                    <p class="subtitle">Mais que uma plataforma, uma ponte para aventuras memoráveis.</p>
+                </div>
+                <div class="story-mission-content">
+                    <div class="story-text animate-on-scroll" data-animation="slideInLeft" data-delay="0.2s">
+                        <h3>Nascidos da Paixão pela Natureza</h3>
+                        <p>A "Passeios da Serra" nasceu do amor profundo pela Serra da Mantiqueira e do desejo de compartilhar suas maravilhas de forma autêntica e sustentável. Acreditamos que cada trilha, cada sabor local e cada encontro cultural na região tem o poder de transformar e inspirar. Nossa missão é facilitar essa conexão, unindo aventureiros e exploradores a guias locais apaixonados e experientes, que conhecem os segredos e encantos deste paraíso natural.</p>
+                        <p>Queremos ser a sua principal referência para descobrir e vivenciar o melhor que Campos do Jordão e arredores têm a oferecer, desde as trilhas mais desafiadoras até os refúgios de paz e contemplação, passando pela rica gastronomia e cultura vibrante da montanha.</p>
+                    </div>
+                    <div class="mission-image animate-on-scroll" data-animation="slideInRight" data-delay="0.3s">
+                        <img src="assets/images/ImagemTrilha1.jpeg" alt="Paisagem inspiradora da Serra da Mantiqueira">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-values-section section-padding-sm" style="background-color: var(--light-gray);">
+            <div class="container">
+                <div class="section-header-alternative animate-on-scroll" data-animation="fadeInUp">
+                    <h2>Nossos Pilares</h2>
+                </div>
+                <div class="values-grid">
+                    <div class="value-card animate-on-scroll" data-animation="fadeInUp" data-delay="0.1s">
+                        <div class="value-icon"><i class="fas fa-leaf"></i></div>
+                        <h3>Sustentabilidade</h3>
+                        <p>Promovemos o turismo consciente, respeitando o meio ambiente e apoiando a conservação da natureza local.</p>
+                    </div>
+                    <div class="value-card animate-on-scroll" data-animation="fadeInUp" data-delay="0.2s">
+                        <div class="value-icon"><i class="fas fa-users"></i></div>
+                        <h3>Comunidade Local</h3>
+                        <p>Valorizamos e fortalecemos os guias e empreendedores locais, fomentando a economia da região.</p>
+                    </div>
+                    <div class="value-card animate-on-scroll" data-animation="fadeInUp" data-delay="0.3s">
+                        <div class="value-icon"><i class="fas fa-heart"></i></div>
+                        <h3>Paixão por Servir</h3>
+                        <p>Nosso objetivo é proporcionar experiências memoráveis, com atendimento dedicado e suporte completo.</p>
+                    </div>
+                    <div class="value-card animate-on-scroll" data-animation="fadeInUp" data-delay="0.4s">
+                        <div class="value-icon"><i class="fas fa-check-circle"></i></div>
+                        <h3>Autenticidade e Qualidade</h3>
+                        <p>Curamos e oferecemos passeios genuínos, com foco na qualidade e na segurança de cada aventura.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-why-us section-padding">
+            <div class="container">
+                <div class="section-header-alternative animate-on-scroll" data-animation="fadeInUp">
+                    <h2>Por Que Explorar com a Passeios da Serra?</h2>
+                    <p class="subtitle">Criamos a plataforma ideal para sua aventura na montanha.</p>
+                </div>
+                <div class="why-us-grid">
+                    <div class="why-us-item animate-on-scroll" data-animation="fadeIn" data-delay="0.1s">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <h4>Variedade de Experiências</h4>
+                        <p>De trilhas desafiadoras a tours gastronômicos relaxantes, temos o passeio perfeito para cada tipo de aventureiro.</p>
+                    </div>
+                    <div class="why-us-item animate-on-scroll" data-animation="fadeIn" data-delay="0.2s">
+                        <i class="fas fa-user-check"></i>
+                        <h4>Guias Locais Verificados</h4>
+                        <p>Conectamos você com guias experientes e credenciados, apaixonados pela região e prontos para compartilhar o melhor dela.</p>
+                    </div>
+                    <div class="why-us-item animate-on-scroll" data-animation="fadeIn" data-delay="0.3s">
+                        <i class="fas fa-lock"></i>
+                        <h4>Reservas Seguras e Fáceis</h4>
+                        <p>Nossa plataforma oferece um processo de reserva simples, rápido e seguro, para você planejar sua viagem com tranquilidade.</p>
+                    </div>
+                    <div class="why-us-item animate-on-scroll" data-animation="fadeIn" data-delay="0.4s">
+                        <i class="fas fa-headset"></i>
+                        <h4>Suporte Dedicado</h4>
+                        <p>Nossa equipe está sempre pronta para ajudar, antes, durante e depois da sua experiência na serra.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="about-team-section section-padding-sm" style="background-color: var(--light-gray);">
+            <div class="container">
+                <div class="section-header-alternative animate-on-scroll" data-animation="fadeInUp">
+                    <h2>Nossa Equipe <small>(Exemplo)</small></h2>
+                    <p class="subtitle">As pessoas por trás da Passeios da Serra.</p>
+                </div>
+                <div class="team-grid">
+                    <div class="team-member-card animate-on-scroll" data-animation="fadeInUp" data-delay="0.1s">
+                        <img src="assets/images/DonoPasseio.jpg" alt="Membro da Equipe 1">
+                        <h4>Yohan Montanhista</h4>
+                        <p class="team-member-role">Fundador & CEO</p>
+                        <p class="team-member-bio">Amante da natureza e especialista em trilhas na Mantiqueira.</p>
+                    </div>
+                    <div class="team-member-card animate-on-scroll" data-animation="fadeInUp" data-delay="0.2s">
+                        <img src="assets/images/ImagemUsuario.jpg" alt="Membro da Equipe 2">
+                        <h4>Ana Aventureira</h4>
+                        <p class="team-member-role">Gerente de Parcerias</p>
+                        <p class="team-member-bio">Conectando os melhores guias e experiências à nossa plataforma.</p>
+                    </div>
+                    <div class="team-member-card animate-on-scroll" data-animation="fadeInUp" data-delay="0.3s">
+                        <img src="assets/images/ImagemUsuario2.jpg" alt="Membro da Equipe 3">
+                        <h4>Carlos Coder</h4>
+                        <p class="team-member-role">Desenvolvedor Chefe</p>
+                        <p class="team-member-bio">Garantindo que sua experiência online seja tão incrível quanto os passeios.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="final-cta-about section-padding">
+            <div class="container text-center animate-on-scroll" data-animation="fadeIn">
+                <h2>Pronto para Sua Próxima Descoberta?</h2>
+                <p>A Serra da Mantiqueira espera por você. Encontre seu passeio ideal e crie memórias inesquecíveis.</p>
+                <a href="pesquisa.html" class="btn btn-primary btn-lg pulse"><i class="fas fa-search"></i> Explorar Passeios Agora</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section about"><h3>Sobre Nós</h3><p>Passeios da Serra é a melhor plataforma para encontrar e reservar experiências únicas em Campos do Jordão e região.</p></div>
+                <div class="footer-section links"><h3>Links Úteis</h3><ul><li><a href="index.html">Home</a></li><li><a href="pesquisa.html">Passeios</a></li><li><a href="contato.html">Contato</a></li></ul></div>
+                <div class="footer-section contact"><h3>Contato</h3><ul><li><i class="fas fa-map-marker-alt"></i> Av. Dr. Januário Miraglia, 1000</li><li><i class="fas fa-phone"></i> (12) 99671-1961</li><li><i class="fas fa-envelope"></i> contato@passeiosdaserra.com</li></ul></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    </body>
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil do Guia - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <nav class="sidebar-menu" id="sidebarMenu">
+        
+        <div class="profile-section">
+            <img src="assets/images/ImagemUsuario.jpg" alt="Perfil do Usuário"> <h4>Nome do Usuário Logado</h4>
+            <p>usuario.logado@email.com</p>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar</a></li>
+            <li><a href="perfil.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+            <li><a href="contato.html"><i class="fas fa-envelope"></i> Contato</a></li>
+            <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+    </nav>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main id="main-content">
+        <section class="guide-profile-hero-section">
+            <div class="guide-profile-banner" id="guideProfileBanner">
+                </div>
+            <div class="container">
+                <div class="guide-profile-header-info">
+                    <div class="guide-avatar-wrapper">
+                        <img src="assets/images/DonoPasseio.jpg" alt="Foto do Guia Yohan" id="guidePublicAvatar">
+                        <span class="verified-guide-badge" id="guideVerifiedBadge" title="Guia Verificado"><i class="fas fa-check-circle"></i></span>
+                    </div>
+                    <div class="guide-intro-text">
+                        <h1 id="guidePublicName">Yohan Montanhista (Exemplo)</h1>
+                        <p class="guide-tagline" id="guidePublicTagline">Especialista em Trilhas e Aventuras na Serra da Mantiqueira</p>
+                        <div class="guide-public-rating">
+                            <div class="stars" data-rating="4.8" id="guidePublicStars"></div>
+                            <span class="rating-text" id="guidePublicRatingText">4.8 (87 avaliações de guias)</span>
+                        </div>
+                    </div>
+                    <div class="guide-profile-actions">
+                        <button class="btn btn-primary" id="contactGuideBtn"><i class="fas fa-envelope"></i> Contatar Guia</button>
+                        </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="guide-profile-details-section section-padding-sm">
+            <div class="container">
+                <div class="guide-profile-layout">
+                    <div class="guide-profile-main-content">
+                        <div class="guide-profile-widget card-style" id="guideAboutSection">
+                            <h2 class="widget-title-alt"><i class="fas fa-user-check"></i> Sobre <span id="guideNameInAbout">Yohan</span></h2>
+                            <div class="guide-bio-text" id="guidePublicBio">
+                                <p>Olá! Sou Yohan, guia profissional credenciado desde 2015 e um verdadeiro apaixonado pela Serra da Mantiqueira. Minha missão é proporcionar experiências autênticas e seguras, revelando os segredos e a beleza única desta região. Sou especializado em ecoturismo, trilhas de todos os níveis, e em compartilhar conhecimentos sobre a flora, fauna e geologia local.</p>
+                                <p>Comigo, sua aventura vai além de um simples passeio; é uma imersão na cultura e na natureza vibrante da montanha. Vamos explorar juntos?</p>
+                            </div>
+                            <div class="guide-credentials" id="guideCredentialsList">
+                                <span class="credential-item"><i class="fas fa-id-badge"></i> CADASTUR: 12345678901234-5</span>
+                                <span class="credential-item"><i class="fas fa-certificate"></i> Certificado em Primeiros Socorros em Áreas Remotas</span>
+                                <span class="credential-item"><i class="fas fa-language"></i> Idiomas: Português, Inglês</span>
+                            </div>
+                        </div>
+
+                        <div class="guide-profile-widget card-style" id="guideToursSection">
+                            <h2 class="widget-title-alt"><i class="fas fa-map-signs"></i> Passeios Oferecidos por <span id="guideNameInTours">Yohan</span></h2>
+                            <div class="results-grid guide-tours-grid" id="guideOfferedToursGrid">
+                                <p class="empty-state-text small-empty" id="noGuideToursMessage" style="display:none;">Este guia ainda não publicou passeios.</p>
+                            </div>
+                            </div>
+
+                        <div class="guide-profile-widget card-style" id="guideReviewsSection">
+                            <h2 class="widget-title-alt"><i class="fas fa-comments"></i> Avaliações Recebidas por <span id="guideNameInReviews">Yohan</span></h2>
+                            <div class="reviews-summary-small" id="guideReviewsSummary">
+                                </div>
+                            <div class="guide-reviews-list" id="guideReceivedReviewsList">
+                                <p class="empty-state-text small-empty" id="noGuideReviewsMessage" style="display:none;">Este guia ainda não recebeu avaliações.</p>
+                            </div>
+                            </div>
+                    </div>
+
+                    <aside class="guide-profile-sidebar">
+                        <div class="guide-profile-widget card-style">
+                            <h3 class="widget-title-alt"><i class="fas fa-info-circle"></i> Informações Rápidas</h3>
+                            <ul class="quick-info-list">
+                                <li id="guideMemberSince"><i class="fas fa-calendar-check"></i>Membro desde: Jan/2020</li>
+                                <li id="guideTotalTours"><i class="fas fa-hiking"></i>Total de Passeios Oferecidos: 5</li>
+                                <li id="guideResponseRate"><i class="fas fa-comments-dollar"></i>Taxa de Resposta: 98% (simulado)</li>
+                                <li id="guideAvgResponseTime"><i class="fas fa-clock"></i>Tempo Médio de Resposta: 2 horas (simulado)</li>
+                            </ul>
+                        </div>
+                         <div class="guide-profile-widget card-style">
+                            <h3 class="widget-title-alt"><i class="fas fa-share-alt"></i> Compartilhar Perfil</h3>
+                            <div class="post-share-buttons" style="justify-content: center;">
+                                <a href="#" id="shareGuideFacebook" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no Facebook"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" id="shareGuideTwitter" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no Twitter"><i class="fab fa-twitter"></i></a>
+                                <a href="#" id="shareGuideWhatsApp" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                                <a href="#" id="copyGuideProfileLink" aria-label="Copiar Link do Perfil"><i class="fas fa-link"></i></a>
+                            </div>
+                             <span id="copyGuideLinkStatus" class="copy-status-message"></span>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section about"><h3>Sobre Nós</h3><p>Passeios da Serra é a melhor plataforma para encontrar e reservar experiências únicas em Campos do Jordão e região.</p></div>
+                <div class="footer-section links"><h3>Links Úteis</h3><ul><li><a href="index.html">Home</a></li><li><a href="pesquisa.html">Passeios</a></li><li><a href="contato.html">Contato</a></li></ul></div>
+                <div class="footer-section contact"><h3>Contato</h3><ul><li><i class="fas fa-map-marker-alt"></i> Av. Dr. Januário Miraglia, 1000</li><li><i class="fas fa-phone"></i> (12) 99671-1961</li><li><i class="fas fa-envelope"></i> contato@passeiosdaserra.com</li></ul></div>
+            </div>
+             <div class="footer-bottom"><p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script src="js/passeios.js"></script> <script src="js/main.js"></script>
+    <script src="js/perfil-guia.js"></script> </body>
+</html>

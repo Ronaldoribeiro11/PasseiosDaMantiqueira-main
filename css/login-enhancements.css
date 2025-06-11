@@ -1,0 +1,150 @@
+/* css/login-enhancements.css */
+
+/* Feedback de Erro nos Campos */
+.form-group input.error,
+.form-group textarea.error {
+    border-color: #e53935; /* Vermelho para erro */
+    background-color: #fff0f0;
+}
+.field-error-message {
+    display: block;
+    color: #d32f2f; /* Vermelho escuro para texto de erro */
+    font-size: 0.8em;
+    margin-top: 4px;
+    min-height: 1em; /* Para evitar que o layout pule */
+}
+
+/* Mensagens de Status do Formulário (Login/Cadastro) */
+.form-status-message {
+    padding: 10px 15px;
+    margin-bottom: 15px;
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9em;
+    text-align: center;
+}
+.form-status-message.success {
+    background-color: #e8f5e9;
+    color: var(--dark-green);
+    border: 1px solid var(--medium-green);
+}
+.form-status-message.error {
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+
+/* Botão Mostrar/Ocultar Senha */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.password-input-wrapper input[type="password"],
+.password-input-wrapper input[type="text"] {
+    padding-right: 40px; /* Espaço para o ícone */
+}
+.password-toggle-btn {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    bottom: 1px;
+    width: 38px; /* Largura do botão de olho */
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #757575;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    outline: none;
+}
+.password-toggle-btn:hover i {
+    color: var(--dark-green);
+}
+
+/* "Lembrar-me" e "Esqueceu senha" na mesma linha */
+.form-group-inline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-md);
+    font-size: 0.9em;
+}
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: var(--dark-gray);
+}
+.checkbox-label input[type="checkbox"] {
+    margin-right: 8px;
+    width: auto; /* Para não ocupar 100% */
+}
+
+/* Acordo de Termos */
+.terms-agreement {
+    font-size: 0.85em;
+    line-height: 1.4;
+    margin-top: var(--space-lg);
+}
+.terms-agreement .checkbox-label {
+    align-items: flex-start; /* Caso o texto quebre em várias linhas */
+}
+.terms-agreement input[type="checkbox"] {
+    margin-top: 2px; /* Alinhamento com a primeira linha do texto */
+}
+.terms-agreement a {
+    color: var(--dark-green);
+    text-decoration: underline;
+}
+
+/* Indicador de Força da Senha para Login/Cadastro */
+.password-strength-indicator-login {
+    margin-top: 6px;
+    height: 8px; /* Mais fino */
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+    display: flex; /* Para o texto ao lado, se desejado */
+    align-items: center;
+}
+.strength-bar-login {
+    height: 100%;
+    width: 0%;
+    background-color: #e53935; /* Fraca */
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 4px;
+}
+.strength-text-login {
+    font-size: 0.75em;
+    margin-left: 8px;
+    color: #555;
+}
+
+/* Cores para a barra de força */
+.strength-bar-login.weak { width: 25%; background-color: #ef5350; }
+.strength-bar-login.medium { width: 50%; background-color: #ffca28; }
+.strength-bar-login.strong { width: 75%; background-color: #66bb6a; }
+.strength-bar-login.very-strong { width: 100%; background-color: var(--dark-green); }
+
+/* Footer simplificado para páginas de auth */
+.auth-page-footer {
+    padding: var(--space-md) var(--space-lg);
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--dark-gray);
+    opacity: 0.7;
+    margin-top: var(--space-xl);
+}
+.auth-page-footer p {
+    margin-bottom: 5px;
+}
+.auth-page-footer a {
+    color: var(--dark-gray);
+    text-decoration: underline;
+}
+.auth-page-footer a:hover {
+    color: var(--dark-green);
+}

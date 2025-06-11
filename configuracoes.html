@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações Avançadas da Conta - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">#
+        
+    </button>
+
+    <nav class="sidebar-menu" id="sidebarMenu">
+        <button class="close-btn" id="closeMenuBtn" aria-label="Fechar menu">&times;</button>
+        <div class="profile-section">
+            <img src="assets/images/ImagemUsuario.jpg" alt="Perfil do Usuário">
+            <h4>Nome do Usuário</h4>
+            <p>usuario@email.com</p>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar</a></li>
+            <li><a href="perfil.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+            <li><a href="criar-passeio.html" class="protected-creator-link"><i class="fas fa-plus-circle"></i> Criar Passeio</a></li>
+            <li><a href="avaliacoes.html"><i class="fas fa-star"></i> Avaliações</a></li>
+            <li><a href="favoritos.html"><i class="fas fa-heart"></i> Favoritos</a></li>
+            <li><a href="configuracoes.html" class="active"><i class="fas fa-cog"></i> Configurações</a></li>
+            <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+    </nav>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main id="main-content">
+        <section class="settings-page-section">
+            <div class="container">
+                <div class="section-header animate-on-scroll" data-animation="fadeInUp">
+                    <h1>Configurações da Conta</h1>
+                    <p>Ajuste suas preferências e gerencie os detalhes da sua conta para uma experiência personalizada.</p>
+                </div>
+
+                <div class="settings-layout">
+                    <aside class="settings-navigation animate-on-scroll" data-animation="slideInLeft" data-delay="0.1s">
+                        <ul class="settings-menu">
+                            <li><a href="#profile" class="settings-menu-link active" data-tab="profile"><i class="fas fa-id-badge"></i> Perfil e Contato</a></li>
+                            <li><a href="#security" class="settings-menu-link" data-tab="security"><i class="fas fa-shield-alt"></i> Segurança e Senha</a></li>
+                            <li><a href="#notifications" class="settings-menu-link" data-tab="notifications"><i class="fas fa-envelope-open-text"></i> Notificações</a></li>
+                            <li><a href="#payments" class="settings-menu-link" data-tab="payments"><i class="fas fa-credit-card"></i> Pagamentos e Assinaturas</a></li>
+                            <li><a href="#privacy" class="settings-menu-link" data-tab="privacy"><i class="fas fa-user-secret"></i> Privacidade e Dados</a></li>
+                            <li><a href="#accessibility" class="settings-menu-link" data-tab="accessibility"><i class="fas fa-universal-access"></i> Acessibilidade</a></li>
+                        </ul>
+                    </aside>
+
+                    <div class="settings-content-area animate-on-scroll" data-animation="fadeIn" data-delay="0.2s">
+                        <div id="profile" class="settings-tab-pane active">
+                            <h2 class="settings-pane-title">Perfil e Informações de Contato</h2>
+                            <p class="settings-pane-intro">Edite suas informações de contato. Para alterar nome, foto e biografia, visite seu <a href="perfil.html" class="link-highlight">Perfil Público</a>.</p>
+                            <form id="profileContactForm" class="settings-form">
+                                <div class="form-group">
+                                    <label for="settings-email-display">E-mail Principal</label>
+                                    <input type="email" id="settings-email-display" class="form-control" value="usuario@exemplo.com" readonly disabled>
+                                    <small class="form-hint">Seu e-mail de login não pode ser alterado por aqui. <a href="contato.html" class="link-hint">Contate o Suporte</a>.</small>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="settings-phone">Telefone Celular</label>
+                                        <input type="tel" id="settings-phone" name="phone" class="form-control" placeholder="(XX) XXXXX-XXXX">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="settings-birthdate">Data de Nascimento</label>
+                                        <input type="date" id="settings-birthdate" name="birthdate" class="form-control">
+                                    </div>
+                                </div>
+                                <h3 class="settings-form-subtitle">Endereço Principal (Opcional)</h3>
+                                <div class="form-row">
+                                    <div class="form-group" style="flex-basis: 20%;">
+                                        <label for="settings-cep">CEP</label>
+                                        <input type="text" id="settings-cep" name="cep" class="form-control" placeholder="00000-000">
+                                    </div>
+                                    <div class="form-group" style="flex-basis: 55%;">
+                                        <label for="settings-street">Logradouro</label>
+                                        <input type="text" id="settings-street" name="street" class="form-control">
+                                    </div>
+                                     <div class="form-group" style="flex-basis: 20%;">
+                                        <label for="settings-number">Número</label>
+                                        <input type="text" id="settings-number" name="number" class="form-control">
+                                    </div>
+                                </div>
+                                 <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="settings-complement">Complemento</label>
+                                        <input type="text" id="settings-complement" name="complement" class="form-control">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="settings-neighborhood">Bairro</label>
+                                        <input type="text" id="settings-neighborhood" name="neighborhood" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="settings-city">Cidade</label>
+                                        <input type="text" id="settings-city" name="city" class="form-control">
+                                    </div>
+                                    <div class="form-group" style="flex-basis: 20%;">
+                                        <label for="settings-state">UF</label>
+                                        <input type="text" id="settings-state" name="state" class="form-control" maxlength="2">
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Informações</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div id="security" class="settings-tab-pane">
+                            <h2 class="settings-pane-title">Segurança e Senha</h2>
+                            <form id="changePasswordForm" class="settings-form">
+                                <h3 class="settings-form-subtitle">Alterar sua Senha</h3>
+                                <div class="form-group">
+                                    <label for="current-password">Senha Atual*</label>
+                                    <input type="password" id="current-password" name="currentPassword" class="form-control" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="new-password">Nova Senha*</label>
+                                    <input type="password" id="new-password" name="newPassword" class="form-control" required aria-describedby="passwordHelp">
+                                    <small id="passwordHelp" class="form-hint">Use no mínimo 8 caracteres, combinando letras maiúsculas, minúsculas, números e símbolos.</small>
+                                </div>
+                                <div class="form-group">
+                                    <label for="confirm-password">Confirmar Nova Senha*</label>
+                                    <input type="password" id="confirm-password" name="confirmPassword" class="form-control" required>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-key"></i> Atualizar Senha</button>
+                                </div>
+                            </form>
+                            <hr class="settings-divider">
+                            <h3 class="settings-form-subtitle">Autenticação de Dois Fatores (2FA)</h3>
+                            <div class="two-factor-status">
+                                <p>Status: <span class="status-badge status-disabled">Desativada</span></p>
+                                <button class="btn btn-secondary" id="setup2FAButton"><i class="fas fa-user-shield"></i> Configurar 2FA</button>
+                            </div>
+                             <hr class="settings-divider">
+                            <h3 class="settings-form-subtitle">Sessões Ativas</h3>
+                            <ul class="active-sessions-list">
+                                <li>
+                                    <i class="fas fa-desktop"></i> Chrome em Windows 10 - São Paulo, SP (Sessão atual)
+                                    <span class="session-time">Ativa há 2 horas</span>
+                                </li>
+                                <li>
+                                    <i class="fas fa-mobile-alt"></i> Safari em iPhone - Campos do Jordão, SP
+                                    <span class="session-time">Ativa há 3 dias</span>
+                                    <button class="btn btn-sm btn-outline btn-revoke-session" data-session-id="1">Revogar</button>
+                                </li>
+                            </ul>
+                            <div class="form-actions">
+                                <button class="btn btn-outline" id="revokeAllSessionsButton"><i class="fas fa-sign-out-alt"></i> Desconectar de Todas as Outras Sessões</button>
+                            </div>
+                        </div>
+
+                        <div id="notifications" class="settings-tab-pane">
+                            <h2 class="settings-pane-title">Preferências de Notificação</h2>
+                            <p class="settings-pane-intro">Escolha quais comunicados você deseja receber e como.</p>
+                            <form id="notificationsForm" class="settings-form">
+                                <div class="form-group checkbox-group">
+                                    <h4 class="settings-form-subtitle"><i class="fas fa-at"></i> Notificações por E-mail:</h4>
+                                    <label class="filter-option"><input type="checkbox" name="email_promocoes" checked><span>Promoções e Ofertas Especiais</span></label>
+                                    <label class="filter-option"><input type="checkbox" name="email_novidades_passeios" checked><span>Novos Passeios e Novidades da Plataforma</span></label>
+                                    <label class="filter-option"><input type="checkbox" name="email_lembretes_reservas" checked><span>Lembretes de Reservas Futuras</span></label>
+                                    <label class="filter-option"><input type="checkbox" name="email_solicitacao_avaliacao"><span>Solicitações para Avaliar Passeios Concluídos</span></label>
+                                    <label class="filter-option"><input type="checkbox" name="email_newsletter"><span>Newsletter Mensal com Dicas e Notícias</span></label>
+                                    <label class="filter-option"><input type="checkbox" name="email_atualizacoes_conta" checked disabled><span><i class="fas fa-lock"></i> Atualizações Importantes da Conta (Obrigatório)</span></label>
+                                </div>
+                                <hr class="settings-divider">
+                                <div class="form-group checkbox-group">
+                                    <h4 class="settings-form-subtitle"><i class="fas fa-mobile-alt"></i> Notificações Push (Aplicativo - Simulado):</h4>
+                                    <label class="filter-option"><input type="checkbox" name="push_alertas_reservas"><span>Alertas de Reservas e Alterações</span></label>
+                                    <label class="filter-option"><input type="checkbox" name="push_mensagens_guias"><span>Novas Mensagens de Guias</span></label>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Preferências de Notificação</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div id="payments" class="settings-tab-pane">
+                            <h2 class="settings-pane-title">Pagamentos e Assinaturas</h2>
+                             <h3 class="settings-form-subtitle">Meus Cartões Salvos</h3>
+                             <div class="saved-payment-methods">
+                                 <div class="payment-method-item">
+                                     <i class="fab fa-cc-visa payment-icon visa"></i>
+                                     <span>Visa **** **** **** 1234</span>
+                                     <span class="card-expiry">Val: 12/2027</span>
+                                     <button class="btn btn-sm btn-outline btn-remove-card" data-card-id="visa1234"><i class="fas fa-trash"></i> Remover</button>
+                                 </div>
+                                 <div class="payment-method-item">
+                                     <i class="fab fa-cc-mastercard payment-icon mastercard"></i>
+                                     <span>Mastercard **** **** **** 5678</span>
+                                     <span class="card-expiry">Val: 08/2026</span>
+                                     <button class="btn btn-sm btn-outline btn-remove-card" data-card-id="mc5678"><i class="fas fa-trash"></i> Remover</button>
+                                 </div>
+                                 <p class="form-hint" style="margin-top: var(--space-sm);">Nenhum cartão cadastrado.</p> </div>
+                             <button class="btn btn-secondary" id="addPaymentMethodButton"><i class="fas fa-plus-circle"></i> Adicionar Novo Cartão</button>
+                             <hr class="settings-divider">
+                             <h3 class="settings-form-subtitle">Histórico de Compras</h3>
+                             <p>Você pode visualizar todas as suas reservas e transações na seção <a href="perfil.html#meus-passeios" class="link-highlight">Meus Passeios</a> no seu perfil.</p>
+                             </div>
+
+                        <div id="privacy" class="settings-tab-pane">
+                            <h2 class="settings-pane-title">Privacidade e Gerenciamento de Dados</h2>
+                            <div class="privacy-action-group">
+                                <h4>Visibilidade do Perfil (Simulado)</h4>
+                                <p>Controle quem pode ver seu perfil e atividades na plataforma.</p>
+                                <select id="profileVisibility" name="profileVisibility" class="form-control" style="max-width: 300px;">
+                                    <option value="publico">Público (Recomendado para guias)</option>
+                                    <option value="apenas_conexoes">Apenas para conexões/amigos (Futuro)</option>
+                                    <option value="privado" selected>Privado (Padrão para clientes)</option>
+                                </select>
+                            </div>
+                            <hr class="settings-divider">
+                            <div class="privacy-action-group">
+                                <h4>Seus Dados na Passeios da Serra</h4>
+                                <p>Você tem o direito de acessar e solicitar a remoção dos seus dados. <a href="politica-privacidade.html" target="_blank" class="link-highlight">Leia nossa Política de Privacidade</a>.</p>
+                                <button id="requestDataExportBtn" class="btn btn-secondary"><i class="fas fa-file-download"></i> Solicitar Cópia dos Meus Dados</button>
+                            </div>
+                            <hr class="settings-divider">
+                            <div class="privacy-action-group">
+                                <h4 class="danger-zone-title"><i class="fas fa-exclamation-triangle"></i> Zona de Perigo</h4>
+                                <p class="form-hint error-message" style="font-weight: bold;">Atenção: A exclusão da sua conta é uma ação permanente e não pode ser desfeita. Todos os seus dados, incluindo perfil, histórico de reservas, avaliações e quaisquer passeios que você tenha criado (se for um guia) serão removidos de forma irreversível.</p>
+                                <button id="requestAccountDeletionBtn" class="btn btn-danger"><i class="fas fa-user-times"></i> Solicitar Exclusão Definitiva da Conta</button>
+                            </div>
+                        </div>
+
+                         <div id="accessibility" class="settings-tab-pane">
+                            <h2 class="settings-pane-title">Preferências de Acessibilidade</h2>
+                            <p class="settings-pane-intro">Ajuste a aparência do site para melhor atender às suas necessidades.</p>
+                            <form id="accessibilityForm" class="settings-form">
+                                <div class="form-group">
+                                    <label for="fontSizePref">Tamanho da Fonte</label>
+                                    <select id="fontSizePref" name="fontSizePref" class="form-control">
+                                        <option value="normal">Normal (Padrão)</option>
+                                        <option value="medium">Médio</option>
+                                        <option value="large">Grande</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Modo de Contraste</label>
+                                    <div class="toggle-switch-container">
+                                        <input type="checkbox" id="highContrastToggle" name="highContrast" class="toggle-switch">
+                                        <label for="highContrastToggle" class="slider"></label>
+                                        <span class="toggle-label">Ativar Alto Contraste</span>
+                                    </div>
+                                </div>
+                                 <div class="form-group">
+                                    <label>Reduzir Movimento</label>
+                                    <div class="toggle-switch-container">
+                                        <input type="checkbox" id="reduceMotionToggle" name="reduceMotion" class="toggle-switch">
+                                        <label for="reduceMotionToggle" class="slider"></label>
+                                        <span class="toggle-label">Reduzir animações e efeitos de movimento</span>
+                                    </div>
+                                </div>
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Preferências de Acessibilidade</button>
+                                </div>
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+             <div class="footer-content">
+                <div class="footer-section about"><h3>Sobre Nós</h3><p>Passeios da Serra é a melhor plataforma para encontrar e reservar experiências únicas em Campos do Jordão e região.</p></div>
+                <div class="footer-section links"><h3>Links Úteis</h3><ul><li><a href="index.html">Home</a></li><li><a href="pesquisa.html">Passeios</a></li><li><a href="contato.html">Contato</a></li></ul></div>
+                <div class="footer-section contact"><h3>Contato</h3><ul><li><i class="fas fa-map-marker-alt"></i> Av. Dr. Januário Miraglia, 1000</li><li><i class="fas fa-phone"></i> (12) 99671-1961</li><li><i class="fas fa-envelope"></i> contato@passeiosdaserra.com</li></ul></div>
+            </div>
+             <div class="footer-bottom"><p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/configuracoes.js"></script>
+</body>
+</html>

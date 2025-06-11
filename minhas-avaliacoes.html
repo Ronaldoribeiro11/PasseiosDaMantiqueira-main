@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Avaliações - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <nav class="sidebar-menu" id="sidebarMenu">
+        <button class="close-btn" id="closeMenuBtn" aria-label="Fechar menu">&times;</button>
+        <div class="profile-section">
+            <img src="assets/images/ImagemUsuario.jpg" alt="Perfil do Usuário">
+            <h4>Nome do Usuário</h4>
+            <p>usuario@email.com</p>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar</a></li>
+            <li><a href="perfil.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+            <li><a href="criar-passeio.html" class="protected-creator-link"><i class="fas fa-plus-circle"></i> Criar Passeio</a></li>
+            <li><a href="avaliacoes.html"><i class="fas fa-star"></i> Ver Todas Avaliações</a></li> <li><a href="minhas-avaliacoes.html" class="active"><i class="fas fa-comment-dots"></i> Minhas Avaliações</a></li>
+            <li><a href="favoritos.html"><i class="fas fa-heart"></i> Favoritos</a></li>
+            <li><a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a></li>
+            <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            <li><a href="sobre.html"><i class="fas fa-info-circle"></i> Sobre Nós</a></li>
+            <li><a href="contato.html"><i class="fas fa-envelope"></i> Contato</a></li>
+            <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+    </nav>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main id="main-content">
+        <section class="my-reviews-section section-padding">
+            <div class="container">
+                <div class="section-header animate-on-scroll" data-animation="fadeInUp">
+                    <h1>Minhas Avaliações</h1>
+                    <p>Acompanhe e gerencie as avaliações que você fez sobre os passeios.</p>
+                </div>
+
+                <div class="my-reviews-list" id="myReviewsListContainer">
+                    <div class="my-review-item animate-on-scroll" data-animation="fadeInUp" data-delay="0.1s">
+                        <div class="my-review-header">
+                            <div class="my-review-tour-info">
+                                <h3><a href="passeio.html?id=1" class="link-highlight">Trilha da Pedra do Baú</a></h3>
+                                <div class="stars" data-rating="5" aria-label="Avaliação de 5 de 5 estrelas">
+                                    </div>
+                            </div>
+                            <span class="my-review-date">Avaliado em: 28 de Maio, 2025</span>
+                        </div>
+                        <div class="my-review-content">
+                            <h4>Experiência Incrível!</h4>
+                            <p>Foi uma das melhores experiências da minha vida! O guia foi super atencioso e conhecia cada detalhe do local. A vista do topo é indescritível, vale cada minuto da trilha. Recomendo muito!</p>
+                        </div>
+                        <div class="my-review-actions">
+                            <button class="btn btn-sm btn-outline btn-edit-review" data-review-id="rev1"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn btn-sm btn-danger-outline btn-delete-review" data-review-id="rev1"><i class="fas fa-trash-alt"></i> Excluir</button>
+                        </div>
+                    </div>
+
+                    <div class="my-review-item animate-on-scroll" data-animation="fadeInUp" data-delay="0.2s">
+                        <div class="my-review-header">
+                             <div class="my-review-tour-info">
+                                <h3><a href="passeio.html?id=2" class="link-highlight">Tour Gastronômico Sabores da Serra</a></h3>
+                                <div class="stars" data-rating="4" aria-label="Avaliação de 4 de 5 estrelas"></div>
+                            </div>
+                            <span class="my-review-date">Avaliado em: 15 de Maio, 2025</span>
+                        </div>
+                        <div class="my-review-content">
+                            <h4>Delicioso, mas um pouco corrido.</h4>
+                            <p>Os lugares visitados foram ótimos e a comida excelente. Achei apenas que o tempo em cada local poderia ser um pouco maior para aproveitarmos com mais calma. No geral, uma boa experiência.</p>
+                        </div>
+                        <div class="my-review-actions">
+                            <button class="btn btn-sm btn-outline btn-edit-review" data-review-id="rev2"><i class="fas fa-edit"></i> Editar</button>
+                            <button class="btn btn-sm btn-danger-outline btn-delete-review" data-review-id="rev2"><i class="fas fa-trash-alt"></i> Excluir</button>
+                        </div>
+                    </div>
+                    </div>
+
+                <div class="empty-state" id="emptyMyReviewsState" style="display:none;">
+                    <div class="empty-state-icon">
+                        <i class="far fa-comment-dots"></i>
+                    </div>
+                    <h2 class="empty-state-title">Você ainda não fez nenhuma avaliação</h2>
+                    <p class="empty-state-text">Após participar de um passeio, compartilhe sua experiência para ajudar outros aventureiros!</p>
+                    <a href="pesquisa.html" class="btn btn-primary btn-lg">Explorar Passeios</a>
+                </div>
+                 <nav class="pagination my-reviews-pagination" aria-label="Paginação de minhas avaliações" style="display:none; margin-top: var(--space-xl);">
+                    </nav>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+             <div class="footer-content">
+                <div class="footer-section about"><h3>Sobre Nós</h3><p>Passeios da Serra é a melhor plataforma para encontrar e reservar experiências únicas em Campos do Jordão e região.</p></div>
+                <div class="footer-section links"><h3>Links Úteis</h3><ul><li><a href="index.html">Home</a></li><li><a href="pesquisa.html">Passeios</a></li><li><a href="contato.html">Contato</a></li></ul></div>
+                <div class="footer-section contact"><h3>Contato</h3><ul><li><i class="fas fa-map-marker-alt"></i> Av. Dr. Januário Miraglia, 1000</li><li><i class="fas fa-phone"></i> (12) 99671-1961</li><li><i class="fas fa-envelope"></i> contato@passeiosdaserra.com</li></ul></div>
+            </div>
+             <div class="footer-bottom"><p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/auth.js"></script>
+    <script src="js/passeios.js"></script> <script src="js/main.js"></script>
+    <script src="js/minhas-avaliacoes.js"></script> </body>
+</html>

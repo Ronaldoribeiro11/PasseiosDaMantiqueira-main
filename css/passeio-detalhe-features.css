@@ -1,0 +1,313 @@
+/* css/criar-passeio-features.css */
+
+body.criar-passeio-page { /* Adicione esta classe ao body de criar-passeio.html */
+    background-color: var(--light-gray, #f5f5f5);
+}
+
+/* Botão de menu fixo na página */
+.page-menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1010; /* Acima do overlay do menu lateral */
+    /* Estilos do círculo dourado (assumindo que estão em style.css ou adicione aqui) */
+    /* Exemplo:
+    width: 44px; height: 44px; background-color: var(--soft-gold); border-radius: 50%;
+    display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 4px; cursor: pointer;
+    */
+}
+body.no-scroll {
+    overflow: hidden;
+}
+
+.create-passeio-section {
+    padding-top: 80px; /* Espaço para o .page-menu-toggle e respiro */
+    padding-bottom: var(--space-xl, 2rem);
+    min-height: 100vh;
+}
+
+.create-header { /* Já deve estar estilizado em style.css */
+    margin-bottom: var(--space-lg, 1.5rem); /* Reduzido um pouco */
+}
+.create-header h1 {
+    font-size: 2rem;
+}
+
+.create-form { /* Já deve estar estilizado em style.css */
+    padding: var(--space-lg, 1.5rem);
+}
+
+/* Indicadores de Etapa */
+.form-steps { /* Estilo base em style.css */
+    margin-bottom: var(--space-xl, 2rem);
+    padding-bottom: var(--space-md, 1rem);
+    border-bottom: 1px solid #e0e0e0;
+}
+.step-indicator { /* Estilo base em style.css */
+    transition: all 0.4s ease;
+}
+.step-indicator .step-number { /* Estilo base em style.css */
+    transition: all 0.4s ease;
+    border: 3px solid var(--light-gray);
+}
+.step-indicator .step-label {
+    font-size: 0.8rem;
+    margin-top: var(--space-xs);
+    color: var(--dark-gray);
+    opacity: 0.7;
+    transition: all 0.4s ease;
+    font-weight: 400;
+}
+.step-indicator.active .step-number {
+    border-color: var(--soft-gold);
+    color: var(--soft-gold);
+    transform: scale(1.1);
+}
+.step-indicator.active .step-label {
+    opacity: 1;
+    font-weight: 600;
+    color: var(--dark-green);
+}
+.step-indicator.completed .step-number {
+    background-color: var(--dark-green);
+    border-color: var(--dark-green);
+    color: var(--white);
+}
+.step-indicator.completed .step-label {
+    opacity: 1;
+    color: var(--dark-green);
+}
+
+
+/* Títulos das Etapas */
+.form-step-title {
+    font-size: 1.5rem;
+    color: var(--dark-green);
+    margin-bottom: var(--space-lg);
+    padding-bottom: var(--space-xs);
+    border-bottom: 2px solid var(--soft-gold);
+    display: inline-block;
+}
+
+/* Mensagens de feedback */
+.field-validation-message {
+    display: block;
+    font-size: 0.8rem;
+    margin-top: 5px;
+    color: #c62828; /* Vermelho para erro */
+    opacity: 0;
+    max-height: 0;
+    transition: opacity 0.3s ease, max-height 0.3s ease, margin-top 0.3s ease;
+    font-weight: 500;
+}
+.field-validation-message.visible {
+    opacity: 1;
+    max-height: 20px; /* Ajuste conforme necessário */
+    margin-top: 5px;
+}
+.form-control.error { /* Reutiliza de style.css */
+    border-color: #c62828 !important; 
+    box-shadow: 0 0 0 0.2rem rgba(200, 0, 0, 0.15);
+}
+.upload-preview.error {
+    border-color: #c62828 !important;
+}
+
+
+/* Contador de caracteres */
+.char-count { /* Estilo base em style.css */
+    font-size: 0.8rem;
+    text-align: right;
+    color: var(--dark-gray);
+    opacity: 0.7;
+    transition: color 0.2s ease, font-weight 0.2s ease;
+}
+.char-count.limit-near { color: #f57f17; font-weight: 500; }
+.char-count.limit-exceeded { color: #c62828; font-weight: bold; }
+
+/* Tags */
+.tags-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-xs);
+    padding: var(--space-xs) 0;
+}
+.tag-item {
+    background-color: var(--dark-green);
+    color: white;
+    padding: 6px 12px;
+    border-radius: var(--border-radius-md);
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+.tag-item:hover {
+    transform: translateY(-1px);
+    background-color: var(--moss-green);
+}
+.remove-tag {
+    background: none; border: none; color: rgba(255,255,255,0.7);
+    margin-left: 8px; cursor: pointer; font-size: 1.1em; padding: 0; line-height: 1;
+}
+.remove-tag:hover { color: white; }
+
+/* Upload de Imagens */
+.upload-preview { /* Estilo base em style.css */
+    position: relative;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 180px; /* Altura mínima */
+    transition: border-color 0.2s ease;
+}
+.upload-preview:hover {
+    border-color: var(--soft-gold);
+}
+.upload-preview .placeholder-text i { font-size: 2rem; margin-bottom: var(--space-xs); }
+
+.gallery-preview-container { /* Renomeado de .gallery-preview */
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-sm);
+    margin-top: var(--space-sm);
+    padding: var(--space-xs);
+    border: 1px solid var(--light-gray);
+    border-radius: var(--border-radius-sm);
+    min-height: 90px; /* Para o placeholder caber */
+}
+.gallery-preview-container .empty-gallery { /* Estilo base em style.css */
+    width: 100%;
+    padding: var(--space-md) 0;
+}
+.gallery-item-wrapper {
+    position: relative;
+    width: 100px;
+    height: 80px;
+    border-radius: var(--border-radius-sm);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+}
+.gallery-item-wrapper .gallery-item { /* Estilo base em style.css */
+    width: 100%; height: 100%;
+    background-size: cover; background-position: center;
+}
+.gallery-item-wrapper .remove-image-btn {
+    position: absolute; top: 3px; right: 3px;
+    background-color: rgba(40,40,40,0.7); color: white;
+    border: none; border-radius: 50%; width: 20px; height: 20px;
+    font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+    line-height: 1; transition: background-color 0.2s ease;
+}
+.gallery-item-wrapper .remove-image-btn:hover { background-color: #c62828; }
+.upload-instructions { /* Estilo base em style.css */
+    font-size: 0.8rem; margin-top: var(--space-xs);
+}
+
+/* Datas e Horários */
+.add-date { /* Estilo base em style.css */
+    align-items: flex-end; /* Alinha botão com inputs */
+}
+.add-date input[type="date"], .add-date input[type="time"] {
+    padding: var(--space-sm); /* Garante padding consistente */
+    max-width: 180px; /* Limita largura */
+}
+.dates-availability-container { /* Renomeado de .dates-container */
+    display: flex; flex-wrap: wrap; gap: var(--space-xs);
+    min-height: auto; /* Remove min-height se não necessário */
+    padding: var(--space-xs) 0;
+}
+.dates-availability-container .date-tag { /* Reutiliza .tag-item */
+    background-color: var(--medium-green); /* Cor diferente para datas */
+}
+.dates-availability-container .date-tag:hover {
+    background-color: var(--dark-green);
+}
+.dates-availability-container .remove-date { /* Reutiliza .remove-tag */
+    color: rgba(255,255,255,0.8);
+}
+
+
+/* Resumo na última etapa */
+#stepSummaryContent {
+    background-color: #fdfdfd;
+    padding: var(--space-lg);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--admin-gray);
+    animation: fadeIn 0.5s ease;
+}
+#stepSummaryContent h3 {
+    color: var(--dark-green); margin-bottom: var(--space-md);
+    border-bottom: 1px solid var(--light-gray); padding-bottom: var(--space-sm);
+}
+#stepSummaryContent div[id^="summary"] { /* Seleciona divs com ID começando com "summary" */
+    margin-bottom: var(--space-sm);
+    padding: var(--space-xs) 0;
+    border-bottom: 1px dotted #eee;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+#stepSummaryContent div[id^="summary"]:last-of-type {
+    border-bottom: none;
+}
+#stepSummaryContent strong {
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin-right: 5px;
+}
+#stepSummaryContent ul { margin-top: 5px; list-style-position: inside;}
+.summary-images-container img {
+    width: 70px; height: 50px; object-fit: cover;
+    border-radius: var(--border-radius-sm); margin: 5px 5px 0 0;
+    border: 1px solid var(--admin-gray);
+    vertical-align: middle;
+}
+#summaryLongDesc span, #summaryRequirements span, #summaryLocationInstructions span {
+    white-space: pre-wrap; /* Mantém quebras de linha das textareas */
+    display: block; /* Para ocupar a linha e respeitar o pre-wrap */
+    margin-top: 4px;
+    padding-left: 10px;
+    border-left: 2px solid var(--light-gray);
+}
+
+
+/* Transição entre etapas */
+.form-step {
+    display: none;
+    /* As classes active/exiting controlarão a animação */
+}
+.form-step.active {
+    display: block;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+.form-step.exiting {
+    animation: fadeOut 0.3s ease-in-out forwards;
+}
+@keyframes fadeOut { Afrom { opacity: 1; } to { opacity: 0; display:none; } } /* Adicionado display none */
+
+/* Botão Salvar Rascunho */
+.btn-save-draft {
+    background-color: var(--moss-green); /* Verde mais claro */
+    border-color: var(--moss-green);
+    color: white;
+}
+.btn-save-draft:hover {
+    background-color: var(--dark-green);
+    border-color: var(--dark-green);
+    color: white;
+}
+/* Estilo para botão desabilitado */
+.btn:disabled, button:disabled {
+    opacity: 0.65;
+    cursor: not-allowed !important;
+}
+.btn:disabled .fa-spinner {
+    margin-right: var(--space-xs);
+}
+
+/* Global form status message (já definido em perfil-features.css, mas aqui por contexto se precisar de ajuste) */
+#formStatusMessageGlobal {
+    /* ... estilos de .form-status-message-profile ... */
+    /* Certifique-se que o padding/margin-bottom combine com o fluxo do form */
+    margin-bottom: var(--space-lg); 
+}

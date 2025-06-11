@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - Novidades e Dicas da Serra - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <nav class="sidebar-menu" id="sidebarMenu">
+        <button class="close-btn" id="closeMenuBtn" aria-label="Fechar menu">&times;</button>
+        <div class="profile-section">
+            <img src="assets/images/ImagemUsuario.jpg" alt="Perfil do Usuário">
+            <h4>Nome do Usuário</h4>
+            <p>usuario@email.com</p>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar</a></li>
+            <li><a href="blog.html" class="active"><i class="fas fa-feather-alt"></i> Blog</a></li>
+            <li><a href="contato.html"><i class="fas fa-envelope"></i> Contato</a></li>
+            <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+    </nav>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main id="main-content">
+        <section class="blog-hero-section">
+            <div class="hero-background-image" style="background-image: url('assets/images/ImagemBlogBanner.jpg');"> </div>
+            <div class="hero-overlay" style="background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.6) 100%);"></div>
+            <div class="container">
+                <div class="blog-hero-content">
+                    <h1 class="animate-on-scroll" data-animation="fadeInDown">Nosso Diário de Aventuras</h1>
+                    <p class="animate-on-scroll" data-animation="fadeInUp" data-delay="0.1s">Dicas, histórias e inspirações para sua próxima jornada na Serra da Mantiqueira.</p>
+                    <div class="blog-hero-search animate-on-scroll" data-animation="fadeInUp" data-delay="0.2s">
+                        <input type="search" id="blogSearchInput" placeholder="Buscar no blog...">
+                        <button aria-label="Buscar Artigos"><i class="fas fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="blog-layout-section section-padding">
+            <div class="container">
+                <div class="blog-main-layout">
+                    <div class="blog-posts-column">
+                        <div id="blogPostsContainer" class="blog-posts-grid">
+                            <article class="blog-post-card animate-on-scroll" data-animation="fadeInUp" data-category="trilhas aventura">
+                                <a href="blog-post-exemplo.html" class="post-card-image-link">
+                                    <img src="assets/images/ImagenPasseioTrilhaPedraDoBau.jpeg" alt="Trilha da Pedra do Baú" class="post-card-image">
+                                </a>
+                                <div class="post-card-content">
+                                    <div class="post-card-meta">
+                                        <span class="post-card-category">Trilhas</span>
+                                        <span class="post-card-date"><i class="fas fa-calendar-alt"></i> 28 de Maio, 2025</span>
+                                    </div>
+                                    <h2 class="post-card-title"><a href="blog-post-exemplo.html">Guia Completo: Trilha da Pedra do Baú para Iniciantes e Experientes</a></h2>
+                                    <p class="post-card-excerpt">A Pedra do Baú é um dos cartões postais da Serra da Mantiqueira. Saiba como se preparar, o que esperar e dicas essenciais para uma aventura segura e inesquecível...</p>
+                                    <a href="blog-post-exemplo.html" class="btn btn-outline btn-sm post-card-readmore">Leia Mais <i class="fas fa-arrow-right"></i></a>
+                                </div>
+                            </article>
+                            </div>
+                        <p id="noBlogResultsMessage" class="empty-state-text" style="display:none; text-align:center; margin-top: var(--space-lg);">Nenhum artigo encontrado para sua busca ou filtro.</p>
+                        
+                        <nav class="pagination blog-pagination" aria-label="Paginação de posts" style="display:none;">
+                            </nav>
+                    </div>
+
+                    <aside class="blog-sidebar-column animate-on-scroll" data-animation="slideInRight" data-delay="0.2s">
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Categorias</h3>
+                            <ul class="widget-list" id="blogCategoryList">
+                                <li><a href="#" data-category-filter="all" class="active">Todas</a></li>
+                                <li><a href="#" data-category-filter="trilhas">Trilhas e Caminhadas</a></li>
+                                <li><a href="#" data-category-filter="gastronomia">Gastronomia Local</a></li>
+                                <li><a href="#" data-category-filter="cultura">Cultura e História</a></li>
+                                <li><a href="#" data-category-filter="dicas">Dicas de Viagem</a></li>
+                                <li><a href="#" data-category-filter="aventura">Aventura na Serra</a></li>
+                            </ul>
+                        </div>
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Posts Recentes</h3>
+                            <ul class="widget-list" id="blogRecentPosts">
+                                </ul>
+                        </div>
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Tags Populares</h3>
+                            <div class="widget-tag-cloud" id="blogTagCloud">
+                                <a href="#" class="tag-link">Mantiqueira</a> <a href="#" class="tag-link">Cachoeiras</a>
+                            </div>
+                        </div>
+                        <div class="sidebar-widget">
+                            <h3 class="widget-title">Arquivo</h3>
+                            <select id="blogArchiveSelect" class="form-control">
+                                <option value="">Selecione o Mês...</option>
+                                </select>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section about"><h3>Sobre Nós</h3><p>Passeios da Serra é a melhor plataforma para encontrar e reservar experiências únicas em Campos do Jordão e região.</p></div>
+                <div class="footer-section links"><h3>Links Úteis</h3><ul><li><a href="index.html">Home</a></li><li><a href="pesquisa.html">Passeios</a></li><li><a href="contato.html">Contato</a></li></ul></div>
+                <div class="footer-section contact"><h3>Contato</h3><ul><li><i class="fas fa-map-marker-alt"></i> Av. Dr. Januário Miraglia, 1000</li><li><i class="fas fa-phone"></i> (12) 99671-1961</li><li><i class="fas fa-envelope"></i> contato@passeiosdaserra.com</li></ul></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/blog.js"></script> </body>
+</html>

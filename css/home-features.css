@@ -1,0 +1,228 @@
+/* css/home-features.css */
+
+/* Estilos para a barra de busca no Hero */
+.hero-search-bar {
+    margin: var(--space-lg) auto var(--space-xl);
+    max-width: 600px;
+    position: relative; /* Para o botão de busca */
+}
+
+.hero-search-bar form {
+    display: flex;
+    width: 100%;
+    background-color: var(--white);
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+}
+
+.hero-search-bar input[type="search"] {
+    flex-grow: 1;
+    border: none;
+    padding: var(--space-md) var(--space-lg);
+    font-size: 1rem;
+    color: var(--dark-gray);
+    outline: none;
+}
+.hero-search-bar input[type="search"]::placeholder {
+    color: #999;
+}
+
+.hero-search-bar button {
+    background-color: var(--soft-gold);
+    color: var(--dark-gray);
+    border: none;
+    padding: 0 var(--space-lg);
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background-color var(--transition-fast);
+}
+
+.hero-search-bar button:hover {
+    background-color: var(--intense-gold);
+}
+
+/* Estilos para a Seção de Categorias Populares */
+.popular-categories-section {
+    background-color: var(--light-gray); /* Ou outra cor de fundo sutil */
+}
+.section-padding { /* Adicione esta classe no HTML se não existir globalmente */
+    padding-top: var(--space-xl);
+    padding-bottom: var(--space-xl);
+}
+@media(min-width: 768px) {
+    .section-padding {
+        padding-top: calc(var(--space-xl) * 1.5);
+        padding-bottom: calc(var(--space-xl) * 1.5);
+    }
+}
+
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+}
+
+.category-card {
+    background-color: var(--white);
+    padding: var(--space-lg);
+    border-radius: var(--border-radius-md);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+    color: var(--dark-gray);
+}
+
+.category-card:hover {
+    transform: translateY(-5px) scale(1.03);
+    box-shadow: var(--shadow-lg);
+    color: var(--dark-green);
+}
+
+.category-card i {
+    font-size: 2.5rem;
+    color: var(--soft-gold);
+    margin-bottom: var(--space-md);
+    display: block; /* Para que a margem funcione */
+    transition: color 0.3s ease;
+}
+.category-card:hover i {
+    color: var(--dark-green);
+}
+
+.category-card h3 {
+    font-size: 1.2rem;
+    color: var(--dark-green);
+    margin-bottom: var(--space-xs);
+    transition: color 0.3s ease;
+}
+.category-card:hover h3 {
+    color: var(--moss-green);
+}
+
+.category-card p {
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0;
+    opacity: 0.8;
+}
+
+/* Estilos para a Seção "Últimas do Blog" */
+.blog-preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-lg);
+    margin-top: var(--space-lg);
+}
+
+.blog-preview-card { /* Similar ao .passeio-card, mas adaptado */
+    background-color: var(--white);
+    border-radius: var(--border-radius-md);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--dark-gray);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.blog-preview-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.blog-preview-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+}
+
+.blog-preview-content {
+    padding: var(--space-md);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.blog-preview-content .post-category {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--soft-gold);
+    text-transform: uppercase;
+    margin-bottom: var(--space-xs);
+}
+
+.blog-preview-content h4 { /* Título do post */
+    font-size: 1.15rem;
+    color: var(--dark-green);
+    margin-bottom: var(--space-sm);
+    line-height: 1.3;
+    /* Limitar título a 2 linhas */
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-height: calc(1.15rem * 1.3 * 2); /* Aproximadamente 2 linhas de altura */
+}
+
+.blog-preview-content .post-excerpt {
+    font-size: 0.9rem;
+    margin-bottom: var(--space-md);
+    line-height: 1.5;
+    flex-grow: 1;
+    /* Limitar resumo a 3 linhas */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.blog-preview-content .post-date {
+    font-size: 0.8rem;
+    color: #777;
+    margin-top: auto; /* Empurra para o final do card */
+}
+
+/* Botão Favoritar nos Cards da Home */
+.passeio-card .favorite-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px; /* Mover o badge para a esquerda ou ajustar */
+    background-color: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease;
+    z-index: 5; /* Acima do badge */
+}
+.passeio-card .card-badge { /* Ajustar se o botão de favoritar estiver no mesmo lugar */
+    right: auto;
+    left: 10px; 
+}
+
+
+.passeio-card .favorite-btn i {
+    font-size: 1.1rem;
+    color: var(--dark-gray); /* Cor padrão do coração (vazio) */
+}
+.passeio-card .favorite-btn.favorited i {
+    color: var(--admin-danger); /* Cor do coração preenchido (vermelho) */
+    font-weight: 900; /* fas (sólido) */
+}
+.passeio-card .favorite-btn:hover {
+    transform: scale(1.1);
+    background-color: white;
+}

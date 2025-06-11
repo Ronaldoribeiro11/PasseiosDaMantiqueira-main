@@ -1,0 +1,191 @@
+document.addEventListener('DOMContentLoaded', function() {
+    const postTitleElem = document.getElementById('postTitle');
+    const postSubtitleElem = document.getElementById('postSubtitle');
+    const postMetaInfoElem = document.getElementById('postMetaInfo');
+    const postFeaturedImageContainer = document.getElementById('postFeaturedImageContainer');
+    const postBodyContentElem = document.getElementById('postBodyContent');
+    const postTagsElem = document.getElementById('postTags');
+    const relatedPostsContainer = document.getElementById('relatedPostsContainer');
+    const noRelatedPostsMessage = document.getElementById('noRelatedPostsMessage');
+
+    // Elementos do Autor (opcional)
+    const authorBioSection = document.getElementById('authorBioSection');
+    const authorBioImageElem = document.getElementById('authorBioImage');
+    const authorBioNameElem = document.getElementById('authorBioName');
+    const authorBioTextElem = document.getElementById('authorBioText');
+    const authorBioLinkElem = document.getElementById('authorBioLink');
+
+    // Botões de Compartilhamento
+    const shareFacebookBtn = document.getElementById('shareFacebook');
+    const shareTwitterBtn = document.getElementById('shareTwitter');
+    const shareWhatsAppBtn = document.getElementById('shareWhatsApp');
+    const copyLinkBtn = document.getElementById('copyLink');
+    const copyStatusElem = document.getElementById('copyStatus');
+
+
+    // Assume que 'allBlogPosts' e 'formatDate' estão disponíveis globalmente (de blog.js)
+    // Em um cenário real, você faria uma chamada de API aqui ou teria os dados de outra forma.
+    if (typeof allBlogPosts === 'undefined') {
+        console.error('Variável allBlogPosts (de blog.js) não encontrada. Certifique-se de que blog.js foi carregado antes de blog-post.js.');
+        if(postBodyContentElem) postBodyContentElem.innerHTML = "<p>Erro ao carregar dados do blog.</p>";
+        return;
+    }
+
+    function getPostByIdOrSlug(identifier) {
+        // Tenta encontrar por ID numérico primeiro, depois por slug (string)
+        const id = parseInt(identifier);
+        if (!isNaN(id)) {
+            return allBlogPosts.find(p => p.id === id);
+        }
+        return allBlogPosts.find(p => p.slug === identifier);
+    }
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const postId = urlParams.get('id'); // Ou 'slug' se você usar slugs na URL
+    const currentPost = getPostByIdOrSlug(postId);
+
+    if (currentPost) {
+        document.title = `${currentPost.title} - Blog Passeios da Serra`;
+
+        if (postTitleElem) postTitleElem.textContent = currentPost.title;
+        if (postSubtitleElem && currentPost.subtitle) postSubtitleElem.textContent = currentPost.subtitle; // Adicione subtitle aos dados se quiser
+        
+        if (postMetaInfoElem) {
+            postMetaInfoElem.innerHTML = `
+                ${currentPost.category ? `<a href="blog.html?category=${currentPost.categorySlug}" class="post-category-link">${currentPost.category}</a>` : ''}
+                ${currentPost.date ? `<span><i class="fas fa-calendar-alt"></i> ${formatDate(currentPost.date)}</span>` : ''}
+                ${currentPost.author ? `<span><i class="fas fa-user"></i> Por ${currentPost.author}</span>` : ''}
+            `;
+        }
+
+        if (postFeaturedImageContainer) {
+            postFeaturedImageContainer.innerHTML = `
+                <img src="${currentPost.imageUrl}" alt="${currentPost.title}">
+                ${currentPost.imageCaption ? `<figcaption>${currentPost.imageCaption}</figcaption>` : ''}
+            `;
+        }
+        
+        if (postBodyContentElem) {
+            // Se o conteúdo for HTML simples:
+            postBodyContentElem.innerHTML = currentPost.content;
+            // Se for Markdown, você precisaria de uma biblioteca para converter:
+            // postBodyContentElem.innerHTML = marked.parse(currentPost.content); (exemplo com 'marked.js')
+        }
+
+        if (postTagsElem && currentPost.tags && currentPost.tags.length > 0) {
+            let tagsHTML = '<strong>Tags:</strong> ';
+            tagsHTML += currentPost.tags.map(tag => `<a href="blog.html?tag=${tag.toLowerCase()}" class="tag-link">${tag}</a>`).join(', ');
+            postTagsElem.innerHTML = tagsHTML;
+        } else if (postTagsElem) {
+            postTagsElem.style.display = 'none';
+        }
+
+        // Preencher informações do autor (se existirem nos dados do post)
+        if (authorBioSection && currentPost.authorDetails) { // Supondo que 'authorDetails' exista no objeto do post
+            authorBioSection.style.display = 'flex';
+            if(authorBioImageElem) authorBioImageElem.src = currentPost.authorDetails.imageUrl || 'assets/images/ImagemUsuario.jpg';
+            if(authorBioImageElem) authorBioImageElem.alt = currentPost.authorDetails.name || currentPost.author;
+            if(authorBioNameElem) authorBioNameElem.textContent = currentPost.authorDetails.name || currentPost.author;
+            if(authorBioTextElem) authorBioTextElem.textContent = currentPost.authorDetails.bio || '';
+            if(authorBioLinkElem && currentPost.authorDetails.postsLink) {
+                authorBioLinkElem.href = currentPost.authorDetails.postsLink;
+            } else if (authorBioLinkElem) {
+                authorBioLinkElem.style.display = 'none';
+            }
+        }
+
+
+        // Lógica de Compartilhamento
+        const pageUrl = window.location.href;
+        const pageTitle = encodeURIComponent(currentPost.title);
+
+        if(shareFacebookBtn) shareFacebookBtn.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
+        if(shareTwitterBtn) shareTwitterBtn.href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${pageTitle}`;
+        if(shareWhatsAppBtn) shareWhatsAppBtn.href = `https://api.whatsapp.com/send?text=${pageTitle}%20${encodeURIComponent(pageUrl)}`;
+        
+        if(copyLinkBtn && copyStatusElem) {
+            copyLinkBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                navigator.clipboard.writeText(pageUrl).then(() => {
+                    copyStatusElem.textContent = 'Link copiado!';
+                    copyStatusElem.classList.add('visible');
+                    setTimeout(() => {
+                        copyStatusElem.classList.remove('visible');
+                        copyStatusElem.textContent = '';
+                    }, 2000);
+                }).catch(err => {
+                    console.error('Erro ao copiar link: ', err);
+                    copyStatusElem.textContent = 'Erro ao copiar.';
+                    copyStatusElem.classList.add('visible');
+                     setTimeout(() => {
+                        copyStatusElem.classList.remove('visible');
+                         copyStatusElem.textContent = '';
+                    }, 2000);
+                });
+            });
+        }
+
+
+        // Carregar Posts Relacionados (simulado)
+        if (relatedPostsContainer) {
+            const related = allBlogPosts.filter(p => p.id !== currentPost.id && p.categorySlug === currentPost.categorySlug).slice(0, 3); // Pega 3 da mesma categoria
+            if (related.length > 0) {
+                relatedPostsContainer.innerHTML = related.map(p => renderPostCard(p)).join(''); // Reutiliza renderPostCard de blog.js
+                if (noRelatedPostsMessage) noRelatedPostsMessage.style.display = 'none';
+            } else {
+                if (noRelatedPostsMessage) noRelatedPostsMessage.style.display = 'block';
+            }
+        }
+
+    } else {
+        if (postBodyContentElem) {
+            postTitleElem.textContent = "Post não encontrado";
+            postBodyContentElem.innerHTML = '<p>O artigo que você está procurando não foi encontrado ou não existe mais. <a href="blog.html" class="link-highlight">Voltar para o Blog</a></p>';
+        }
+    }
+
+
+    // Lógica do menu lateral global (se já não estiver em main.js)
+    const globalMenuToggle = document.querySelector('.page-menu-toggle');
+    const globalSidebarMenu = document.getElementById('sidebarMenu');
+    const globalMenuOverlay = document.getElementById('menuOverlay');
+    const globalCloseMenuBtn = document.getElementById('closeMenuBtn');
+
+    function toggleGlobalSidebarMenu() {
+        if (globalSidebarMenu) globalSidebarMenu.classList.toggle('open');
+        if (globalMenuOverlay) globalMenuOverlay.classList.toggle('active');
+    }
+
+    if (globalMenuToggle) globalMenuToggle.addEventListener('click', toggleGlobalSidebarMenu);
+    if (globalMenuOverlay) globalMenuOverlay.addEventListener('click', toggleGlobalSidebarMenu);
+    if (globalCloseMenuBtn) globalCloseMenuBtn.addEventListener('click', toggleGlobalSidebarMenu);
+
+});
+
+// Função renderPostCard precisa ser acessível aqui se for usada para posts relacionados.
+// Idealmente, mova 'allBlogPosts' e 'renderPostCard' para um arquivo de 'dados/utilitários' do blog
+// ou passe 'allBlogPosts' de alguma forma para este script.
+// Por simplicidade, estou assumindo que blog.js foi carregado e `renderPostCard`
+// e `allBlogPosts` estão no escopo global ou foram adaptados para serem acessíveis.
+// Se `renderPostCard` não estiver acessível, você precisará duplicá-la ou recriá-la aqui.
+// Para este exemplo, vou assumir que você pode chamá-la. (Adapte conforme sua estrutura)
+
+function renderPostCard(post) { // Copiada de blog.js para exemplo
+    const postLink = `blog-post-exemplo.html?id=${post.id}`; // Ou usar o slug
+    return `
+        <article class="blog-post-card animate-on-scroll" data-animation="fadeInUp" data-category="${post.categorySlug} ${post.tags.join(' ').toLowerCase()}">
+            <a href="${postLink}" class="post-card-image-link">
+                <img src="${post.imageUrl}" alt="${post.title}" class="post-card-image">
+            </a>
+            <div class="post-card-content">
+                <div class="post-card-meta">
+                    <span class="post-card-category">${post.category}</span>
+                    <span class="post-card-date"><i class="fas fa-calendar-alt"></i> ${typeof formatDate === 'function' ? formatDate(post.date) : post.date}</span>
+                </div>
+                <h2 class="post-card-title"><a href="${postLink}">${post.title}</a></h2>
+                <p class="post-card-excerpt">${post.excerpt}</p>
+                <a href="${postLink}" class="btn btn-outline btn-sm post-card-readmore">Leia Mais <i class="fas fa-arrow-right"></i></a>
+            </div>
+        </article>
+    `;
+}

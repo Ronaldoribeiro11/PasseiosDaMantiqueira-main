@@ -1,0 +1,353 @@
+        <!DOCTYPE html>
+        <html lang="pt-BR">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Gestão de Passeios - Passeios da Serra</title>
+            <link rel="stylesheet" href="../css/style.css">
+            <link rel="stylesheet" href="../css/admin.css">
+            <link rel="stylesheet" href="../css/responsive.css">
+            <link rel="stylesheet" href="../css/animation.css">
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+        </head>
+        <body>
+            <!-- Header Admin -->
+            <header class="admin-header">
+                <div class="container">
+                    <div class="admin-header-content">
+                        <button class="menu-toggle">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </button>
+                        
+                        <div class="logo">
+                            <img src="../assets/images/logo.png" alt="Passeios da Serra">
+                            <span>Admin</span>
+                        </div>
+                        
+                        <div class="admin-nav">
+                            <div class="admin-search">
+                                <input type="text" placeholder="Buscar passeios...">
+                                <button><i class="fas fa-search"></i></button>
+                            </div>
+                            <div class="admin-notifications">
+                                <button class="notification-btn">
+                                    <i class="fas fa-bell"></i>
+                                    <span class="notification-badge">3</span>
+                                </button>
+                            </div>
+                            <div class="admin-profile">
+                                <img src="../assets/images/admin-avatar.jpg" alt="Admin">
+                                <span>Admin</span>
+                                <i class="fas fa-chevron-down"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Menu Lateral Admin -->
+            <div class="admin-sidebar">
+                <div class="admin-sidebar-content">
+                    <div class="admin-sidebar-profile">
+                        <img src="../assets/images/admin-avatar.jpg" alt="Admin">
+                        <h4>Administrador</h4>
+                        <p>admin@passeiosdaserra.com</p>
+                    </div>
+                    
+                    <nav class="admin-sidebar-menu">
+                        <ul>
+                            <li>
+                                <a href="../admin-dashboard.html">
+                                    <i class="fas fa-tachometer-alt"></i>
+                                    <span>Painel Resumo</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="users.html">
+                                    <i class="fas fa-users"></i>
+                                    <span>Gestão de Usuários</span>
+                                </a>
+                            </li>
+                            <li class="active">
+                                <a href="tours.html">
+                                    <i class="fas fa-map-marked-alt"></i>
+                                    <span>Gestão de Passeios</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="bookings.html">
+                                    <i class="fas fa-calendar-check"></i>
+                                    <span>Reservas</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="reviews.html">
+                                    <i class="fas fa-star"></i>
+                                    <span>Avaliações</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="admin-financial.html">
+                                    <i class="fas fa-chart-line"></i>
+                                    <span>Financeiro</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="admin-settings.html">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Configurações</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="admin-support.html">
+                                    <i class="fas fa-headset"></i>
+                                    <span>Suporte</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                    
+                    <div class="admin-sidebar-footer">
+                        <a href="../index.html" class="btn btn-outline">
+                            <i class="fas fa-globe"></i>
+                            <span>Ver Site</span>
+                        </a>
+                        <a href="../login.html" class="btn btn-outline">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Sair</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Conteúdo Principal -->
+            <main class="admin-main">
+                <div class="container">
+                    <div class="admin-page-header">
+                        <h1>Gestão de Passeios</h1>
+                        <div class="admin-breadcrumb">
+                            <span>Admin</span>
+                            <i class="fas fa-chevron-right"></i>
+                            <span>Passeios</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Filtros e Ações -->
+                    <div class="admin-actions-bar">
+                        <div class="filter-group">
+                            <select class="form-control">
+                                <option>Todas as categorias</option>
+                                <option>Trilhas</option>
+                                <option>Gastronomia</option>
+                                <option>Cultura</option>
+                                <option>Aventura</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select class="form-control">
+                                <option>Todos os status</option>
+                                <option>Ativos</option>
+                                <option>Inativos</option>
+                                <option>Pendentes</option>
+                            </select>
+                        </div>
+                        <div class="filter-group">
+                            <select class="form-control">
+                                <option>Ordenar por</option>
+                                <option>Mais recentes</option>
+                                <option>Mais antigos</option>
+                                <option>Mais populares</option>
+                                <option>Melhor avaliados</option>
+                            </select>
+                        </div>
+                        <button class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Novo Passeio
+                        </button>
+                    </div>
+                    
+                    <!-- Tabela de Passeios -->
+                    <div class="admin-table-card">
+                        <div class="table-header">
+                            <h3>Lista de Passeios</h3>
+                            <div class="table-actions">
+                                <span>324 passeios encontrados</span>
+                                <select class="form-control">
+                                    <option>10 por página</option>
+                                    <option>25 por página</option>
+                                    <option>50 por página</option>
+                                    <option>100 por página</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Imagem</th>
+                                        <th>Nome</th>
+                                        <th>Categoria</th>
+                                        <th>Guia</th>
+                                        <th>Preço</th>
+                                        <th>Avaliação</th>
+                                        <th>Status</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <img src="../assets/images/ImagenPasseioTrilhaPedraDoBau.jpeg" alt="Passeio" class="table-thumbnail">
+                                        </td>
+                                        <td>Trilha da Pedra do Baú</td>
+                                        <td>Trilhas</td>
+                                        <td>Yohan Santos</td>
+                                        <td>R$ 120,00</td>
+                                        <td>
+                                            <div class="stars" data-rating="4.5">
+                                                <span>★★★★★</span>
+                                            </div>
+                                            <small>(128)</small>
+                                        </td>
+                                        <td><span class="badge badge-confirmed">Ativo</span></td>
+                                        <td>
+                                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="../assets/images/ImagemTourGastronomico.jpg" alt="Passeio" class="table-thumbnail">
+                                        </td>
+                                        <td>Tour Gastronômico</td>
+                                        <td>Gastronomia</td>
+                                        <td>Ana Silva</td>
+                                        <td>R$ 180,00</td>
+                                        <td>
+                                            <div class="stars" data-rating="5">
+                                                <span>★★★★★</span>
+                                            </div>
+                                            <small>(87)</small>
+                                        </td>
+                                        <td><span class="badge badge-confirmed">Ativo</span></td>
+                                        <td>
+                                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="../assets/images/ImagemPasseioTremPasseiosDaSerra.jpg" alt="Passeio" class="table-thumbnail">
+                                        </td>
+                                        <td>Passeio de Trem</td>
+                                        <td>Cultura</td>
+                                        <td>Carlos Mendes</td>
+                                        <td>R$ 90,00</td>
+                                        <td>
+                                            <div class="stars" data-rating="4.8">
+                                                <span>★★★★★</span>
+                                            </div>
+                                            <small>(215)</small>
+                                        </td>
+                                        <td><span class="badge badge-confirmed">Ativo</span></td>
+                                        <td>
+                                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="../assets/images/ImagemPasseioCachoeira.jpg" alt="Passeio" class="table-thumbnail">
+                                        </td>
+                                        <td>Cachoeira do Tobogã</td>
+                                        <td>Aventura</td>
+                                        <td>Mariana Costa</td>
+                                        <td>R$ 150,00</td>
+                                        <td>
+                                            <div class="stars" data-rating="4.2">
+                                                <span>★★★★★</span>
+                                            </div>
+                                            <small>(76)</small>
+                                        </td>
+                                        <td><span class="badge badge-pending">Pendente</span></td>
+                                        <td>
+                                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="../assets/images/ImagemPasseioVilaCapivari.jpg" alt="Passeio" class="table-thumbnail">
+                                        </td>
+                                        <td>Vila Capivari</td>
+                                        <td>Cultura</td>
+                                        <td>João Pereira</td>
+                                        <td>R$ 60,00</td>
+                                        <td>
+                                            <div class="stars" data-rating="4.0">
+                                                <span>★★★★★</span>
+                                            </div>
+                                            <small>(92)</small>
+                                        </td>
+                                        <td><span class="badge badge-cancelled">Inativo</span></td>
+                                        <td>
+                                            <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                            <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        
+                        <!-- Paginação -->
+                        <div class="table-pagination">
+                            <span>Mostrando 1 a 5 de 324 registros</span>
+                            <div class="pagination-controls">
+                                <button class="btn btn-outline" disabled>
+                                    <i class="fas fa-chevron-left"></i>
+                                </button>
+                                <button class="btn btn-primary">1</button>
+                                <button class="btn btn-outline">2</button>
+                                <button class="btn btn-outline">3</button>
+                                <span>...</span>
+                                <button class="btn btn-outline">65</button>
+                                <button class="btn btn-outline">
+                                    <i class="fas fa-chevron-right"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+            
+            <!-- Scripts -->
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    // Menu toggle
+                    const menuToggle = document.querySelector('.menu-toggle');
+                    const sidebar = document.querySelector('.admin-sidebar');
+                    
+                    if (menuToggle && sidebar) {
+                        menuToggle.addEventListener('click', function() {
+                            sidebar.classList.toggle('collapsed');
+                        });
+                    }
+                    
+                    // Atualizar estrelas de avaliação
+                    const starRatings = document.querySelectorAll('.stars');
+                    starRatings.forEach(rating => {
+                        const value = parseFloat(rating.getAttribute('data-rating'));
+                        const stars = rating.querySelector('span');
+                        const percentage = (value / 5) * 100;
+                        stars.style.width = `${percentage}%`;
+                    });
+                });
+            </script>
+        </body>
+        </html>

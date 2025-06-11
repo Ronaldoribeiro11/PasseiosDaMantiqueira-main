@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Passeios - Painel do Guia - Passeios da Serra</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css"> 
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/animation.css">
+    <link rel="stylesheet" href="css/guia-painel.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="guide-panel-body">
+
+    <nav class="admin-sidebar guide-sidebar" id="guideSidebar">
+        <div class="admin-sidebar-content">
+            <div class="admin-sidebar-profile guide-sidebar-profile">
+                <img src="../assets/images/DonoPasseio.jpg" alt="Foto do Guia Yohan">
+                <h4>Yohan Montanhista</h4>
+                <p><span class="badge badge-guide">Guia Verificado</span></p>
+            </div>
+            <ul class="admin-sidebar-menu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Painel Inicial</span></a></li>
+                <li class="active"><a href="meus-passeios.html"><i class="fas fa-map-signs"></i><span>Meus Passeios</span></a></li>
+                <li><a href="minhas-reservas.html"><i class="fas fa-calendar-alt"></i><span>Minhas Reservas</span></a></li>
+                <li><a href="calendario-guia.html"><i class="fas fa-calendar-day"></i><span>Meu Calendário</span></a></li>
+                <li><a href="meu-financeiro.html"><i class="fas fa-wallet"></i><span>Meu Financeiro</span></a></li>
+                <li><a href="minhas-avaliacoes-guia.html"><i class="fas fa-star-half-alt"></i><span>Minhas Avaliações</span></a></li>
+                <li><a href="mensagens-guia.html"><i class="fas fa-comments"></i><span>Mensagens <span class="notification-badge-inline">2</span></span></a></li>
+                <li><a href="editar-perfil-guia.html"><i class="fas fa-user-edit"></i><span>Editar Perfil de Guia</span></a></li>
+            </ul>
+            <div class="admin-sidebar-footer">
+                <a href="../index.html" class="btn btn-outline" target="_blank"><i class="fas fa-globe"></i><span>Ver Site</span></a>
+                <a href="../login.html" id="guideLogoutButton" class="btn btn-outline"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="guide-panel-header">
+        <button class="menu-toggle guide-menu-toggle" id="guideMenuToggle" aria-label="Abrir menu do guia">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="guide-header-title">
+            Meus Passeios
+        </div>
+        <div class="guide-header-actions">
+            <a href="mensagens-guia.html" class="notification-btn" aria-label="Mensagens"><i class="fas fa-comments"></i><span class="notification-badge">2</span></a>
+            <div class="guide-profile-dropdown">
+                <img src="../assets/images/DonoPasseio.jpg" alt="Guia Yohan" class="guide-avatar-sm">
+                <span>Yohan M.</span> <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main guide-main-content" id="guideMainContent">
+        <div class="container-fluid">
+            <div class="admin-page-header">
+                <h1>Gerenciar Meus Passeios</h1>
+                <p class="text-muted">Crie, edite e administre os passeios que você oferece na plataforma.</p>
+            </div>
+
+            <div class="admin-actions-bar guide-actions-bar">
+                <div class="filter-group">
+                    <input type="search" id="searchMyToursInput" class="form-control" placeholder="Buscar por nome do passeio...">
+                </div>
+                <div class="filter-group">
+                    <select id="filterMyToursStatus" class="form-control">
+                        <option value="all">Todos os Status</option>
+                        <option value="active">Ativos</option>
+                        <option value="inactive">Inativos/Pendentes</option>
+                        <option value="draft">Rascunhos</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select id="filterMyToursCategory" class="form-control">
+                        <option value="all">Todas as Categorias</option>
+                        <option value="aventura">Aventura</option>
+                        <option value="cultural">Cultural</option>
+                        <option value="gastronomia">Gastronomia</option>
+                        <option value="natureza">Natureza</option>
+                        <option value="familia">Família</option>
+                    </select>
+                </div>
+                <a href="../criar-passeio.html" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Criar Novo Passeio
+                </a>
+            </div>
+
+            <div class="admin-table-card guide-table-card">
+                <div class="table-header">
+                    <h3 id="myToursTableTitle">Seus Passeios Cadastrados</h3>
+                    <div class="table-actions">
+                        <span id="myToursCount">0 passeios encontrados</span>
+                        </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table guide-my-tours-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 80px;">Imagem</th>
+                                <th>Nome do Passeio</th>
+                                <th style="width: 120px;">Categoria</th>
+                                <th style="width: 100px;">Preço</th>
+                                <th style="width: 120px;">Status</th>
+                                <th style="width: 100px;">Avaliação</th>
+                                <th style="width: 120px;">Reservas (Próx.)</th>
+                                <th style="width: 150px;">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myToursTableBody">
+                            </tbody>
+                    </table>
+                </div>
+                <div id="emptyMyToursStateTable" class="empty-state" style="display:none; padding: var(--space-xl); border-top: 1px solid var(--admin-gray);">
+                     <div class="empty-state-icon"><i class="fas fa-hiking" style="font-size: 3rem;"></i></div>
+                     <h2 class="empty-state-title">Você ainda não criou nenhum passeio</h2>
+                     <p class="empty-state-text">Clique no botão "Criar Novo Passeio" acima para começar a compartilhar suas aventuras!</p>
+                </div>
+                
+                <div class="table-pagination guide-tours-pagination" style="display:none;">
+                    </div>
+            </div>
+        </div> </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/passeios.js"></script>
+    <script src="js/guia-painel.js"></script> <script src="js/guia-meus-passeios.js"></script> </body>
+</html>

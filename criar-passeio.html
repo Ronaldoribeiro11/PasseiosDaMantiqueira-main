@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Novo Passeio - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="css/criar-passeio-features.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <nav class="sidebar-menu" id="sidebarMenuCriarPasseio">
+        <div class="profile-section" id="sidebarProfileSectionCriarPasseio">
+            <img src="assets/images/ImagemUsuario.jpg" alt="Perfil" id="sidebarProfileImgCriarPasseio" style="display:none;">
+            <h4 id="sidebarProfileNameCriarPasseio">Visitante</h4>
+            <p id="sidebarProfileEmailCriarPasseio">Faça login ou cadastre-se</p>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar Passeios</a></li>
+            <li id="sidebarLinkMeuPerfilCriarPasseio" style="display: none;"><a href="perfil.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+            <li id="sidebarLinkCriarPasseioCriarPasseio" style="display: none;"><a href="criar-passeio.html" class="protected-creator-link active"><i class="fas fa-plus-circle"></i> Criar Passeio</a></li>
+            <li id="sidebarLinkAvaliacoesCriarPasseio" style="display: none;"><a href="minhas-avaliacoes.html"><i class="fas fa-star"></i> Minhas Avaliações</a></li>
+            <li id="sidebarLinkFavoritosCriarPasseio" style="display: none;"><a href="favoritos.html"><i class="fas fa-heart"></i> Favoritos</a></li>
+            <li id="sidebarLinkConfiguracoesCriarPasseio" style="display: none;"><a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a></li>
+            <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            <li id="sidebarLinkAuthCriarPasseio"><a href="login.html"><i class="fas fa-sign-in-alt"></i> Login / Cadastro</a></li>
+        </ul>
+    </nav>
+    <div class="menu-overlay" id="menuOverlayCriarPasseio"></div>
+
+    <main id="main-content" class="create-passeio-section">
+        <div class="container">
+            <div class="create-header animate-on-scroll" data-animation="fadeIn">
+                <h1 id="pageTitle">Criar Novo Passeio</h1>
+                <p id="pageSubtitle">Compartilhe sua experiência única com outros viajantes.</p>
+            </div>
+            
+            <form class="create-form" id="createPasseioForm">
+                <div id="formStatusMessageGlobal" class="form-status-message-profile" style="display:none; margin-bottom: var(--space-lg);"></div>
+                <div class="form-steps">
+                    <div class="step-indicator active" data-step="1"><span>1</span><span>Básico</span></div>
+                    <div class="step-indicator" data-step="2"><span>2</span><span>Detalhes</span></div>
+                    <div class="step-indicator" data-step="3"><span>3</span><span>Mídia</span></div>
+                    <div class="step-indicator" data-step="4"><span>4</span><span>Logística</span></div>
+                    <div class="step-indicator" data-step="5"><span>5</span><span>Revisar</span></div>
+                </div>
+                
+                <div class="form-step active" data-step="1">
+                    <h2>Informações Básicas</h2>
+                    <div class="form-group">
+                        <label for="passeio-title">Título do Passeio*</label>
+                        <input type="text" id="passeio-title" name="title" placeholder="Ex: Trilha da Pedra do Baú com Pôr do Sol" required>
+                        <small class="field-validation-message" id="titleError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="passeio-category">Categoria*</label>
+                        <select id="passeio-category" name="category" required>
+                            <option value="">Selecione uma categoria</option>
+                            <option value="aventura">Aventura</option>
+                            <option value="cultural">Cultural</option>
+                            <option value="gastronomia">Gastronomia</option>
+                            <option value="natureza">Natureza</option>
+                            <option value="familia">Família</option>
+                        </select>
+                        <small class="field-validation-message" id="categoryError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="passeio-short-desc">Descrição Curta* (Max: 200 caracteres)</label>
+                        <textarea id="passeio-short-desc" name="shortDesc" rows="3" placeholder="Um resumo atrativo que aparecerá nas listagens." required maxlength="200"></textarea>
+                        <div class="char-count" id="shortDescCharCount">0/200</div>
+                        <small class="field-validation-message" id="shortDescError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="passeio-tags">Tags/Palavras-chave (separadas por vírgula)</label>
+                        <input type="text" id="passeio-tags-input" placeholder="Ex: trilha, vista panorâmica, pôr do sol">
+                        <div class="tags-container" id="passeio-tags-container" style="margin-top: var(--space-sm);">
+                          
+                        </div>
+                        <small class="form-hint">Pressione Enter ou vírgula para adicionar uma tag. Clique na tag para remover.</small>
+                    </div>
+                    <div class="form-actions">
+                        <span></span> 
+                        <button type="button" class="btn btn-primary" data-next-step>Próximo <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                <div class="form-step" data-step="2">
+                    <h2>Detalhes do Passeio</h2>
+                    <div class="form-group">
+                        <label for="passeio-long-desc">Descrição Detalhada*</label>
+                        <textarea id="passeio-long-desc" name="longDesc" rows="6" placeholder="Descreva o itinerário, o que os participantes verão e farão, diferenciais da experiência..." required></textarea>
+                        <small class="field-validation-message" id="longDescError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="passeio-requirements">O que Levar / Requisitos / Preparação</label>
+                        <textarea id="passeio-requirements" name="requirements" rows="3" placeholder="Ex: Levar água, lanche, protetor solar. Usar calçado confortável. Idade mínima: 10 anos."></textarea>
+                    </div>
+                     <div class="form-group">
+                        <label>Itens Inclusos no Preço</label>
+                        <div class="included-items">
+                            <label class="item-option"><input type="checkbox" name="includedItems" value="refeicoes"><span>Refeições</span></label>
+                            <label class="item-option"><input type="checkbox" name="includedItems" value="bebidas"><span>Bebidas</span></label>
+                            <label class="item-option"><input type="checkbox" name="includedItems" value="transporte"><span>Transporte</span></label>
+                            <label class="item-option"><input type="checkbox" name="includedItems" value="equipamentos"><span>Equipamentos</span></label>
+                            <label class="item-option"><input type="checkbox" name="includedItems" value="ingressos"><span>Ingressos</span></label>
+                            <label class="item-option"><input type="checkbox" name="includedItems" value="seguro"><span>Seguro Aventura</span></label>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" data-prev-step><i class="fas fa-arrow-left"></i> Voltar</button>
+                        <button type="button" class="btn btn-primary" data-next-step>Próximo <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+                <div class="form-step" data-step="3">
+                    <h2>Imagens do Passeio</h2>
+                    <div class="form-group">
+                        <label>Imagem Principal*</label>
+                        <p class="form-hint">A melhor foto para representar seu passeio (JPG, PNG. Recomendado: 1200x800px).</p>
+                        <div class="image-upload">
+                            <label for="main-image" class="upload-preview" id="main-image-preview">
+                                <span class="placeholder-text"><i class="fas fa-camera"></i> Clique para enviar Imagem Principal</span>
+                            </label>
+                            <input type="file" id="main-image" name="mainImageFile" class="file-input-hidden" accept="image/jpeg, image/png">
+                            <small class="upload-instructions" id="mainImageInfo"></small>
+                            <small class="field-validation-message" id="mainImageError"></small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Galeria de Imagens (Até 5 fotos adicionais)</label>
+                        <p class="form-hint">Mostre diferentes ângulos e momentos da experiência.</p>
+                        <div class="gallery-upload">
+                             <label for="gallery-images" class="btn btn-outline"><i class="fas fa-plus-circle"></i> Adicionar Imagens à Galeria</label>
+                            <input type="file" id="gallery-images" name="galleryImageFiles" class="file-input-hidden" accept="image/jpeg, image/png" multiple>
+                            <div class="gallery-preview" id="gallery-preview-container">
+                                <div class="empty-gallery" id="emptyGalleryPlaceholder">
+                                    <i class="fas fa-images"></i>
+                                    <span>Nenhuma imagem na galeria</span>
+                                </div>
+                            </div>
+                            <small class="upload-instructions">Selecione múltiplas imagens de uma vez ou adicione uma por uma.</small>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" data-prev-step><i class="fas fa-arrow-left"></i> Voltar</button>
+                        <button type="button" class="btn btn-primary" data-next-step>Próximo <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+                
+                <div class="form-step" data-step="4">
+                    <h2>Logística e Preço</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="passeio-location-detailed">Localização Específica / Ponto de Encontro*</label>
+                            <input type="text" id="passeio-location-detailed" name="locationDetailed" placeholder="Ex: Entrada do Parque Estadual, Portão Principal" required>
+                            <small class="field-validation-message" id="locationDetailedError"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="passeio-maps-link">Link do Google Maps (Opcional)</label>
+                            <input type="url" id="passeio-maps-link" name="mapsLink" placeholder="https://maps.app.goo.gl/xxxx">
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label for="passeio-location-instructions">Instruções para Chegar ao Ponto de Encontro</label>
+                        <textarea id="passeio-location-instructions" name="locationInstructions" rows="2" placeholder="Ex: Após o portal da cidade, siga por 2km e vire à direita na placa..."></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="passeio-duration">Duração Estimada (em horas)*</label>
+                            <input type="number" id="passeio-duration" name="duration" min="0.5" step="0.5" placeholder="Ex: 2.5 para 2h30min" required>
+                            <small class="field-validation-message" id="durationError"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="passeio-difficulty">Nível de Dificuldade*</label>
+                            <select id="passeio-difficulty" name="difficulty" required>
+                                <option value="">Selecione</option>
+                                <option value="facil">Fácil (para todos)</option>
+                                <option value="moderado">Moderado (requer algum preparo)</option>
+                                <option value="dificil">Difícil (exige bom preparo físico)</option>
+                            </select>
+                            <small class="field-validation-message" id="difficultyError"></small>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="passeio-price">Preço por Pessoa (R$)*</label>
+                            <input type="number" id="passeio-price" name="price" min="0" step="0.01" placeholder="Ex: 75.50" required>
+                            <small class="field-validation-message" id="priceError"></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="passeio-max-participants">Máximo de Participantes por Saída*</label>
+                            <input type="number" id="passeio-max-participants" name="maxParticipants" min="1" placeholder="Ex: 10" required>
+                            <small class="field-validation-message" id="maxParticipantsError"></small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Datas de Disponibilidade*</label>
+                        <p class="form-hint">Adicione as datas e horários em que o passeio estará disponível.</p>
+                        <div class="add-date">
+                            <input type="date" id="new-date-input">
+                            <input type="time" id="new-time-input">
+                            <button type="button" class="btn btn-secondary btn-sm" id="add-date-time-btn"><i class="fas fa-plus"></i> Adicionar Data/Hora</button>
+                        </div>
+                        <div class="dates-container" id="dates-availability-container" style="margin-top: var(--space-sm);">
+                        </div>
+                        <small class="field-validation-message" id="datesAvailabilityError"></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="passeio-cancelation">Política de Cancelamento*</label>
+                        <select id="passeio-cancelation" name="cancelationPolicy" required>
+                            <option value="">Selecione uma política</option>
+                            <option value="flexivel">Flexível - Reembolso total até 24h antes</option>
+                            <option value="moderada">Moderada - Reembolso total até 72h antes</option>
+                            <option value="rigorosa">Rigorosa - Reembolso de 50% até 7 dias antes</option>
+                            <option value="nao_reembolsavel">Não Reembolsável</option>
+                        </select>
+                        <small class="field-validation-message" id="cancelationPolicyError"></small>
+                    </div>
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" data-prev-step><i class="fas fa-arrow-left"></i> Voltar</button>
+                        <button type="button" class="btn btn-primary" data-next-step>Próximo: Revisar <i class="fas fa-arrow-right"></i></button>
+                    </div>
+                </div>
+
+
+                <div class="form-step" data-step="5">
+                    <h2>Revisar e Publicar</h2>
+                    <p class="form-hint">Confira todas as informações do seu passeio antes de publicá-lo. Você poderá editar depois, se necessário.</p>
+                    <div id="stepSummaryContent">
+                      
+                        <h3>Resumo do Passeio</h3>
+                        <div id="summaryTitle"><strong>Título:</strong> <span></span></div>
+                        <div id="summaryCategory"><strong>Categoria:</strong> <span></span></div>
+                        <div id="summaryShortDesc"><strong>Descrição Curta:</strong> <span></span></div>
+                        <div id="summaryLocationDetailed"><strong>Ponto de Encontro:</strong> <span></span></div>
+                        <div id="summaryDuration"><strong>Duração:</strong> <span></span> horas</div>
+                        <div id="summaryDifficulty"><strong>Dificuldade:</strong> <span></span></div>
+                        <div id="summaryPrice"><strong>Preço/Pessoa:</strong> R$ <span></span></div>
+                        <div id="summaryMaxParticipants"><strong>Max. Participantes:</strong> <span></span></div>
+                        <div id="summaryDates"><strong>Datas/Horas:</strong> <ul></ul></div>
+                        <div id="summaryIncludedItems"><strong>Itens Inclusos:</strong> <span></span></div>
+                        <div id="summaryMainImage" class="summary-images-container"><strong>Imagem Principal:</strong> <img src="" alt="Preview Imagem Principal" style="display:none;"></div>
+                        <div id="summaryGalleryImages" class="summary-images-container"><strong>Galeria:</strong></div>
+                    </div>
+                    
+                    <div class="form-group" style="margin-top: var(--space-lg);">
+                        <label class="filter-option">
+                            <input type="checkbox" id="confirm-accuracy" name="confirmAccuracy" required>
+                            <span>Confirmo que todas as informações estão corretas e concordo com os <a href="termos-de-uso.html#termos-criadores" target="_blank">Termos para Criadores</a>.</span>
+                        </label>
+                        <small class="field-validation-message" id="confirmAccuracyError"></small>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="button" class="btn btn-secondary" data-prev-step><i class="fas fa-arrow-left"></i> Voltar</button>
+                        <div>
+                            <button type="button" class="btn btn-outline btn-save-draft" id="saveDraftButton" style="margin-right: var(--space-sm);"><i class="fas fa-save"></i> Salvar como Rascunho</button>
+                            <button type="submit" class="btn btn-primary btn-lg" id="publishButton"><i class="fas fa-rocket"></i> Publicar Passeio</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <div class="preview-section animate-on-scroll" data-animation="fadeIn" style="margin-top: var(--space-xl); display:none;">
+                <h2>Pré-visualização do Card</h2>
+                <div class="preview-container">
+                    <div class="passeio-card card-zoom">
+                        <div class="card-image" id="preview-card-image" style="background-image: url('assets/images/placeholder-passeio.jpg');">
+                            <span class="card-badge" id="preview-card-badge">Categoria</span>
+                        </div>
+                        <div class="card-content">
+                            <h3 id="preview-card-title">Título do Seu Passeio</h3>
+                            <div class="card-rating">
+                                <div class="stars" data-rating="0"><span>★★★★★</span></div>
+                                <span class="rating-text">Novo</span>
+                            </div>
+                            <p class="card-description" id="preview-card-desc">Sua descrição curta e atrativa aparecerá aqui.</p>
+                            <div class="card-footer">
+                                <span class="card-price" id="preview-card-price">R$ 0,00</span>
+                                <a href="#" class="btn btn-primary btn-sm">Detalhes</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+    
+<footer class="site-footer">
+    <div class="container">
+
+        <div class="footer-content">
+            <div class="footer-section about"><h3>Sobre Nós</h3><p>Passeios da Serra é a melhor plataforma para encontrar e reservar experiências únicas em Campos do Jordão e região.</p></div>
+            <div class="footer-section links"><h3>Links Úteis</h3><ul><li><a href="index.html">Home</a></li><li><a href="pesquisa.html">Passeios</a></li><li><a href="contato.html">Contato</a></li></ul></div>
+            <div class="footer-section contact"><h3>Contato</h3><ul><li><i class="fas fa-map-marker-alt"></i> Av. Dr. Januário Miraglia, 1000</li><li><i class="fas fa-phone"></i> (12) 99671-1961</li><li><i class="fas fa-envelope"></i> contato@passeiosdaserra.com</li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p></div>
+    </div>
+</footer>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/passeios.js"></script>
+    <script src="js/sidebarMenuHandler.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/criar-passeio-features.js"></script> 
+</body>
+</html>

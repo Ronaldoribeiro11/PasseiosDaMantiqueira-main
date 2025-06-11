@@ -1,0 +1,207 @@
+/* css/login-page-features.css */
+
+/* Estilo para o botão de abrir menu na página de login */
+.page-menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1010; /* Acima do overlay do menu */
+    /* Estilos adicionais do seu .page-menu-toggle (círculo dourado etc.) devem estar em style.css ou aqui */
+}
+body.no-scroll { /* Impede o scroll do body quando o menu está aberto */
+    overflow: hidden;
+}
+
+/* Main content da página de login para acomodar o menu fixo */
+.login-page-main {
+    padding-top: 0; /* Remove padding-top se o header foi removido */
+    display: flex; /* Para centralizar o auth-section */
+    align-items: center; /* Para centralizar o auth-section */
+    min-height: 100vh;
+}
+.auth-section {
+    width: 100%; /* Para que o auth-container possa ser centralizado */
+}
+.auth-page-logo-link-inline { /* Logo acima dos formulários */
+    display: block;
+    text-align: center;
+    margin-bottom: var(--space-md);
+}
+.auth-page-logo-link-inline img {
+    height: 40px;
+    max-width: 180px;
+}
+
+
+/* Mensagens de status/erro para formulários */
+.form-status-message {
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-md);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9rem;
+    text-align: center;
+    border: 1px solid transparent;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease, margin-bottom 0.3s ease;
+}
+.form-status-message.visible {
+    opacity: 1;
+    max-height: 100px; /* Altura suficiente para a mensagem */
+    padding: var(--space-sm) var(--space-md); /* Readiciona padding ao ficar visível */
+    margin-bottom: var(--space-md); /* Readiciona margem */
+}
+.form-status-message.error {
+    background-color: #ffebee;
+    color: #c62828;
+    border-color: #c62828;
+}
+.form-status-message.success {
+    background-color: #e8f5e9;
+    color: var(--dark-green);
+    border-color: var(--dark-green);
+}
+.field-error-msg {
+    display: block;
+    color: #c62828;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    opacity: 0;
+    max-height: 0;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+.field-error-msg.visible {
+    opacity: 1;
+    max-height: 20px; /* Altura para a mensagem de erro do campo */
+}
+
+
+/* Wrapper para input de senha com ícone de mostrar/ocultar */
+.password-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+.password-input-wrapper input[type="password"],
+.password-input-wrapper input[type="text"] { /* Para quando a senha é mostrada */
+    padding-right: 40px; /* Espaço para o ícone */
+}
+.toggle-password {
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    bottom: 1px;
+    width: 38px; /* Largura do botão do ícone */
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    cursor: pointer;
+    color: var(--dark-gray);
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 var(--border-radius-sm) var(--border-radius-sm) 0;
+}
+.toggle-password:hover {
+    opacity: 1;
+}
+.toggle-password i {
+    font-size: 0.9rem;
+}
+
+/* Checkbox "Lembrar-me" e "Termos" */
+.form-group-inline {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--space-md);
+}
+.form-group-inline input[type="checkbox"] {
+    width: auto; /* Tamanho natural */
+    margin-right: var(--space-sm);
+    accent-color: var(--dark-green); /* Cor do checkbox marcado */
+}
+.checkbox-label {
+    font-size: 0.9rem;
+    font-weight: normal !important; /* Sobrescreve label geral */
+    margin-bottom: 0 !important;
+}
+
+/* Links para Termos e Política no formulário de cadastro */
+.terms-agreement {
+    margin-top: var(--space-lg);
+    font-size: 0.85rem;
+    text-align: left; /* Alinhar texto à esquerda */
+}
+.terms-agreement .checkbox-label {
+    line-height: 1.4;
+}
+.terms-agreement a {
+    color: var(--dark-green);
+    text-decoration: underline;
+}
+.terms-agreement a:hover {
+    color: var(--moss-green);
+}
+
+/* Indicador de força da senha (reutilizado de redefinir-senha.html) */
+.password-strength-indicator {
+    margin-top: var(--space-xs);
+    height: 8px;
+    display: flex;
+    align-items: center;
+    background-color: #e0e0e0; /* Fundo da barra */
+    border-radius: 4px;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease;
+}
+.password-strength-indicator.visible { /* Para animação de aparecimento */
+    opacity: 1;
+    max-height: 20px;
+}
+.strength-bar {
+    height: 100%;
+    width: 0%; 
+    background-color: #e53935; /* Fraca */
+    border-radius: 4px;
+    transition: width 0.3s ease, background-color 0.3s ease;
+}
+.strength-text { /* O texto é opcional, pode ser removido se a barra for suficiente */
+    font-size: 0.75rem;
+    color: var(--dark-gray);
+    opacity: 0.7;
+    margin-left: var(--space-xs);
+    padding: 0 var(--space-sm);
+    white-space: nowrap;
+    display: none; /* Ocultando para uma UI mais limpa, a barra visual é o principal */
+}
+.strength-bar.weak { width: 25%; background-color: #e53935; }
+.strength-bar.medium { width: 50%; background-color: #fdd835; }
+.strength-bar.strong { width: 75%; background-color: #43a047; }
+.strength-bar.very-strong { width: 100%; background-color: var(--dark-green); }
+
+/* Melhoria visual para os indicadores de etapa do formulário de cadastro */
+.form-steps .step-indicator {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+    border: 2px solid var(--light-gray);
+}
+.form-steps .step-indicator.completed {
+    background-color: var(--dark-green) !important;
+    color: var(--white) !important;
+    border-color: var(--dark-green) !important;
+}
+.form-steps .step-indicator.active { /* Mantém o estilo atual de 'active' */
+    background-color: var(--soft-gold);
+    color: var(--dark-gray);
+    border-color: var(--soft-gold);
+}
+
+/* Botões sociais */
+.social-auth button {
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+}
+.social-auth button:hover {
+    opacity: 0.85;
+}

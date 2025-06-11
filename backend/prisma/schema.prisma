@@ -1,0 +1,182 @@
+// Define o gerador de cliente Prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Define a fonte de dados (nosso banco PostgreSQL)
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// --- INÍCIO DOS MODELOS DO BANCO DE DADOS ---
+
+// Apenas o modelo Usuario está ativo. O resto está "desligado" com //
+
+model Usuario {
+  id                         BigInt    @id @default(autoincrement())
+  nome_completo              String
+  email                      String    @unique
+  senha_hash                 String
+  telefone                   String?
+  data_nascimento            DateTime?
+  avatar_url                 String?
+  bio                        String?
+  tipo_de_usuario            String    @default("cliente") // 'cliente', 'guia', 'admin'
+  preferencias_notificacao   Json?
+  email_verificado_em        DateTime?
+  criado_em                  DateTime  @default(now())
+  atualizado_em              DateTime  @updatedAt
+  deleted_at                 DateTime?
+
+  // Relações (Comentadas para a primeira migração)
+  // perfil_de_guia             PerfilDeGuia?
+  // reservas                   Reserva[]
+  // avaliacoes                 Avaliacao[]
+  // favoritos                  Favorito[]
+  // mensagens_enviadas         Mensagem[]
+  // participacao_em_conversas  ConversaParticipante[]
+  // notificacoes               Notificacao[]
+}
+
+// --- O RESTANTE DOS MODELOS ESTÁ COMENTADO POR ENQUANTO ---
+
+// model PerfilDeGuia {
+//   id                   BigInt    @id @default(autoincrement())
+//   nome_publico         String
+//   tagline              String?
+//   bio_publica          String?
+//   numero_cadastur      String?   @unique
+//   status_verificacao   String    @default("pendente") // "pendente", "verificado", "rejeitado"
+//   informacoes_bancarias Json?
+//   criado_em            DateTime  @default(now())
+//   atualizado_em        DateTime  @updatedAt
+//   // Relação 1-para-1 com Usuario
+//   usuario_id           BigInt    @unique
+//   usuario              Usuario   @relation(fields: [usuario_id], references: [id])
+//   // Relações
+//   passeios             Passeio[]
+//   documentos_guia      DocumentoGuia[]
+// }
+// model Passeio {
+//   id                    BigInt    @id @default(autoincrement())
+//   titulo                String
+//   descricao_curta       String
+//   descricao_longa       String
+//   preco                 Float
+//   duracao_horas         Float
+//   dificuldade           String    // 'facil', 'moderado', 'dificil'
+//   localizacao_geral     String
+//   ponto_encontro        String
+//   instrucoes_local      String?
+//   latitude              Float?
+//   longitude             Float?
+//   status                String    @default("rascunho") // 'rascunho', 'ativo', 'inativo'
+//   itens_inclusos        Json?
+//   requisitos            String?
+//   imagem_principal_url  String?
+//   galeria_imagens_urls  Json?
+//   politica_cancelamento String
+//   criado_em             DateTime  @default(now())
+//   atualizado_em         DateTime  @updatedAt
+//   deleted_at            DateTime?
+//   // Relações
+//   guia_id               BigInt
+//   guia                  PerfilDeGuia  @relation(fields: [guia_id], references: [id])
+//   categoria_id          BigInt
+//   categoria             Categoria     @relation(fields: [categoria_id], references: [id])
+//   tags                  PasseioTag[]
+//   datas_disponiveis     DataDisponivel[]
+//   avaliacoes            Avaliacao[]
+//   reservas              Reserva[]
+//   usuarios_favoritos    Favorito[]
+// }
+// model Categoria {
+//   id            BigInt    @id @default(autoincrement())
+//   nome          String    @unique
+//   slug          String    @unique
+//   passeios      Passeio[]
+// }
+// model Tag {
+//   id        BigInt       @id @default(autoincrement())
+//   nome      String       @unique
+//   passeios  PasseioTag[]
+// }
+// model PasseioTag {
+//   passeio_id  BigInt
+//   passeio     Passeio @relation(fields: [passeio_id], references: [id], onDelete: Cascade)
+//   tag_id      BigInt
+//   tag         Tag     @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+//   @@id([passeio_id, tag_id])
+// }
+// model DataDisponivel {
+//   id              BigInt    @id @default(autoincrement())
+//   data_hora_inicio DateTime
+//   vagas_totais     Int
+//   vagas_ocupadas   Int       @default(0)
+//   passeio_id      BigInt
+//   passeio         Passeio   @relation(fields: [passeio_id], references: [id], onDelete: Cascade)
+//   reservas        Reserva[]
+// }
+// model Reserva {
+//   id                      BigInt    @id @default(autoincrement())
+//   codigo_reserva          String    @unique
+//   numero_participantes    Int
+//   valor_total             Float
+//   status_reserva          String    // 'confirmada', 'pendente_pagamento', 'cancelada_usuario', 'cancelada_guia', 'concluida', 'nao_compareceu'
+//   observacoes_cliente     String?
+//   data_reserva            DateTime  @default(now())
+//   usuario_id              BigInt
+//   usuario                 Usuario   @relation(fields: [usuario_id], references: [id])
+//   passeio_id              BigInt
+//   passeio                 Passeio   @relation(fields: [passeio_id], references: [id])
+//   data_disponivel_id      BigInt
+//   data_disponivel         DataDisponivel @relation(fields: [data_disponivel_id], references: [id])
+//   pagamento               Pagamento?
+// }
+// model Pagamento {
+//   id                  String   @id @default(cuid())
+//   status_pagamento    String   // 'aprovado', 'recusado', 'pendente', 'reembolsado'
+//   valor               Float
+//   metodo_pagamento    String?
+//   gateway_transacao_id String   @unique
+//   dados_pagamento     Json?
+//   criado_em           DateTime @default(now())
+//   reserva_id          BigInt   @unique
+//   reserva             Reserva  @relation(fields: [reserva_id], references: [id])
+// }
+// model Avaliacao {
+//   id                BigInt    @id @default(autoincrement())
+//   nota              Int
+//   titulo            String?
+//   comentario        String?
+//   resposta_do_guia  String?
+//   status            String    @default("pendente_aprovacao")
+//   data_avaliacao    DateTime  @default(now())
+//   usuario_id        BigInt
+//   usuario           Usuario   @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
+//   passeio_id        BigInt
+//   passeio           Passeio   @relation(fields: [passeio_id], references: [id], onDelete: Cascade)
+// }
+// model Favorito {
+//   usuario_id  BigInt
+//   usuario     Usuario @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
+//   passeio_id  BigInt
+//   passeio     Passeio @relation(fields: [passeio_id], references: [id], onDelete: Cascade)
+//   @@id([usuario_id, passeio_id])
+// }
+// model DocumentoGuia {
+//   id                  BigInt    @id @default(autoincrement())
+//   tipo_documento      String
+//   url_arquivo         String
+//   status_verificacao  String    @default("pendente")
+//   observacoes_admin   String?
+//   criado_em           DateTime  @default(now())
+//   perfil_de_guia_id   BigInt
+//   perfil_de_guia      PerfilDeGuia @relation(fields: [perfil_de_guia_id], references: [id], onDelete: Cascade)
+// }
+// model Conversa {
+//   id            BigInt    @id @default(autoincrement())
+//   criado_em     DateTime  @default(now())
+//   participantes ConversaParticipante[]
+//   mens

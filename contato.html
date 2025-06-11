@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fale Conosco - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    </head>
+<body>
+    <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <nav class="sidebar-menu" id="sidebarMenu">
+        <button class="close-btn" id="closeMenuBtn" aria-label="Fechar menu">&times;</button>
+        <div class="profile-section">
+            <img src="assets/images/ImagemUsuario.jpg" alt="Perfil do Usuário">
+            <h4>Nome do Usuário</h4>
+            <p>usuario@email.com</p>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar</a></li>
+            <li><a href="perfil.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+            <li><a href="criar-passeio.html" class="protected-creator-link"><i class="fas fa-plus-circle"></i> Criar Passeio</a></li>
+            <li><a href="avaliacoes.html"><i class="fas fa-star"></i> Avaliações</a></li>
+            <li><a href="favoritos.html"><i class="fas fa-heart"></i> Favoritos</a></li>
+            <li><a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a></li>
+            <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            <li><a href="sobre.html"><i class="fas fa-info-circle"></i> Sobre Nós</a></li>
+            <li><a href="contato.html" class="active"><i class="fas fa-envelope"></i> Contato</a></li>
+            <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+    </nav>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main id="main-content">
+        <section class="contact-hero-section">
+            <div class="hero-background-image" style="background-image: url('assets/images/ImagemContatoBanner.jpg');"> </div>
+            <div class="hero-overlay" style="background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);"></div>
+            <div class="container">
+                <div class="contact-hero-content">
+                    <h1 class="animate-on-scroll" data-animation="fadeInDown">Estamos Aqui Para Ajudar</h1>
+                    <p class="animate-on-scroll" data-animation="fadeInUp" data-delay="0.1s">Tem alguma dúvida, sugestão ou precisa de suporte? Entre em contato conosco!</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="contact-main-section section-padding">
+            <div class="container">
+                <div class="contact-layout">
+                    <div class="contact-form-column animate-on-scroll" data-animation="slideInLeft" data-delay="0.2s">
+                        <div class="section-header-alternative left-align">
+                            <h2>Envie-nos uma Mensagem</h2>
+                            <p class="subtitle">Preencha o formulário abaixo e nossa equipe responderá o mais breve possível.</p>
+                        </div>
+                        <form id="contactForm" class="contact-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="contact-name">Nome Completo*</label>
+                                    <input type="text" id="contact-name" name="contactName" class="form-control" required placeholder="Seu nome">
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-email">Seu Melhor E-mail*</label>
+                                    <input type="email" id="contact-email" name="contactEmail" class="form-control" required placeholder="email@exemplo.com">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-subject">Assunto*</label>
+                                <select id="contact-subject" name="contactSubject" class="form-control" required>
+                                    <option value="" disabled selected>Selecione um assunto...</option>
+                                    <option value="duvida_geral">Dúvida Geral</option>
+                                    <option value="problema_reserva">Problema com Reserva</option>
+                                    <option value="sugestao">Sugestão</option>
+                                    <option value="parcerias">Parcerias</option>
+                                    <option value="suporte_tecnico">Suporte Técnico</option>
+                                    <option value="outro">Outro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="contact-message">Sua Mensagem*</label>
+                                <textarea id="contact-message" name="contactMessage" class="form-control" rows="6" required placeholder="Descreva sua dúvida ou solicitação em detalhes..."></textarea>
+                            </div>
+                            <div class="form-group checkbox-group">
+                                <label class="filter-option">
+                                    <input type="checkbox" name="agree_privacy_contact" required>
+                                    <span>Concordo com a <a href="politica-privacidade.html" target="_blank" class="link-highlight">Política de Privacidade</a> e o uso dos meus dados para esta solicitação.</span>
+                                </label>
+                            </div>
+                            <div class="form-actions" style="justify-content: flex-start;">
+                                <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-paper-plane"></i> Enviar Mensagem</button>
+                            </div>
+                            <div id="contactFormStatus" class="form-status-message" style="display:none;"></div>
+                        </form>
+                    </div>
+
+                    <aside class="contact-info-column animate-on-scroll" data-animation="slideInRight" data-delay="0.3s">
+                        <div class="contact-info-box">
+                            <h3>Outras Formas de Contato</h3>
+                            <p>Prefere falar conosco diretamente ou tem uma dúvida urgente?</p>
+                            <ul class="contact-details-list">
+                                <li>
+                                    <i class="fas fa-phone-alt"></i>
+                                    <div>
+                                        <strong>Telefone (WhatsApp):</strong>
+                                        <span>(12) 99671-1961</span> <br>
+                                        <small>Atendimento: Seg-Sex, 9h-18h</small>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fas fa-envelope"></i>
+                                    <div>
+                                        <strong>E-mail:</strong>
+                                        <span>contato@passeiosdaserra.com</span><br>
+                                        <small>Tempo de resposta: até 24h úteis</small>
+                                    </div>
+                                </li>
+                                <li>
+                                    <i class="fas fa-map-marker-alt"></i>
+                                    <div>
+                                        <strong>Endereço (Escritório):</strong>
+                                        <span>Av. Dr. Januário Miraglia, 1000</span><br>
+                                        <span>Campos do Jordão, SP - 12460-000</span><br>
+                                        <small>(Visitas apenas com agendamento)</small>
+                                    </div>
+                                </li>
+                            </ul>
+                            <hr class="contact-info-divider">
+                            <h4>Precisa de ajuda rápida?</h4>
+                            <p>Muitas dúvidas comuns já estão respondidas em nossa <a href="ajuda.html" class="link-highlight">Central de Ajuda (FAQ)</a>.</p>
+                        </div>
+                        </aside>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section about"><h3>Sobre Nós</h3><p>Passeios da Serra é a melhor plataforma para encontrar e reservar experiências únicas em Campos do Jordão e região.</p></div>
+                <div class="footer-section links"><h3>Links Úteis</h3><ul><li><a href="index.html">Home</a></li><li><a href="pesquisa.html">Passeios</a></li><li><a href="sobre.html">Sobre Nós</a></li></ul></div>
+                <div class="footer-section contact"><h3>Contato</h3><ul><li><i class="fas fa-map-marker-alt"></i> Av. Dr. Januário Miraglia, 1000</li><li><i class="fas fa-phone"></i> (12) 99671-1961</li><li><i class="fas fa-envelope"></i> contato@passeiosdaserra.com</li></ul></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/contato.js"></script> </body>
+</html>

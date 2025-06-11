@@ -1,0 +1,254 @@
+/* css/criar-passeio-features.css */
+
+body {
+    background-color: var(--light-gray); /* Garante fundo claro */
+}
+
+/* Estilo para o botão de abrir menu na página */
+.page-menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1010;
+    /* Estilos do círculo dourado (devem vir de style.css ou ser repetidos/ajustados) */
+}
+body.no-scroll {
+    overflow: hidden;
+}
+
+.create-passeio-section {
+    padding-top: 80px; /* Espaço para o .page-menu-toggle */
+    padding-bottom: var(--space-xl);
+}
+
+/* Mensagens de erro/sucesso para campos */
+.field-validation-message {
+    display: block;
+    font-size: 0.8rem;
+    margin-top: 4px;
+    opacity: 0;
+    max-height: 0;
+    transition: opacity 0.3s ease, max-height 0.3s ease, color 0.3s ease;
+}
+.field-validation-message.error {
+    color: #c62828;
+    opacity: 1;
+    max-height: 20px;
+}
+.field-validation-message.success {
+    color: var(--dark-green);
+    opacity: 1;
+    max-height: 20px;
+}
+
+/* Contador de caracteres com feedback visual */
+.char-count {
+    transition: color 0.3s ease;
+}
+.char-count.limit-near {
+    color: #f57f17; /* Laranja para perto do limite */
+    font-weight: 500;
+}
+.char-count.limit-exceeded {
+    color: #c62828; /* Vermelho para limite excedido */
+    font-weight: bold;
+}
+
+/* Preview de Imagens Aprimorado */
+.upload-preview { /* Estilo base já em style.css */
+    position: relative; /* Para o botão de remover */
+    background-size: cover; /* Melhor para imagem principal */
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.upload-preview img.preview-image-item { /* Para o preview da imagem principal */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: var(--border-radius-md);
+}
+
+.gallery-preview .gallery-item-wrapper {
+    position: relative;
+    width: 100px; /* Mantenha o tamanho do seu .gallery-item */
+    height: 80px;
+    margin-bottom: var(--space-xs); /* Adicionado para espaçamento se quebrar linha */
+}
+.gallery-preview .gallery-item { /* Já estilizado em style.css */
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--light-gray); /* Borda sutil */
+}
+.gallery-preview .remove-image-btn {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: rgba(211, 47, 47, 0.9); /* Vermelho com transparência */
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 0.7rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+    transition: background-color 0.2s ease;
+}
+.gallery-preview .remove-image-btn:hover {
+    background-color: #c62828; /* Vermelho mais forte */
+}
+.upload-instructions {
+    font-size: 0.8rem;
+    color: var(--dark-gray);
+    opacity: 0.7;
+    margin-top: var(--space-xs);
+}
+
+/* Datas e Tags */
+.dates-container .date-tag,
+.tags-container .tag-item { /* Estilo para tags de palavras-chave */
+    background-color: var(--dark-green);
+    color: white;
+    padding: 5px 10px;
+    border-radius: var(--border-radius-md);
+    font-size: 0.85rem;
+    display: inline-flex; /* Para alinhar com o botão de remover */
+    align-items: center;
+    margin-right: var(--space-xs);
+    margin-bottom: var(--space-xs);
+    transition: transform 0.2s ease;
+}
+.dates-container .date-tag:hover,
+.tags-container .tag-item:hover {
+    transform: translateY(-1px);
+}
+
+.remove-date, .remove-tag { /* Botão de remover data/tag */
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    margin-left: 8px;
+    cursor: pointer;
+    font-size: 0.9em;
+    padding: 0;
+    line-height: 1;
+}
+.remove-date:hover, .remove-tag:hover {
+    color: white;
+}
+
+/* Seção de Resumo para Confirmação */
+#stepSummaryContent {
+    background-color: #f9f9f9;
+    padding: var(--space-lg);
+    border-radius: var(--border-radius-md);
+    border: 1px solid var(--admin-gray);
+}
+#stepSummaryContent h3 {
+    color: var(--dark-green);
+    margin-bottom: var(--space-md);
+    border-bottom: 1px solid var(--light-gray);
+    padding-bottom: var(--space-sm);
+}
+#summaryTitle,
+#summaryCategory,
+#summaryLocation
+/* etc. */
+{
+    display: block;
+    margin-bottom: var(--space-xs);
+}
+#summaryTitle strong, #summaryCategory strong /* etc. */ {
+    font-weight: 600;
+    min-width: 120px; /* Alinhamento */
+    display: inline-block;
+}
+.summary-images-container {
+    margin-top: var(--space-sm);
+}
+.summary-images-container img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: var(--border-radius-sm);
+    margin-right: var(--space-xs);
+    border: 1px solid var(--admin-gray);
+}
+
+/* Animações para transição de etapas */
+.form-step {
+    display: none;
+    animation: fadeIn 0.5s ease-in-out forwards; /* Reutiliza fadeIn de animation.css */
+}
+.form-step.active {
+    display: block;
+}
+.form-step.exiting { /* Classe para etapa que está saindo */
+    animation: fadeOut 0.3s ease-in-out forwards;
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Botão "Salvar como Rascunho" */
+.form-actions .btn-save-draft {
+    background-color: var(--medium-green); /* Um verde diferente */
+    color: white;
+}
+.form-actions .btn-save-draft:hover {
+    background-color: var(--dark-green);
+}
+/* css/criar-passeio-features.css (adicionar ou garantir que exista) */
+
+/* ... outros estilos que você já tem para esta página ... */
+
+/* Mensagem de status global para o formulário de criar passeio */
+#formStatusMessageGlobal {
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-lg); /* Espaço antes dos indicadores de etapa */
+    border-radius: var(--border-radius-sm);
+    font-size: 0.95rem;
+    text-align: center;
+    border: 1px solid transparent;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.4s ease, padding 0.3s ease, margin-bottom 0.3s ease;
+}
+#formStatusMessageGlobal.visible {
+    opacity: 1;
+    max-height: 100px; /* Altura suficiente para a mensagem */
+    padding: var(--space-md); 
+    margin-bottom: var(--space-lg);
+}
+#formStatusMessageGlobal.success {
+    background-color: #e8f5e9; /* Verde claro */
+    color: var(--dark-green);
+    border-color: var(--dark-green);
+}
+#formStatusMessageGlobal.success i {
+    margin-right: var(--space-xs);
+}
+#formStatusMessageGlobal.error {
+    background-color: #ffebee; /* Vermelho claro */
+    color: #c62828;
+    border-color: #c62828;
+}
+#formStatusMessageGlobal.error i {
+    margin-right: var(--space-xs);
+}
+
+/* Estilo para botões desabilitados durante o envio */
+.btn:disabled,
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed !important;
+}
+.btn:disabled i.fa-spinner {
+    margin-right: var(--space-sm);
+}

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Mensagens - Painel do Guia - Passeios da Serra</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/animation.css">
+    <link rel="stylesheet" href="css/guia-painel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="guide-panel-body">
+
+    <nav class="admin-sidebar guide-sidebar" id="guideSidebar">
+        <div class="admin-sidebar-content">
+            <div class="admin-sidebar-profile guide-sidebar-profile">
+                <img src="../assets/images/DonoPasseio.jpg" alt="Foto do Guia Yohan">
+                <h4>Yohan Montanhista</h4>
+                <p><span class="badge badge-guide">Guia Verificado</span></p>
+            </div>
+            <ul class="admin-sidebar-menu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Painel Inicial</span></a></li>
+                <li><a href="meus-passeios.html"><i class="fas fa-map-signs"></i><span>Meus Passeios</span></a></li>
+                <li><a href="minhas-reservas.html"><i class="fas fa-calendar-alt"></i><span>Minhas Reservas</span></a></li>
+                <li><a href="calendario-guia.html"><i class="fas fa-calendar-day"></i><span>Meu Calendário</span></a></li>
+                <li><a href="meu-financeiro.html"><i class="fas fa-wallet"></i><span>Meu Financeiro</span></a></li>
+                <li><a href="minhas-avaliacoes-guia.html"><i class="fas fa-star-half-alt"></i><span>Minhas Avaliações</span></a></li>
+                <li class="active"><a href="mensagens-guia.html"><i class="fas fa-comments"></i><span>Mensagens <span class="notification-badge-inline" id="sidebarMessagesBadge">2</span></span></a></li>
+                <li><a href="editar-perfil-guia.html"><i class="fas fa-user-edit"></i><span>Editar Perfil de Guia</span></a></li>
+            </ul>
+            <div class="admin-sidebar-footer">
+                <a href="../index.html" class="btn btn-outline" target="_blank"><i class="fas fa-globe"></i><span>Ver Site</span></a>
+                <a href="../login.html" id="guideLogoutButton" class="btn btn-outline"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="guide-panel-header">
+        <button class="menu-toggle guide-menu-toggle" id="guideMenuToggle" aria-label="Abrir menu do guia">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="guide-header-title">
+            Minhas Mensagens
+        </div>
+        <div class="guide-header-actions">
+            <a href="mensagens-guia.html" class="notification-btn" aria-label="Mensagens">
+                <i class="fas fa-comments"></i>
+                <span class="notification-badge" id="headerMessagesBadge">2</span>
+            </a>
+            <div class="guide-profile-dropdown">
+                <img src="../assets/images/DonoPasseio.jpg" alt="Guia Yohan" class="guide-avatar-sm">
+                <span>Yohan M.</span> <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main guide-main-content guide-messages-main" id="guideMainContent">
+        <div class="messages-layout-wrapper">
+            <aside class="conversations-list-column">
+                <div class="conversations-header">
+                    <input type="search" id="searchConversationsInput" class="form-control" placeholder="Buscar conversas...">
+                    <div class="conversation-filters">
+                        <select id="filterMessageType" class="form-control form-control-sm">
+                            <option value="all">Todas</option>
+                            <option value="unread">Não Lidas</option>
+                            <option value="client">Clientes</option>
+                            <option value="platform">Plataforma</option>
+                        </select>
+                    </div>
+                </div>
+                <ul class="conversations-list" id="conversationsList">
+                    <li class="conversation-item active-conversation" data-conversation-id="conv1">
+                        <img src="../assets/images/ImagemUsuario.jpg" alt="Ana Silva" class="conversation-avatar">
+                        <div class="conversation-summary">
+                            <div class="conversation-header-line">
+                                <span class="conversation-name">Ana Silva</span>
+                                <span class="conversation-time">10:30 AM</span>
+                            </div>
+                            <p class="conversation-preview">Olá Yohan, tenho uma dúvida sobre o passeio da Pedra do Baú...</p>
+                        </div>
+                        <span class="unread-dot"></span>
+                    </li>
+                    <li class="conversation-item" data-conversation-id="conv2">
+                        <img src="../assets/images/logo-small-icon.png" alt="Passeios da Serra" class="conversation-avatar platform-avatar">
+                        <div class="conversation-summary">
+                             <div class="conversation-header-line">
+                                <span class="conversation-name">Passeios da Serra</span>
+                                <span class="conversation-time">Ontem</span>
+                            </div>
+                            <p class="conversation-preview"><strong>Atualização Importante:</strong> Nova política de...</p>
+                        </div>
+                    </li>
+                    </ul>
+                <div id="emptyConversationsState" class="empty-state small-empty" style="display:none; padding: var(--space-md);">
+                    <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom:var(--space-sm);"></i>
+                    <p>Nenhuma conversa encontrada.</p>
+                </div>
+            </aside>
+
+            <section class="message-view-column" id="messageViewColumn">
+                <div class="message-view-header">
+                    <img src="../assets/images/ImagemUsuario.jpg" alt="Ana Silva" class="current-chat-avatar" id="currentChatAvatar">
+                    <div class="current-chat-info">
+                        <h3 id="currentChatName">Ana Silva</h3>
+                        <span class="current-chat-status" id="currentChatStatus">Online</span>
+                    </div>
+                    <div class="message-view-actions">
+                        <button class="btn-icon" title="Marcar como não lida"><i class="fas fa-envelope"></i></button>
+                        <button class="btn-icon" title="Arquivar conversa"><i class="fas fa-archive"></i></button>
+                    </div>
+                </div>
+                <div class="message-history" id="messageHistory">
+                    <div class="message-bubble received">
+                        <p>Olá Yohan, tenho uma dúvida sobre o passeio da Pedra do Baú. É adequado para crianças de 10 anos?</p>
+                        <span class="message-time">10:30 AM</span>
+                    </div>
+                    <div class="message-bubble sent">
+                        <p>Olá Ana! Para crianças de 10 anos com bom condicionamento e acompanhadas, sim! A subida tem partes com escadas, mas podemos adaptar. Qual seria a data?</p>
+                        <span class="message-time">10:35 AM</span>
+                    </div>
+                    </div>
+                <div id="emptyMessageViewState" class="empty-state" style="display:flex; flex-direction:column; justify-content:center; align-items:center; height:100%; background:var(--light-gray);">
+                     <i class="fas fa-comments" style="font-size: 4rem; color: var(--admin-gray); margin-bottom: var(--space-md);"></i>
+                     <h4>Selecione uma conversa para visualizar.</h4>
+                </div>
+                <div class="message-reply-area">
+                    <textarea id="messageReplyInput" placeholder="Digite sua resposta aqui..."></textarea>
+                    <button id="sendMessageBtn" class="btn btn-primary"><i class="fas fa-paper-plane"></i> Enviar</button>
+                </div>
+            </section>
+        </div> </main>
+
+    <script src="../js/auth.js"></script>
+    <script src="../js/passeios.js"></script>
+    <script src="js/guia-painel.js"></script>
+    <script src="js/guia-mensagens.js"></script> </body>
+</html>

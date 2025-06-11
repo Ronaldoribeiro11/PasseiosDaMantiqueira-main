@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Passeios da Serra - Explore Campos do Jordão</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="css/home-features.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-container container">
+            
+            <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            </div>
+    </header>
+    
+    <main id="main-content">
+        <section class="hero-section">
+            <div class="hero-background">
+                <img src="assets/images/BannerPasseiosDaMantiqueira.jpg" alt="Paisagem de Campos do Jordão" class="hero-background-image">
+                <div class="hero-overlay"></div>
+            </div>
+            <div class="hero-content container">
+                <div class="hero-text animate-on-scroll" data-animation="slideDown">
+                    <h1 class="type-animation">Explore Campos do Jordão como nunca antes!</h1>
+                    <p class="subtitle slide-in-left">Descubra experiências inesquecíveis com guias locais e aventure-se na natureza.</p>
+                    
+                   
+                    <div class="hero-search-bar animate-on-scroll" data-animation="fadeInUp" data-delay="0.2s">
+                        <form id="heroSearchForm">
+                            <input type="search" id="heroSearchInput" name="q" placeholder="O que você procura na serra? (Ex: Trilha, Gastronomia)">
+                            <button type="submit" aria-label="Buscar Passeio"><i class="fas fa-search"></i></button>
+                        </form>
+                    </div>
+
+                    <div class="hero-buttons slide-in-right">
+                        <a href="login.html" class="btn btn-primary pulse">Criar Conta</a>
+                        <a href="pesquisa.html" class="btn btn-secondary">Explorar Tudo</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="hero-scroll-indicator">
+                <span>Scroll</span>
+                <i class="fas fa-chevron-down"></i>
+            </div>
+        </section>
+        
+        <section class="featured-section container section-padding">
+            <h2 class="section-title animate-on-scroll" data-animation="fadeIn">Passeios em Destaque</h2>
+            <p class="section-subtitle animate-on-scroll" data-animation="fadeIn">As melhores experiências selecionadas para você</p>
+            
+            <div class="passeios-carousel">
+                <div class="carousel-container">
+                    <div class="carousel-track" id="featuredToursTrack">
+                        
+                        <div class="passeio-card-placeholder" style="display: none;">
+                            <div class="card-image">
+                                <span class="card-badge"></span>
+                                <button class="favorite-btn" aria-label="Favoritar"><i class="far fa-heart"></i></button>
+                            </div>
+                            <div class="card-content">
+                                <h3>Título do Passeio</h3>
+                                <div class="card-rating">
+                                    <div class="stars" data-rating="0"><span>★★★★★</span></div>
+                                    <span class="rating-text">(0)</span>
+                                </div>
+                                <p class="card-description">Descrição curta do passeio.</p>
+                                <div class="card-footer">
+                                    <span class="card-price">R$ 0,00</span>
+                                    <a href="#" class="btn btn-primary btn-sm">Detalhes</a>
+                                </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                    
+                    <button class="carousel-prev"><i class="fas fa-chevron-left"></i></button>
+                    <button class="carousel-next"><i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+            
+            <div class="section-cta animate-on-scroll" data-animation="fadeIn">
+                <a href="pesquisa.html" class="btn btn-primary">Ver Todos os Passeios</a>
+            </div>
+        </section>
+        
+        <section class="how-it-works container section-padding">
+            <h2 class="section-title animate-on-scroll" data-animation="fadeIn">Como Funciona</h2>
+            <p class="section-subtitle animate-on-scroll" data-animation="fadeIn">Encontre, reserve e aproveite passeios incríveis em poucos passos</p>
+            
+            <div class="steps-container">
+                <div class="step animate-on-scroll" data-animation="slideInLeft">
+                    <div class="step-icon">
+                        <i class="fas fa-binoculars"></i>
+                        <span class="step-number">1</span>
+                    </div>
+                    <h3>Encontre</h3>
+                    <p>Busque passeios que combinam com seu estilo e preferências.</p>
+                </div>
+                
+                <div class="step animate-on-scroll" data-animation="slideUp">
+                    <div class="step-icon">
+                        <i class="fas fa-credit-card"></i>
+                        <span class="step-number">2</span>
+                    </div>
+                    <h3>Reserve</h3>
+                    <p>Escolha a data e faça sua reserva de forma rápida e segura.</p>
+                </div>
+                
+                <div class="step animate-on-scroll" data-animation="slideInRight">
+                    <div class="step-icon">
+                        <i class="fas fa-camera-retro"></i>
+                        <span class="step-number">3</span>
+                    </div>
+                    <h3>Aproveite</h3>
+                    <p>Viva experiências únicas e crie memórias inesquecíveis.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="popular-categories-section container section-padding">
+            <h2 class="section-title animate-on-scroll" data-animation="fadeIn">Explore por Categoria</h2>
+            <p class="section-subtitle animate-on-scroll" data-animation="fadeIn">Encontre o tipo de aventura que mais combina com você.</p>
+            <div class="categories-grid animate-on-scroll" data-animation="fadeInUp">
+                <a href="pesquisa.html?category=aventura" class="category-card">
+                    <i class="fas fa-hiking"></i>
+                    <h3>Aventura</h3>
+                    <p>Trilhas, esportes radicais e natureza selvagem.</p>
+                </a>
+                <a href="pesquisa.html?category=cultural" class="category-card">
+                    <i class="fas fa-landmark"></i>
+                    <h3>Cultural</h3>
+                    <p>Museus, história local e arquitetura encantadora.</p>
+                </a>
+                <a href="pesquisa.html?category=gastronomia" class="category-card">
+                    <i class="fas fa-utensils"></i>
+                    <h3>Gastronomia</h3>
+                    <p>Sabores da serra, restaurantes e produtos locais.</p>
+                </a>
+                <a href="pesquisa.html?category=natureza" class="category-card">
+                    <i class="fas fa-leaf"></i>
+                    <h3>Natureza</h3>
+                    <p>Paisagens, parques e contemplação.</p>
+                </a>
+                <a href="pesquisa.html?category=familia" class="category-card">
+                    <i class="fas fa-users"></i>
+                    <h3>Família</h3>
+                    <p>Diversão garantida para todas as idades.</p>
+                </a>
+            </div>
+        </section>
+        
+        <section class="testimonials-section section-padding"> 
+            <div class="container">
+                <h2 class="section-title animate-on-scroll" data-animation="fadeIn">O Que Dizem Nossos Visitantes</h2>
+                <p class="section-subtitle animate-on-scroll" data-animation="fadeIn">Experiências reais de quem já explorou com a gente</p>
+                
+                <div class="testimonials-carousel">
+                   
+                    <div class="testimonial animate-on-scroll" data-animation="slideUp">
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <p class="testimonial-text">"A trilha da Pedra do Baú foi uma das experiências mais incríveis da minha vida! O guia foi super atencioso e conhecia cada detalhe do local."</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="assets/images/ImagemUsuario.jpg" alt="Japones">
+                            <div><h4>Ana Silva</h4><span>São Paulo, SP</span></div>
+                        </div>
+                    </div>
+                    <div class="testimonial animate-on-scroll" data-animation="slideUp" data-delay="0.2s">
+                        <div class="testimonial-content">
+                            <div class="testimonial-rating">
+                                <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                            </div>
+                            <p class="testimonial-text">"O tour gastronômico superou todas as expectativas. Conhecemos lugares que nunca encontraríamos sozinhos e comemos muito bem!"</p>
+                        </div>
+                        <div class="testimonial-author">
+                            <img src="assets/images/ImagemUsuario2.jpg" alt="Vinicius">
+                            <div><h4>Carlos Mendes</h4><span>Rio de Janeiro, RJ</span></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section-cta animate-on-scroll" data-animation="fadeIn">
+                    <a href="avaliacoes.html" class="btn btn-secondary">Ver Mais Depoimentos</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="latest-blog-section section-padding" style="background-color: var(--white);">
+            <div class="container">
+                <h2 class="section-title animate-on-scroll" data-animation="fadeIn">Dicas e Histórias da Serra</h2>
+                <p class="section-subtitle animate-on-scroll" data-animation="fadeIn">Acompanhe nosso blog para inspirações e novidades.</p>
+                <div class="blog-preview-grid animate-on-scroll" data-animation="fadeInUp" id="latestBlogPostsContainer">
+                   
+                </div>
+                <div class="section-cta animate-on-scroll" data-animation="fadeIn">
+                    <a href="blog.html" class="btn btn-secondary">Visitar Blog Completo</a>
+                </div>
+            </div>
+        </section>
+        
+        <section class="final-cta">
+            <div class="container">
+                <div class="cta-content animate-on-scroll" data-animation="fadeIn">
+                    <h2>Pronto para sua próxima aventura?</h2>
+                    <p>Junte-se a milhares de viajantes que já descobriram os melhores passeios de Campos do Jordão.</p>
+                    <div class="cta-buttons">
+                        <a href="pesquisa.html" class="btn btn-primary btn-lg">Explorar Passeios</a>
+                        <a href="criar-passeio.html" class="btn btn-secondary btn-lg protected-creator-link">Criar Passeio</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>Sobre Nós</h3>
+                    <p>Passeios da Serra é a melhor plataforma para encontrar e reservar experiências únicas em Campos do Jordão e região.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                
+                <div class="footer-section links">
+                    <h3>Links Úteis</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="pesquisa.html">Passeios</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section contact">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Dr. Januário Miraglia, 1000 - Campos do Jordão, SP</li>
+                        <li><i class="fas fa-phone"></i> (12) 99671-1961</li>
+                        <li><i class="fas fa-envelope"></i> contato@passeiosdaserra.com</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="sidebar-menu" id="sidebarMenu">
+        
+        <div class="profile-section" id="sidebarProfileSection">
+            <img src="assets/images/ImagemUsuario.jpg" alt="Perfil" id="sidebarProfileImg">
+            <h4 id="sidebarProfileName">Visitante</h4>
+            <p id="sidebarProfileEmail">Faça login ou cadastre-se</p>
+        </div>
+        
+        <ul class="sidebar-nav">
+        <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+        <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar Passeios</a></li>
+        <li id="sidebarLinkMeuPerfil" style="display: none;"><a href="perfil.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+        <li id="sidebarLinkCriarPasseio" style="display: none;"><a href="criar-passeio.html" class="protected-creator-link"><i class="fas fa-plus-circle"></i> Criar Passeio</a></li>
+        <li id="sidebarLinkAvaliacoes" style="display: none;"><a href="avaliacoes.html"><i class="fas fa-star"></i> Avaliações</a></li>
+        <li id="sidebarLinkFavoritos" style="display: none;"><a href="favoritos.html"><i class="fas fa-heart"></i> Favoritos</a></li>
+        <li id="sidebarLinkConfiguracoes" style="display: none;"><a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a></li>
+        <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+        <li id="sidebarLinkAuth"><a href="login.html"><i class="fas fa-sign-in-alt"></i> Login / Cadastro</a></li>
+    </ul>
+        </ul>
+    </div>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <script src="js/auth.js"></script> 
+    <script src="js/passeios.js"></script> 
+    <script src="js/carousel.js"></script> 
+    <script src="js/main.js"></script> 
+    <script src="js/index.js"></script> 
+    
+ <script src="js/blog-data.js"></script>
+    
+ <script src="js/blog.js"></script> 
+
+    <script src="js/home-features.js"></script> 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Controle do Menu Lateral
+    const menuToggle = document.querySelector('.menu-toggle');
+    const sidebarMenu = document.getElementById('sidebarMenu');
+    const menuOverlay = document.getElementById('menuOverlay');
+    const closeMenuBtn = document.getElementById('closeMenuBtn');
+    
+    function toggleMenu() {
+        menuToggle.classList.toggle('active');
+        sidebarMenu.classList.toggle('open');
+        menuOverlay.classList.toggle('active');
+        document.body.classList.toggle('no-scroll');
+    }
+    
+    if (menuToggle && sidebarMenu && menuOverlay ) {
+        menuToggle.addEventListener('click', toggleMenu);
+        
+        menuOverlay.addEventListener('click', toggleMenu);
+    }
+
+            // Carrossel de passeios
+            const passeiosCarousel = new Carousel('.passeios-carousel .carousel-container', {
+                slidesToShow: 3,
+                slidesToScroll: 1,
+                infinite: true,
+                responsive: [
+                    {
+                        breakpoint: 1024,
+                        settings: {
+                            slidesToShow: 2
+                        }
+                    },
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+            });
+            
+            // Carrossel de depoimentos
+            const testimonialsCarousel = new Carousel('.testimonials-carousel', {
+                slidesToShow: 2,
+                slidesToScroll: 1,
+                infinite: true,
+                responsive: [
+                    {
+                        breakpoint: 768,
+                        settings: {
+                            slidesToShow: 1
+                        }
+                    }
+                ]
+            });
+
+            // Animação de digitação
+            const typeElements = document.querySelectorAll('.type-animation');
+            typeElements.forEach(el => {
+                const text = el.textContent;
+                el.textContent = '';
+                let i = 0;
+                const typing = setInterval(() => {
+                    if (i < text.length) {
+                        el.textContent += text.charAt(i);
+                        i++;
+                    } else {
+                        clearInterval(typing);
+                    }
+                }, 100);
+            });
+        });
+        document.addEventListener('DOMContentLoaded', function() {
+    
+});
+    </script>
+</body>
+</html>

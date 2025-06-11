@@ -1,0 +1,156 @@
+/* css/perfil-features.css */
+
+/* Estilo para o botão de abrir menu na página de perfil */
+.page-menu-toggle {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1010; /* Acima do overlay do menu */
+    /* Estilos do círculo dourado etc. (devem estar em style.css ou aqui) */
+    /* Exemplo, se não estiver global: */
+    /* width: 44px; height: 44px; background-color: var(--soft-gold); border-radius: 50%; ... */
+}
+body.no-scroll {
+    overflow: hidden;
+}
+
+/* Main content da página de perfil para acomodar o menu fixo */
+.profile-page-main { /* Adicione esta classe ao <main> em perfil.html */
+    padding-top: 80px; /* Espaço para o .page-menu-toggle + um pouco de margem */
+}
+
+/* Feedback visual para formulários */
+.form-status-message-profile {
+    padding: var(--space-sm) var(--space-md);
+    margin-top: var(--space-md); /* Para separar do botão de salvar */
+    margin-bottom: var(--space-sm);
+    border-radius: var(--border-radius-sm);
+    font-size: 0.9rem;
+    text-align: center;
+    border: 1px solid transparent;
+    opacity: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: opacity 0.3s ease, max-height 0.3s ease, padding 0.3s ease, margin-top 0.3s ease;
+}
+.form-status-message-profile.visible {
+    opacity: 1;
+    max-height: 100px;
+    padding: var(--space-sm) var(--space-md);
+    margin-top: var(--space-md);
+}
+.form-status-message-profile.success {
+    background-color: #e8f5e9;
+    color: var(--dark-green);
+    border-color: var(--dark-green);
+}
+.form-status-message-profile.error {
+    background-color: #ffebee;
+    color: #c62828;
+    border-color: #c62828;
+}
+
+/* Avatar e botão de edição */
+.profile-avatar {
+    position: relative;
+    width: 120px; /* Mantenha o tamanho do HTML original */
+    height: 120px;
+    margin: 0 auto var(--space-md);
+    border-radius: 50%;
+    overflow: hidden; /* Garante que a imagem fique dentro do círculo */
+}
+.profile-avatar img#profileAvatarDisplay { /* ID para a imagem do avatar */
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+/* O .btn-edit-avatar já está estilizado em style.css */
+
+/* Seção de status do criador */
+.creator-status-banner {
+    padding: var(--space-sm) var(--space-md);
+    margin-bottom: var(--space-lg);
+    border-radius: var(--border-radius-sm);
+    text-align: center;
+    font-weight: 500;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    transform: translateY(-10px);
+}
+.creator-status-banner.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.creator-status-banner.pending {
+    background-color: #fffde7; /* Amarelo claro */
+    color: #f57f17; /* Laranja escuro */
+    border: 1px solid #fbc02d;
+}
+.creator-status-banner.rejected {
+    background-color: #ffebee; /* Vermelho claro */
+    color: #c62828;
+    border: 1px solid #e57373;
+}
+.creator-status-banner.verified {
+    background-color: #e8f5e9; /* Verde claro */
+    color: var(--dark-green);
+    border: 1px solid var(--medium-green);
+}
+.creator-status-banner a {
+    color: inherit;
+    text-decoration: underline;
+    font-weight: bold;
+}
+
+/* Animações para itens de lista (passeios) */
+.passeio-item {
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+.passeio-item.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Ajuste no empty state para melhor visibilidade */
+.tab-content .empty-state {
+    border: 2px dashed var(--light-gray); /* Borda mais suave */
+    padding: var(--space-xl);
+    background-color: #fdfdfd;
+}
+.tab-content .empty-state i {
+    color: var(--dark-green); /* Ícone com a cor primária */
+    opacity: 0.5;
+}
+
+/* Hover e animação para os links do menu do perfil (profile-menu) */
+.profile-menu a {
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+.profile-menu a:hover {
+    transform: translateX(5px);
+}
+.profile-menu a i {
+    transition: transform 0.2s ease;
+}
+.profile-menu a:hover i {
+    transform: scale(1.1);
+}
+/* css/perfil-features.css (adicionar ou garantir que exista) */
+
+/* ... outros estilos ... */
+
+.passeio-actions .btn-danger-outline {
+    background-color: transparent;
+    border: 1px solid var(--admin-danger, #e53935); /* Cor de perigo */
+    color: var(--admin-danger, #e53935);
+    transition: all var(--transition-fast);
+}
+.passeio-actions .btn-danger-outline:hover {
+    background-color: var(--admin-danger, #e53935);
+    color: var(--white);
+}
+.passeio-actions .btn-danger-outline i {
+    margin-right: var(--space-xs);
+}

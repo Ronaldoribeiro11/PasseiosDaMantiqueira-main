@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Central de Ajuda - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <nav class="sidebar-menu" id="sidebarMenu">
+        <button class="close-btn" id="closeMenuBtn" aria-label="Fechar menu">&times;</button>
+        <div class="profile-section">
+            <img src="assets/images/ImagemUsuario.jpg" alt="Perfil do Usuário">
+            <h4>Nome do Usuário</h4>
+            <p>usuario@email.com</p>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar</a></li>
+            <li><a href="perfil.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+            <li><a href="criar-passeio.html" class="protected-creator-link"><i class="fas fa-plus-circle"></i> Criar Passeio</a></li>
+            <li><a href="avaliacoes.html"><i class="fas fa-star"></i> Avaliações</a></li>
+            <li><a href="favoritos.html"><i class="fas fa-heart"></i> Favoritos</a></li>
+            <li><a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a></li>
+            <li><a href="ajuda.html" class="active"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+    </nav>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main id="main-content">
+        <section class="help-center-hero">
+            <div class="container">
+                <h1 class="animate-on-scroll" data-animation="fadeInDown">Como podemos ajudar?</h1>
+                <div class="help-search-bar animate-on-scroll" data-animation="fadeInUp" data-delay="0.1s">
+                    <input type="search" id="faqSearchInput" placeholder="Digite sua dúvida ou palavra-chave...">
+                    <button aria-label="Buscar"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </section>
+
+        <section class="help-content-section">
+            <div class="container">
+                <div class="help-layout">
+                    <aside class="help-categories-nav animate-on-scroll" data-animation="slideInLeft" data-delay="0.2s">
+                        <h2>Tópicos Populares</h2>
+                        <ul class="category-list">
+                            <li><a href="#category-reservas" class="category-link active" data-category-filter="all"><i class="fas fa-stream"></i> Todos os Tópicos</a></li>
+                            <li><a href="#category-reservas" class="category-link" data-category-filter="reservas"><i class="fas fa-calendar-check"></i> Reservas e Agendamentos</a></li>
+                            <li><a href="#category-pagamentos" class="category-link" data-category-filter="pagamentos"><i class="fas fa-credit-card"></i> Pagamentos e Reembolsos</a></li>
+                            <li><a href="#category-conta" class="category-link" data-category-filter="conta"><i class="fas fa-user-cog"></i> Gerenciamento da Conta</a></li>
+                            <li><a href="#category-passeios" class="category-link" data-category-filter="passeios"><i class="fas fa-map-signs"></i> Sobre os Passeios</a></li>
+                            <li><a href="#category-guias" class="category-link" data-category-filter="guias"><i class="fas fa-id-badge"></i> Para Guias e Anfitriões</a></li>
+                            <li><a href="#category-tecnico" class="category-link" data-category-filter="tecnico"><i class="fas fa-tools"></i> Problemas Técnicos</a></li>
+                        </ul>
+                    </aside>
+
+                    <div class="faq-list-area animate-on-scroll" data-animation="fadeIn" data-delay="0.3s">
+                        <h2 id="faq-list-title">Perguntas Frequentes</h2>
+                        <div id="faqListContainer">
+                            <div class="faq-item" data-category="reservas">
+                                <button class="faq-question">
+                                    <span>Como faço para cancelar uma reserva?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Para cancelar uma reserva, acesse "Meu Perfil", depois "Meus Passeios" na aba "Reservados". Encontre a reserva desejada e procure pela opção "Cancelar Reserva". As condições de reembolso dependerão da política de cancelamento do passeio e da antecedência do cancelamento. Você pode verificar a política de cancelamento específica na página do passeio ou nos detalhes da sua reserva.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item" data-category="pagamentos">
+                                <button class="faq-question">
+                                    <span>Quais métodos de pagamento são aceitos?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Aceitamos os principais cartões de crédito (Visa, Mastercard, Amex), PIX e, para alguns passeios, boleto bancário. As opções disponíveis serão mostradas no momento da finalização da reserva.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item" data-category="conta">
+                                <button class="faq-question">
+                                    <span>Como altero minha senha?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Você pode alterar sua senha na seção "Configurações da Conta", acessível pelo menu do seu perfil. Procure pela aba "Segurança e Senha". Você precisará informar sua senha atual para definir uma nova.</p>
+                                </div>
+                            </div>
+                             <div class="faq-item" data-category="passeios">
+                                <button class="faq-question">
+                                    <span>O que devo levar para uma trilha?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Recomendamos levar água, lanche leve (frutas, barras de cereal), protetor solar, repelente, um pequeno kit de primeiros socorros e vestir roupas confortáveis e calçados apropriados para caminhada (tênis de trilha ou botas). Verifique sempre a descrição do passeio para recomendações específicas do guia.</p>
+                                </div>
+                            </div>
+                            <div class="faq-item" data-category="guias">
+                                <button class="faq-question">
+                                    <span>Como me torno um guia na plataforma?</span>
+                                    <i class="fas fa-chevron-down"></i>
+                                </button>
+                                <div class="faq-answer">
+                                    <p>Ficamos felizes com seu interesse! Para se tornar um guia ou anfitrião, você precisa primeiro criar uma conta de usuário comum. Depois, acesse a opção "Criar Passeio" ou procure por "Seja um Guia" no seu perfil. Você será direcionado para um formulário de cadastro mais detalhado, onde deverá fornecer informações pessoais, documentos e, se aplicável, suas credenciais como guia (CADASTUR, certificados, etc.). Seu perfil passará por uma análise antes de ser aprovado.</p>
+                                </div>
+                            </div>
+                            </div>
+                        <p id="noResultsMessage" class="empty-state-text" style="display:none; text-align:center; margin-top: var(--space-lg);">Nenhuma pergunta encontrada para sua busca.</p>
+                    </div>
+                </div>
+
+                <section class="contact-prompt-section animate-on-scroll" data-animation="fadeInUp" data-delay="0.4s">
+                    <h2>Não encontrou o que procurava?</h2>
+                    <p>Nossa equipe de suporte está pronta para te ajudar com qualquer outra dúvida ou problema.</p>
+                    <a href="contato.html" class="btn btn-primary btn-lg"><i class="fas fa-headset"></i> Entre em Contato</a>
+                    <div class="quick-contact-info">
+                        <p><i class="fas fa-phone-alt"></i> (12) 99671-1961 | <i class="fas fa-envelope"></i> suporte@passeiosdaserra.com</p>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section about"><h3>Sobre Nós</h3><p>Passeios da Serra é a melhor plataforma para encontrar e reservar experiências únicas em Campos do Jordão e região.</p></div>
+                <div class="footer-section links"><h3>Links Úteis</h3><ul><li><a href="index.html">Home</a></li><li><a href="pesquisa.html">Passeios</a></li><li><a href="contato.html">Contato</a></li></ul></div>
+                <div class="footer-section contact"><h3>Contato</h3><ul><li><i class="fas fa-map-marker-alt"></i> Av. Dr. Januário Miraglia, 1000</li><li><i class="fas fa-phone"></i> (12) 99671-1961</li><li><i class="fas fa-envelope"></i> contato@passeiosdaserra.com</li></ul></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/ajuda.js"></script> </body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Meta tags e links como no template base -->
+    <title>Avaliações - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+     <!-- Link para o Font Awesome (versão gratuita) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header como no template base -->
+    
+    <main id="main-content">
+        <section class="reviews-section">
+            <div class="container">
+                <div class="reviews-header animate-on-scroll" data-animation="fadeIn">
+                    <h1>Avaliações</h1>
+                    <p>O que nossos visitantes estão dizendo</p>
+                </div>
+                
+                <div class="reviews-container">
+                    <div class="reviews-filters animate-on-scroll" data-animation="slideInLeft">
+                        <h3>Filtrar Avaliações</h3>
+                        
+                        <div class="filter-group">
+                            <h4 class="filter-title">Passeio</h4>
+                            <select id="filter-passeio">
+                                <option value="">Todos os passeios</option>
+                                <option value="trilha-pedra-bau">Trilha da Pedra do Baú</option>
+                                <option value="tour-gastronomico">Tour Gastronômico</option>
+                                <option value="passeio-trem">Passeio de Trem</option>
+                            </select>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <h4 class="filter-title">Avaliação</h4>
+                            <div class="rating-filter">
+                                <label class="rating-option">
+                                    <input type="radio" name="filter-rating" value="5" checked>
+                                    <span class="stars">★★★★★</span>
+                                    <span>Todas</span>
+                                </label>
+                                <label class="rating-option">
+                                    <input type="radio" name="filter-rating" value="5">
+                                    <span class="stars">★★★★★</span>
+                                    <span>5 estrelas</span>
+                                </label>
+                                <label class="rating-option">
+                                    <input type="radio" name="filter-rating" value="4">
+                                    <span class="stars">★★★★☆</span>
+                                    <span>4 estrelas</span>
+                                </label>
+                                <label class="rating-option">
+                                    <input type="radio" name="filter-rating" value="3">
+                                    <span class="stars">★★★☆☆</span>
+                                    <span>3 estrelas</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <h4 class="filter-title">Ordenar por</h4>
+                            <select id="filter-sort">
+                                <option value="recent">Mais recentes</option>
+                                <option value="helpful">Mais úteis</option>
+                                <option value="highest">Melhores avaliações</option>
+                                <option value="lowest">Piores avaliações</option>
+                            </select>
+                        </div>
+                        
+                        <button class="btn btn-primary btn-block">Aplicar Filtros</button>
+                    </div>
+                    
+                    <div class="reviews-content animate-on-scroll" data-animation="slideInRight">
+                        <div class="reviews-summary">
+                            <div class="summary-overall">
+                                <div class="overall-rating">4.7</div>
+                                <div class="stars" data-rating="4.7">
+                                    <span>★★★★★</span>
+                                </div>
+                                <div class="total-reviews">Baseado em 215 avaliações</div>
+                            </div>
+                            
+                            <div class="summary-bars">
+                                <div class="rating-bar">
+                                    <span>5 estrelas</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 70%"></div>
+                                    </div>
+                                    <span>150</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>4 estrelas</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 20%"></div>
+                                    </div>
+                                    <span>43</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>3 estrelas</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 7%"></div>
+                                    </div>
+                                    <span>15</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>2 estrelas</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 2%"></div>
+                                    </div>
+                                    <span>4</span>
+                                </div>
+                                <div class="rating-bar">
+                                    <span>1 estrela</span>
+                                    <div class="bar-container">
+                                        <div class="bar-fill" style="width: 1%"></div>
+                                    </div>
+                                    <span>3</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="write-review">
+                            <h3>Deixe sua avaliação</h3>
+                            <form class="review-form">
+                                <div class="form-group">
+                                    <label for="review-title">Título</label>
+                                    <input type="text" id="review-title" placeholder="Resuma sua experiência">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="review-rating">Sua Avaliação</label>
+                                    <div class="rating-input">
+                                        <span class="rating-label">Ruim</span>
+                                        <div class="stars-select">
+                                            <input type="radio" id="star5" name="rating" value="5">
+                                            <label for="star5"><i class="fas fa-star"></i></label>
+                                            <input type="radio" id="star4" name="rating" value="4">
+                                            <label for="star4"><i class="fas fa-star"></i></label>
+                                            <input type="radio" id="star3" name="rating" value="3">
+                                            <label for="star3"><i class="fas fa-star"></i></label>
+                                            <input type="radio" id="star2" name="rating" value="2">
+                                            <label for="star2"><i class="fas fa-star"></i></label>
+                                            <input type="radio" id="star1" name="rating" value="1">
+                                            <label for="star1"><i class="fas fa-star"></i></label>
+                                        </div>
+                                        <span class="rating-label">Excelente</span>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="review-text">Sua Avaliação</label>
+                                    <textarea id="review-text" rows="5" placeholder="Compartilhe detalhes da sua experiência com este passeio"></textarea>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="submit" class="btn btn-primary">Enviar Avaliação</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="reviews-list">
+                            <!-- Review 1 -->
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="review-author">
+                                        <!-- IMAGEM A SER INSERIDA: Foto do autor da avaliação -->
+                                        <img src="assets/images/ImagemUsuario.jpg" alt="Japones">
+                                        <div>
+                                            <h4>Japones</h4>
+                                            <div class="review-meta">
+                                                <div class="review-rating">
+                                                    <div class="stars" data-rating="5">
+                                                        <span>★★★★★</span>
+                                                    </div>
+                                                </div>
+                                                <span class="review-date">15 Ago 2023</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="review-content">
+                                    <h3>Experiência incrível!</h3>
+                                    <div class="review-passeio">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Trilha da Pedra do Baú</span>
+                                    </div>
+                                    <p>Foi uma das melhores experiências da minha vida! O guia foi super atencioso e conhecia cada detalhe do local. A vista do topo é indescritível, vale cada minuto da trilha. Recomendo muito!</p>
+                                </div>
+                                <div class="review-actions">
+                                    <button class="btn-like"><i class="fas fa-thumbs-up"></i> Útil (24)</button>
+                                    <button class="btn-reply">Responder</button>
+                                </div>
+                                
+                                <!-- Respostas -->
+                                <div class="review-replies">
+                                    <div class="reply">
+                                        <div class="reply-author">
+                                            <!-- IMAGEM A SER INSERIDA: Foto do autor da resposta -->
+                                            <img src="assets/images/DonoPasseio.jpg" alt="Yohan">
+                                            <div>
+                                                <h5>Yohan Santos <span class="reply-badge">Guia</span></h5>
+                                                <span class="reply-date">16 Ago 2023</span>
+                                            </div>
+                                        </div>
+                                        <div class="reply-content">
+                                            <p>Obrigado pelo feedback, Ana! Foi um prazer guiar você nessa aventura. Espero vê-la novamente em outros passeios!</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Review 2 -->
+                            <div class="review">
+                                <div class="review-header">
+                                    <div class="review-author">
+                                        <!-- IMAGEM A SER INSERIDA: Foto do autor da avaliação -->
+                                        <img src="assets/images/ImagemUsuario2.jpg" alt="Vinicius">
+                                        <div>
+                                            <h4>Vinicius</h4>
+                                            <div class="review-meta">
+                                                <div class="review-rating">
+                                                    <div class="stars" data-rating="4">
+                                                        <span>★★★★★</span>
+                                                    </div>
+                                                </div>
+                                                <span class="review-date">10 Jul 2023</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="review-content">
+                                    <h3>Ótimo passeio, mas cansativo</h3>
+                                    <div class="review-passeio">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                        <span>Trilha da Pedra do Baú</span>
+                                    </div>
+                                    <p>O passeio é realmente muito bom, os guias são experientes e o lugar é lindo. Porém, é importante avisar que a trilha é pesada, principalmente a subida final na pedra. Quem não tem bom preparo físico pode sofrer um pouco.</p>
+                                </div>
+                                <div class="review-actions">
+                                    <button class="btn-like"><i class="fas fa-thumbs-up"></i> Útil (12)</button>
+                                    <button class="btn-reply">Responder</button>
+                                </div>
+                            </div>
+                            
+                            <!-- Mais avaliações... -->
+                        </div>
+                        
+                        <div class="pagination">
+                            <button class="btn btn-secondary" disabled>Anterior</button>
+                            <div class="page-numbers">
+                                <button class="active">1</button>
+                                <button>2</button>
+                                <button>3</button>
+                            </div>
+                            <button class="btn btn-secondary">Próxima</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer como no template base -->
+    
+    <!-- Scripts específicos das avaliações -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Sistema de avaliação por estrelas
+            const starInputs = document.querySelectorAll('.stars-select input');
+            starInputs.forEach(input => {
+                input.addEventListener('change', function() {
+                    const rating = parseInt(this.value);
+                    const starsContainer = this.closest('.stars-select');
+                    
+                    // Atualizar visualização das estrelas
+                    starsContainer.querySelectorAll('label').forEach((label, index) => {
+                        if (index < rating) {
+                            label.querySelector('i').style.color = 'var(--intense-gold)';
+                        } else {
+                            label.querySelector('i').style.color = '#ddd';
+                        }
+                    });
+                });
+            });
+            
+            // Botões de like
+            const likeButtons = document.querySelectorAll('.btn-like');
+            likeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const likeCount = this.querySelector('i').nextSibling;
+                    let count = parseInt(likeCount.textContent.match(/\d+/)[0]);
+                    likeCount.textContent = ` Útil (${count + 1})`;
+                    this.disabled = true;
+                });
+            });
+            
+            // Botões de resposta
+            const replyButtons = document.querySelectorAll('.btn-reply');
+            replyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const review = this.closest('.review');
+                    const replies = review.querySelector('.review-replies');
+                    
+                    // Verificar se já existe um formulário de resposta
+                    if (review.querySelector('.reply-form')) return;
+                    
+                    // Criar formulário de resposta
+                    const replyForm = document.createElement('div');
+                    replyForm.className = 'reply-form';
+                    replyForm.innerHTML = `
+                        <textarea placeholder="Escreva sua resposta..." rows="3"></textarea>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary btn-cancel-reply">Cancelar</button>
+                            <button type="button" class="btn btn-primary btn-submit-reply">Enviar</button>
+                        </div>
+                    `;
+                    
+                    // Adicionar formulário antes das respostas existentes
+                    if (replies) {
+                        replies.prepend(replyForm);
+                    } else {
+                        const newReplies = document.createElement('div');
+                        newReplies.className = 'review-replies';
+                        newReplies.appendChild(replyForm);
+                        review.appendChild(newReplies);
+                    }
+                    
+                    // Rolar até o formulário
+                    replyForm.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    
+                    // Adicionar eventos aos botões do formulário
+                    replyForm.querySelector('.btn-cancel-reply').addEventListener('click', function() {
+                        replyForm.remove();
+                    });
+                    
+                    replyForm.querySelector('.btn-submit-reply').addEventListener('click', function() {
+                        const text = replyForm.querySelector('textarea').value.trim();
+                        if (!text) return;
+                        
+                        // Aqui você enviaria a resposta para o servidor
+                        console.log('Resposta enviada:', text);
+                        
+                        // Simular resposta enviada
+                        const newReply = document.createElement('div');
+                        newReply.className = 'reply';
+                        newReply.innerHTML = `
+                            <div class="reply-author">
+                                <img src="images/profile.jpg" alt="Meu Perfil">
+                                <div>
+                                    <h5>Você</h5>
+                                    <span class="reply-date">Agora</span>
+                                </div>
+                            </div>
+                            <div class="reply-content">
+                                <p>${text}</p>
+                            </div>
+                        `;
+                        
+                        if (replies) {
+                            replies.insertBefore(newReply, replyForm);
+                        } else {
+                            const newReplies = document.createElement('div');
+                            newReplies.className = 'review-replies';
+                            newReplies.appendChild(newReply);
+                            review.appendChild(newReplies);
+                        }
+                        
+                        replyForm.remove();
+                    });
+                });
+            });
+            
+            // Formulário de avaliação
+            const reviewForm = document.querySelector('.review-form');
+            if (reviewForm) {
+                reviewForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const title = document.getElementById('review-title').value;
+                    const rating = document.querySelector('input[name="rating"]:checked')?.value;
+                    const text = document.getElementById('review-text').value;
+                    
+                    if (!rating || !text) {
+                        alert('Por favor, selecione uma avaliação e escreva seu comentário.');
+                        return;
+                    }
+                    
+                    // Aqui você enviaria a avaliação para o servidor
+                    console.log('Avaliação enviada:', { title, rating, text });
+                    
+                    // Simular avaliação enviada
+                    alert('Avaliação enviada com sucesso! Obrigado por seu feedback.');
+                    this.reset();
+                    
+                    // Resetar estrelas
+                    document.querySelectorAll('.stars-select label i').forEach(star => {
+                        star.style.color = '#ddd';
+                    });
+                });
+            }
+        });
+    </script>
+    <!-- Menu Lateral -->
+<div class="sidebar-menu" id="sidebarMenu">
+    <div class="profile-section">
+        <img src="assets/images/ImagemUsuario.jpg" alt="Perfil">
+        <h4>Ana Silva</h4>
+        <p>ana.silva@email.com</p>
+    </div>
+    
+    <ul class="sidebar-nav">
+        <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+        <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar Passeios</a></li>
+        <li><a href="perfil.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+        <li><a href="criar-passeio.html"><i class="fas fa-plus-circle"></i> Criar Passeio</a></li>
+        <li><a href="avaliacoes.html"><i class="fas fa-star"></i> Avaliações</a></li>
+        <li><a href="favoritos.html"><i class="fas fa-heart"></i> Favoritos</a></li>
+        <li><a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a></li>
+        <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+        <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+    </ul>
+</div>
+
+<div class="menu-overlay" id="menuOverlay"></div>
+
+<script>
+    // Controle do Menu Lateral
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuToggle = document.querySelector('.menu-toggle');
+        const sidebarMenu = document.getElementById('sidebarMenu');
+        const menuOverlay = document.getElementById('menuOverlay');
+        
+        if (menuToggle && sidebarMenu && menuOverlay) {
+            menuToggle.addEventListener('click', function() {
+                sidebarMenu.classList.toggle('open');
+                menuOverlay.classList.toggle('active');
+            });
+            
+            menuOverlay.addEventListener('click', function() {
+                sidebarMenu.classList.remove('open');
+                this.classList.remove('active');
+            });
+        }
+    });
+</script>
+</body>
+</html>

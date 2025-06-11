@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Torne-se um Guia - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <script src="js/auth.js"></script> <script>
+    (function() {
+        // Esta função é auto-executável para proteger a página
+        const auth = new Auth(); // Cria uma nova instância para verificar o usuário
+        const currentUser = auth.getCurrentUser();
+
+        if (!currentUser) {
+            // Se não estiver logado, redireciona para login, guardando o destino original
+            const currentPage = window.location.pathname.split('/').pop(); // Obtém 'criar-passeio.html'
+            alert('Você precisa estar logado para criar um passeio. Redirecionando para login...');
+            window.location.href = `login.html?redirect=${encodeURIComponent(currentPage)}`;
+            throw new Error("Usuário não logado. Acesso negado."); // Para a execução de scripts
+        }
+
+        // Para fins de teste, você pode descomentar a linha abaixo e rodar no console
+        // para marcar um usuário como verificado:
+        // auth.updateCurrentUserData({ creatorStatus: 'verified' });
+        // console.log('Current user for test:', auth.getCurrentUser());
+
+
+        if (currentUser.creatorStatus !== 'verified') {
+            alert('Seu cadastro de criador ainda não foi aprovado ou não foi completado. Para criar passeios, por favor, complete seu cadastro e aguarde a aprovação. Redirecionando...');
+            // Envia para a página de cadastro de criador se ainda não tiver tentado,
+            // ou para o perfil se já estiver pendente.
+            if (currentUser.creatorStatus === 'none') {
+                window.location.href = 'cadastro-criador.html';
+            } else { // 'pending_verification' ou 'rejected'
+                window.location.href = 'perfil.html'; // O perfil pode mostrar o status
+            }
+            throw new Error("Acesso negado: perfil de criador não verificado ou pendente."); // Para a execução de scripts
+        }
+        // Se chegou aqui, o usuário está logado e é um criador verificado.
+        // O restante do HTML da página criar-passeio.html pode ser renderizado.
+        console.log('Acesso permitido a criar-passeio.html');
+    })();
+</script>
+    <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <nav class="sidebar-menu" id="sidebarMenu">
+        <button class="close-btn" id="closeMenuBtn" aria-label="Fechar menu">&times;</button>
+        <div class="profile-section">
+            <img src="assets/images/ImagemUsuario.jpg" alt="Perfil do Usuário"> <h4>Nome do Usuário</h4>
+            <p>usuario@email.com</p>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar Passeios</a></li>
+            <li><a href="perfil.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
+            <li><a href="criar-passeio.html"><i class="fas fa-plus-circle"></i> Criar Passeio</a></li>
+            <li><a href="avaliacoes.html"><i class="fas fa-star"></i> Avaliações</a></li>
+            <li><a href="favoritos.html"><i class="fas fa-heart"></i> Favoritos</a></li>
+            <li><a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a></li>
+            <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            <li><a href="login.html"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+        </ul>
+    </nav>
+    <div class="menu-overlay" id="menuOverlay"></div>
+
+    <main id="main-content">
+        <section class="creator-signup-section">
+            <div class="container">
+                <div class="creator-signup-header animate-on-scroll" data-animation="fadeIn">
+                    <h1>Torne-se um Guia ou Anfitrião de Passeios</h1>
+                    <p>Compartilhe sua paixão pela Serra da Mantiqueira! Preencha os campos abaixo para verificarmos suas informações e você poder começar a criar experiências incríveis.</p>
+                </div>
+
+                <form class="creator-form" id="creatorSignupForm">
+                    <div class="form-steps">
+                        <div class="step-indicator active" data-step="1">
+                            <span class="step-number">1</span>
+                            <span class="step-label">Informações Pessoais</span>
+                        </div>
+                        <div class="step-indicator" data-step="2">
+                            <span class="step-number">2</span>
+                            <span class="step-label">Documentação</span>
+                        </div>
+                        <div class="step-indicator" data-step="3">
+                            <span class="step-number">3</span>
+                            <span class="step-label">Detalhes Profissionais</span>
+                        </div>
+                        <div class="step-indicator" data-step="4">
+                            <span class="step-number">4</span>
+                            <span class="step-label">Termos e Conclusão</span>
+                        </div>
+                    </div>
+
+                    <div class="form-step active" data-step="1">
+                        <h2 class="form-section-title">1. Suas Informações Pessoais</h2>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="creator-fullname">Nome Completo*</label>
+                                <input type="text" id="creator-fullname" name="creatorFullname" class="form-control" placeholder="Seu nome como aparece no documento" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="creator-cpf">CPF*</label>
+                                <input type="text" id="creator-cpf" name="creatorCpf" class="form-control" placeholder="000.000.000-00" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="creator-birthdate">Data de Nascimento*</label>
+                                <input type="date" id="creator-birthdate" name="creatorBirthdate" class="form-control" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="creator-phone">Telefone Celular* (com DDD)</label>
+                                <input type="tel" id="creator-phone" name="creatorPhone" class="form-control" placeholder="(00) 90000-0000" required>
+                            </div>
+                        </div>
+                        <h3 class="filter-title" style="margin-top: var(--space-lg);">Endereço Completo</h3>
+                        <div class="form-row">
+                            <div class="form-group" style="flex: 0 0 25%;">
+                                <label for="creator-cep">CEP*</label>
+                                <input type="text" id="creator-cep" name="creatorCep" class="form-control" placeholder="00000-000" required>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label for="creator-street">Rua/Logradouro*</label>
+                                <input type="text" id="creator-street" name="creatorStreet" class="form-control" placeholder="Ex: Av. Principal" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group" style="flex: 0 0 20%;">
+                                <label for="creator-number">Número*</label>
+                                <input type="text" id="creator-number" name="creatorNumber" class="form-control" placeholder="Ex: 123" required>
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label for="creator-complement">Complemento</label>
+                                <input type="text" id="creator-complement" name="creatorComplement" class="form-control" placeholder="Ex: Apto 10, Bloco A">
+                            </div>
+                            <div class="form-group" style="flex: 1;">
+                                <label for="creator-neighborhood">Bairro*</label>
+                                <input type="text" id="creator-neighborhood" name="creatorNeighborhood" class="form-control" placeholder="Ex: Vila Capivari" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="creator-city">Cidade*</label>
+                                <input type="text" id="creator-city" name="creatorCity" class="form-control" placeholder="Ex: Campos do Jordão" required>
+                            </div>
+                            <div class="form-group" style="flex: 0 0 20%;">
+                                <label for="creator-state">Estado*</label>
+                                <input type="text" id="creator-state" name="creatorState" class="form-control" placeholder="Ex: SP" required maxlength="2">
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <span></span> <button type="button" class="btn btn-primary" data-next-step>Próximo <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" data-step="2">
+                        <h2 class="form-section-title">2. Envio de Documentos</h2>
+                        <p class="form-hint">Para sua segurança e dos nossos usuários, precisamos de alguns documentos. As imagens devem estar nítidas e legíveis.</p>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Documento de Identidade (RG ou CNH) - Frente*</label>
+                                <label for="doc-id-front" class="upload-preview" id="doc-id-front-preview">
+                                    <span class="placeholder-text"><i class="fas fa-cloud-upload-alt"></i>Clique para enviar</span>
+                                </label>
+                                <input type="file" id="doc-id-front" name="docIdFront" class="file-input-hidden" accept="image/jpeg, image/png, application/pdf" required>
+                                <small class="upload-instructions">Formatos: JPG, PNG, PDF. Tamanho máx: 5MB.</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Documento de Identidade (RG ou CNH) - Verso*</label>
+                                 <label for="doc-id-back" class="upload-preview" id="doc-id-back-preview">
+                                    <span class="placeholder-text"><i class="fas fa-cloud-upload-alt"></i>Clique para enviar</span>
+                                </label>
+                                <input type="file" id="doc-id-back" name="docIdBack" class="file-input-hidden" accept="image/jpeg, image/png, application/pdf" required>
+                                <small class="upload-instructions">Formatos: JPG, PNG, PDF. Tamanho máx: 5MB.</small>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Comprovante de Residência* (Conta de água, luz, etc. - recente, máx. 3 meses)</label>
+                                <label for="doc-proof-address" class="upload-preview" id="doc-proof-address-preview">
+                                    <span class="placeholder-text"><i class="fas fa-cloud-upload-alt"></i>Clique para enviar</span>
+                                </label>
+                                <input type="file" id="doc-proof-address" name="docProofAddress" class="file-input-hidden" accept="image/jpeg, image/png, application/pdf" required>
+                                <small class="upload-instructions">Formatos: JPG, PNG, PDF. Tamanho máx: 5MB.</small>
+                            </div>
+                            <div class="form-group">
+                                <label>Selfie segurando seu Documento de Identidade*</label>
+                                <label for="doc-selfie" class="upload-preview" id="doc-selfie-preview">
+                                    <span class="placeholder-text"><i class="fas fa-cloud-upload-alt"></i>Clique para enviar</span>
+                                </label>
+                                <input type="file" id="doc-selfie" name="docSelfie" class="file-input-hidden" accept="image/jpeg, image/png" required>
+                                <small class="upload-instructions">Rosto e documento visíveis. Formatos: JPG, PNG. Máx: 5MB.</small>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" data-prev-step><i class="fas fa-arrow-left"></i> Voltar</button>
+                            <button type="button" class="btn btn-primary" data-next-step>Próximo <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" data-step="3">
+                        <h2 class="form-section-title">3. Detalhes Profissionais <small>(Opcional para Anfitriões Locais)</small></h2>
+                        <div class="form-group">
+                            <label for="creator-cadastur">Número de Registro no CADASTUR (Guias de Turismo)</label>
+                            <input type="text" id="creator-cadastur" name="creatorCadastur" class="form-control" placeholder="Seu número de registro, se aplicável">
+                        </div>
+                        <div class="form-group">
+                            <label for="creator-experience">Sua Experiência como Guia/Anfitrião*</label>
+                            <textarea id="creator-experience" name="creatorExperience" class="form-control" rows="5" placeholder="Conte-nos sobre sua paixão pela região, suas especialidades e o que os visitantes podem esperar de você." required></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>Certificações (Primeiros Socorros, Idiomas, etc.)</label>
+                            <label for="doc-certificates" class="btn btn-outline">
+                                <i class="fas fa-paperclip"></i> Anexar Certificados
+                            </label>
+                            <input type="file" id="doc-certificates" name="docCertificates" class="file-input-hidden" accept="image/jpeg, image/png, application/pdf" multiple>
+                            <small class="upload-instructions">Você pode selecionar múltiplos arquivos. Formatos: JPG, PNG, PDF. Máx: 5MB por arquivo.</small>
+                            <div id="certificate-file-list" class="file-list-preview"></div>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" data-prev-step><i class="fas fa-arrow-left"></i> Voltar</button>
+                            <button type="button" class="btn btn-primary" data-next-step>Próximo <i class="fas fa-arrow-right"></i></button>
+                        </div>
+                    </div>
+
+                    <div class="form-step" data-step="4">
+                        <h2 class="form-section-title">4. Termos e Condições para Criadores</h2>
+                        <div class="terms-box">
+                            <p><strong>Leia atentamente nossos Termos e Condições para Criadores de Passeios:</strong></p>
+                            <p>Ao se cadastrar como Guia ou Anfitrião na plataforma "Passeios da Serra", você concorda em cumprir todas as leis e regulamentações aplicáveis à atividade de turismo e à prestação de seus serviços. Você se responsabiliza integralmente pela veracidade das informações fornecidas sobre si mesmo e sobre os passeios oferecidos.</p>
+                            <p><strong>Responsabilidades do Guia/Anfitrião:</strong></p>
+                            <ul>
+                                <li>Garantir a segurança e o bem-estar dos participantes durante os passeios.</li>
+                                <li>Fornecer descrições precisas, completas e atualizadas dos passeios, incluindo nível de dificuldade, duração, itens inclusos, requisitos e política de cancelamento.</li>
+                                <li>Possuir todas as licenças, alvarás, seguros e qualificações necessárias para operar os passeios oferecidos.</li>
+                                <li>Manter uma conduta profissional, ética e respeitosa com todos os usuários da plataforma e participantes dos passeios.</li>
+                                <li>Comunicar prontamente à plataforma e aos participantes quaisquer alterações ou cancelamentos de passeios.</li>
+                            </ul>
+                            <p><strong>Política de Comissão e Pagamentos:</strong></p>
+                            <p>A plataforma "Passeios da Serra" retém uma comissão de <strong>15%</strong> (quinze por cento) sobre o valor de cada reserva confirmada e realizada através da plataforma. O repasse do valor restante ao Guia/Anfitrião será efetuado em até 7 (sete) dias úteis após a data de realização do passeio, deduzidas quaisquer taxas aplicáveis.</p>
+                            <p><strong>Cancelamentos e Reembolsos:</strong></p>
+                            <p>O Guia/Anfitrião deve definir uma política de cancelamento para seus passeios (Flexível, Moderada ou Rigorosa) no momento da criação do passeio. A plataforma seguirá a política definida pelo Guia/Anfitrião para processar cancelamentos e reembolsos solicitados pelos clientes, respeitando os prazos e condições estabelecidos.</p>
+                            <p><strong>Conteúdo e Propriedade Intelectual:</strong></p>
+                            <p>Você concede à "Passeios da Serra" o direito de usar, reproduzir e exibir o conteúdo (textos, fotos, vídeos) fornecido por você para a divulgação dos seus passeios na plataforma e em materiais de marketing.</p>
+                            <p>A "Passeios da Serra" reserva-se o direito de remover ou suspender passeios e/ou contas de Guias/Anfitriões que violem estes termos, as políticas da plataforma ou a legislação vigente, sem aviso prévio.</p>
+                            <p><em>Estes termos podem ser atualizados periodicamente. É sua responsabilidade revisá-los regularmente.</em></p>
+                        </div>
+                        <div class="form-group">
+                            <label class="filter-option" style="font-size: 1rem; align-items: flex-start;">
+                                <input type="checkbox" id="agree-terms" name="agreeTerms" style="margin-top: 5px;" required>
+                                <span style="line-height: 1.5;">Li e concordo integralmente com os Termos e Condições para Criadores de Passeios da plataforma Passeios da Serra.*</span>
+                            </label>
+                        </div>
+                        <div class="form-actions">
+                            <button type="button" class="btn btn-secondary" data-prev-step><i class="fas fa-arrow-left"></i> Voltar</button>
+                            <button type="submit" class="btn btn-primary btn-lg"><i class="fas fa-check-circle"></i> Enviar Cadastro para Análise</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section about">
+                    <h3>Sobre Nós</h3>
+                    <p>Passeios da Serra é a melhor plataforma para encontrar e reservar experiências únicas em Campos do Jordão e região.</p>
+                    <div class="social-links">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section links">
+                    <h3>Links Úteis</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="pesquisa.html">Passeios</a></li>
+                        <li><a href="sobre.html">Sobre</a></li>
+                        <li><a href="contato.html">Contato</a></li>
+                        <li><a href="blog.html">Blog</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section contact">
+                    <h3>Contato</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> Av. Dr. Januário Miraglia, 1000 - Campos do Jordão, SP</li>
+                        <li><i class="fas fa-phone"></i> (12) 99671-1961</li>
+                        <li><i class="fas fa-envelope"></i> contato@passeiosdaserra.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script> <script src="js/creator-form.js"></script> </body>
+</html>

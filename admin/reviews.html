@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestão de Avaliações - Passeios da Serra</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Admin -->
+    <header class="admin-header">
+        <div class="container">
+            <div class="admin-header-content">
+                <button class="menu-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+                
+                <div class="logo">
+                    <img src="../assets/images/logo.png" alt="Passeios da Serra">
+                    <span>Admin</span>
+                </div>
+                
+                <div class="admin-nav">
+                    <div class="admin-search">
+                        <input type="text" placeholder="Buscar avaliações...">
+                        <button><i class="fas fa-search"></i></button>
+                    </div>
+                    <div class="admin-notifications">
+                        <button class="notification-btn">
+                            <i class="fas fa-bell"></i>
+                            <span class="notification-badge">3</span>
+                        </button>
+                    </div>
+                    <div class="admin-profile">
+                        <img src="../assets/images/admin-avatar.jpg" alt="Admin">
+                        <span>Admin</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Menu Lateral Admin -->
+    <div class="admin-sidebar">
+        <div class="admin-sidebar-content">
+            <div class="admin-sidebar-profile">
+                <img src="../assets/images/admin-avatar.jpg" alt="Admin">
+                <h4>Administrador</h4>
+                <p>admin@passeiosdaserra.com</p>
+            </div>
+            
+            <nav class="admin-sidebar-menu">
+                <ul>
+                    <li>
+                        <a href="../admin-dashboard.html">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <span>Painel Resumo</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="users.html">
+                            <i class="fas fa-users"></i>
+                            <span>Gestão de Usuários</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="tours.html">
+                            <i class="fas fa-map-marked-alt"></i>
+                            <span>Gestão de Passeios</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="bookings.html">
+                            <i class="fas fa-calendar-check"></i>
+                            <span>Reservas</span>
+                        </a>
+                    </li>
+                    <li class="active">
+                        <a href="reviews.html">
+                            <i class="fas fa-star"></i>
+                            <span>Avaliações</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="financial.html">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Financeiro</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="settings.html">
+                            <i class="fas fa-cog"></i>
+                            <span>Configurações</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="support.html">
+                            <i class="fas fa-headset"></i>
+                            <span>Suporte</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            
+            <div class="admin-sidebar-footer">
+                <a href="../index.html" class="btn btn-outline">
+                    <i class="fas fa-globe"></i>
+                    <span>Ver Site</span>
+                </a>
+                <a href="../login.html" class="btn btn-outline">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Conteúdo Principal -->
+    <main class="admin-main">
+        <div class="container">
+            <div class="admin-page-header">
+                <h1>Gestão de Avaliações</h1>
+                <div class="admin-breadcrumb">
+                    <span>Admin</span>
+                    <i class="fas fa-chevron-right"></i>
+                    <span>Avaliações</span>
+                </div>
+            </div>
+            
+            <!-- Resumo de Avaliações -->
+            <div class="admin-kpi-grid">
+                <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Avaliações Totais</h3>
+                        <div class="kpi-value">1.024</div>
+                        <div class="kpi-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>8% (últimos 7 dias)</span>
+                        </div>
+                    </div>
+                    <div class="kpi-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Média Geral</h3>
+                        <div class="kpi-value">4.7</div>
+                        <div class="kpi-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>0.1 (últimos 7 dias)</span>
+                        </div>
+                    </div>
+                    <div class="kpi-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                </div>
+                
+                <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>5 Estrelas</h3>
+                        <div class="kpi-value">724</div>
+                        <div class="kpi-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>12% (últimos 7 dias)</span>
+                        </div>
+                    </div>
+                    <div class="kpi-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+                
+                <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>1 Estrela</h3>
+                        <div class="kpi-value">18</div>
+                        <div class="kpi-change negative">
+                            <i class="fas fa-arrow-down"></i>
+                            <span>2% (últimos 7 dias)</span>
+                        </div>
+                    </div>
+                    <div class="kpi-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Filtros e Ações -->
+            <div class="admin-actions-bar">
+                <div class="filter-group">
+                    <select class="form-control">
+                        <option>Todas as avaliações</option>
+                        <option>5 estrelas</option>
+                        <option>4 estrelas</option>
+                        <option>3 estrelas</option>
+                        <option>2 estrelas</option>
+                        <option>1 estrela</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <select class="form-control">
+                        <option>Todos os passeios</option>
+                        <option>Trilha da Pedra do Baú</option>
+                        <option>Tour Gastronômico</option>
+                        <option>Passeio de Trem</option>
+                        <option>Cachoeira do Tobogã</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <input type="date" class="form-control" placeholder="Data da avaliação">
+                </div>
+                <button class="btn btn-primary">
+                    <i class="fas fa-filter"></i> Filtrar
+                </button>
+            </div>
+            
+            <!-- Tabela de Avaliações -->
+            <div class="admin-table-card">
+                <div class="table-header">
+                    <h3>Últimas Avaliações</h3>
+                    <div class="table-actions">
+                        <span>1.024 avaliações encontradas</span>
+                        <select class="form-control">
+                            <option>10 por página</option>
+                            <option>25 por página</option>
+                            <option>50 por página</option>
+                            <option>100 por página</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Avaliação</th>
+                                <th>Passeio</th>
+                                <th>Cliente</th>
+                                <th>Data</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="stars" data-rating="5">
+                                        <span>★★★★★</span>
+                                    </div>
+                                    <p class="review-excerpt">"A trilha foi incrível! O guia conhecia cada detalhe do local."</p>
+                                </td>
+                                <td>Trilha da Pedra do Baú</td>
+                                <td>Ana Silva</td>
+                                <td>18/10/2023</td>
+                                <td><span class="badge badge-confirmed">Publicada</span></td>
+                                <td>
+                                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stars" data-rating="4">
+                                        <span>★★★★★</span>
+                                    </div>
+                                    <p class="review-excerpt">"Gostei muito, mas o passeio poderia ser um pouco mais longo."</p>
+                                </td>
+                                <td>Tour Gastronômico</td>
+                                <td>Carlos Mendes</td>
+                                <td>17/10/2023</td>
+                                <td><span class="badge badge-confirmed">Publicada</span></td>
+                                <td>
+                                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stars" data-rating="5">
+                                        <span>★★★★★</span>
+                                    </div>
+                                    <p class="review-excerpt">"Experiência maravilhosa! Recomendo para toda a família."</p>
+                                </td>
+                                <td>Passeio de Trem</td>
+                                <td>Mariana Costa</td>
+                                <td>16/10/2023</td>
+                                <td><span class="badge badge-confirmed">Publicada</span></td>
+                                <td>
+                                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stars" data-rating="2">
+                                        <span>★★★★★</span>
+                                    </div>
+                                    <p class="review-excerpt">"Não atendeu às expectativas. O guia chegou atrasado."</p>
+                                </td>
+                                <td>Cachoeira do Tobogã</td>
+                                <td>João Pereira</td>
+                                <td>15/10/2023</td>
+                                <td><span class="badge badge-pending">Pendente</span></td>
+                                <td>
+                                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="stars" data-rating="1">
+                                        <span>★★★★★</span>
+                                    </div>
+                                    <p class="review-excerpt">"Péssima experiência. O passeio foi cancelado sem aviso."</p>
+                                </td>
+                                <td>Trilha da Pedra do Baú</td>
+                                <td>Yohan Santos</td>
+                                <td>14/10/2023</td>
+                                <td><span class="badge badge-cancelled">Ocultada</span></td>
+                                <td>
+                                    <button class="btn-icon"><i class="fas fa-eye"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-edit"></i></button>
+                                    <button class="btn-icon"><i class="fas fa-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Paginação -->
+                <div class="table-pagination">
+                    <span>Mostrando 1 a 5 de 1.024 registros</span>
+                    <div class="pagination-controls">
+                        <button class="btn btn-outline" disabled>
+                            <i class="fas fa-chevron-left"></i>
+                        </button>
+                        <button class="btn btn-primary">1</button>
+                        <button class="btn btn-outline">2</button>
+                        <button class="btn btn-outline">3</button>
+                        <span>...</span>
+                        <button class="btn btn-outline">205</button>
+                        <button class="btn btn-outline">
+                            <i class="fas fa-chevron-right"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Scripts -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Menu toggle
+            const menuToggle = document.querySelector('.menu-toggle');
+            const sidebar = document.querySelector('.admin-sidebar');
+            
+            if (menuToggle && sidebar) {
+                menuToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('collapsed');
+                });
+            }
+            
+            // Atualizar estrelas de avaliação
+            const starRatings = document.querySelectorAll('.stars');
+            starRatings.forEach(rating => {
+                const value = parseFloat(rating.getAttribute('data-rating'));
+                const stars = rating.querySelector('span');
+                const percentage = (value / 5) * 100;
+                stars.style.width = `${percentage}%`;
+            });
+        });
+    </script>
+</body>
+</html>

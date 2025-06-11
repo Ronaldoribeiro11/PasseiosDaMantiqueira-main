@@ -1,0 +1,200 @@
+/* --- Estilos para a Página de Contato (contato.html) --- */
+
+/* Posicionamento do menu-toggle (já definido antes, mas por contexto) */
+.page-menu-toggle {
+    position: fixed; top: 20px; left: 20px; z-index: 1005;
+    background-color: rgba(255, 255, 255, 0.7); padding: 10px;
+    border-radius: 50%; box-shadow: var(--shadow-sm); backdrop-filter: blur(4px);
+}
+.menu-toggle.page-menu-toggle span { background-color: var(--dark-gray); }
+
+/* Hero Section da Página de Contato */
+.contact-hero-section {
+    position: relative;
+    height: 55vh; /* Altura moderada */
+    min-height: 350px;
+    max-height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--white);
+    padding-top: 60px;
+}
+/* .hero-background-image e .hero-overlay podem ser reutilizados de sobre.html ou index.html */
+.contact-hero-content h1 {
+    font-size: 2.8rem;
+    color: var(--white);
+    margin-bottom: var(--space-md, 1rem);
+    text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+.contact-hero-content p {
+    font-size: 1.2rem;
+    max-width: 700px;
+    margin: 0 auto;
+    opacity: 0.95; /* Mais opacidade para melhor leitura */
+    text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+}
+
+/* Seção Principal de Contato */
+.contact-main-section {
+    padding: var(--section-padding, 4rem) 0;
+    background-color: var(--white); /* Fundo branco para destacar o formulário */
+}
+
+.contact-layout {
+    display: flex;
+    gap: var(--space-xl, 2rem); /* Espaço entre as colunas */
+    align-items: flex-start;
+}
+
+.contact-form-column {
+    flex: 1.5; /* Formulário ocupa mais espaço */
+    min-width: 0; /* Para evitar overflow em flex containers */
+}
+
+/* Reutilizando .section-header-alternative de sobre.html, mas com alinhamento à esquerda */
+.section-header-alternative.left-align {
+    text-align: left;
+}
+.section-header-alternative.left-align h2::after {
+    left: 0;
+    transform: translateX(0);
+}
+.section-header-alternative.left-align .subtitle {
+    margin-left: 0;
+    margin-right: 0;
+    max-width: 100%;
+}
+
+.contact-form {
+    margin-top: var(--space-lg, 1.5rem);
+}
+/* As classes .form-row, .form-group, .form-control, .btn são reutilizadas de style.css */
+.contact-form .form-actions {
+    border-top: none; /* Remover borda se não desejar */
+    padding-top: 0;
+}
+.contact-form .btn-lg i {
+    margin-right: var(--space-sm);
+}
+
+.form-status-message {
+    margin-top: var(--space-md);
+    padding: var(--space-md);
+    border-radius: var(--border-radius-sm);
+    font-weight: 500;
+}
+.form-status-message.success {
+    background-color: #e8f5e9; /* Verde claro (como .status-enabled de config.css) */
+    color: var(--dark-green);
+    border: 1px solid var(--dark-green);
+}
+.form-status-message.error {
+    background-color: #ffebee; /* Vermelho claro (como .status-disabled de config.css) */
+    color: #c62828;
+    border: 1px solid #c62828;
+}
+
+
+/* Coluna de Informações de Contato */
+.contact-info-column {
+    flex: 1;
+    min-width: 0;
+}
+.contact-info-box {
+    background-color: var(--light-gray, #f5f5f5);
+    padding: var(--space-xl, 2rem);
+    border-radius: var(--border-radius-lg, 12px);
+    box-shadow: var(--shadow-sm);
+}
+.contact-info-box h3 {
+    font-size: 1.6rem;
+    color: var(--dark-green);
+    margin-bottom: var(--space-sm, 0.5rem);
+}
+.contact-info-box > p { /* Parágrafo direto dentro do box */
+    margin-bottom: var(--space-lg, 1.5rem);
+    line-height: 1.6;
+}
+
+.contact-details-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 var(--space-lg, 1.5rem) 0;
+}
+.contact-details-list li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: var(--space-md, 1rem);
+    font-size: 1rem;
+}
+.contact-details-list li i {
+    font-size: 1.3rem;
+    color: var(--soft-gold);
+    margin-right: var(--space-md, 1rem);
+    margin-top: 4px; /* Ajuste fino de alinhamento */
+    width: 25px; /* Largura fixa para alinhamento do texto */
+    text-align: center;
+}
+.contact-details-list li div strong {
+    display: block;
+    font-weight: 600;
+    color: var(--dark-gray);
+    margin-bottom: var(--space-xs, 0.25rem);
+}
+.contact-details-list li div span {
+    color: var(--dark-gray);
+    opacity: 0.9;
+}
+.contact-details-list li div small {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--dark-gray);
+    opacity: 0.7;
+    margin-top: 2px;
+}
+
+.contact-info-divider {
+    margin: var(--space-lg, 1.5rem) 0;
+    border: 0;
+    border-top: 1px solid var(--admin-gray, #e0e0e0);
+}
+.contact-info-box h4 {
+    font-size: 1.2rem;
+    color: var(--dark-green);
+    margin-bottom: var(--space-xs, 0.25rem);
+}
+
+/* Mapa (opcional) */
+.contact-map-container {
+    height: 300px;
+    border-radius: var(--border-radius-md, 8px);
+    overflow: hidden;
+    margin-top: var(--space-lg, 1.5rem);
+    border: 1px solid var(--admin-gray, #e0e0e0);
+}
+
+
+/* Responsividade para a página de contato */
+@media (max-width: 992px) {
+    .contact-layout {
+        flex-direction: column;
+    }
+    .contact-form-column, .contact-info-column {
+        flex: 1 1 100%; /* Ocupam toda a largura */
+    }
+    .contact-info-column {
+        margin-top: var(--space-xl, 2rem); /* Espaço quando empilhado */
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-hero-section { height: 45vh; min-height: 300px; }
+    .contact-hero-content h1 { font-size: 2.2rem; }
+    .contact-hero-content p { font-size: 1.1rem; }
+
+    .section-header-alternative.left-align h2 { font-size: 1.8rem; }
+    .contact-form .form-row { flex-direction: column; gap: 0; } /* Empilha campos de nome/email */
+    .contact-form .form-row .form-group { margin-bottom: var(--space-md); }
+}

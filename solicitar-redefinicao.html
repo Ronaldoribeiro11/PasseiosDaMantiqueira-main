@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recuperar Senha - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-page-background"> <a href="index.html" class="auth-page-logo-link animate-on-scroll" data-animation="fadeInDown">
+        <img src="assets/images/logo.png" alt="Passeios da Serra Logo">
+    </a>
+
+    <main id="main-content" class="auth-form-container">
+        <div class="auth-card animate-on-scroll" data-animation="fadeInUp">
+            <div class="auth-card-header">
+                <i class="fas fa-key auth-header-icon"></i>
+                <h1>Recuperar Senha</h1>
+                <p>Esqueceu sua senha? Sem problemas! Digite seu e-mail abaixo e enviaremos instruções para você criar uma nova.</p>
+            </div>
+
+            <form id="requestPasswordResetForm" class="auth-form-fields">
+                <div class="form-group">
+                    <label for="reset-email">Seu Endereço de E-mail Registrado</label>
+                    <div class="input-icon-group">
+                        <i class="fas fa-envelope input-icon"></i>
+                        <input type="email" id="reset-email" name="resetEmail" class="form-control" placeholder="Ex: seuemail@dominio.com" required>
+                    </div>
+                </div>
+
+                <div class="form-actions" style="margin-top: var(--space-lg);">
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">
+                        <i class="fas fa-paper-plane"></i> Enviar Link de Redefinição
+                    </button>
+                </div>
+                <div id="requestResetStatus" class="form-status-message" style="display:none; margin-top: var(--space-md);"></div>
+            </form>
+
+            <div class="auth-card-footer">
+                <p>Lembrou da senha? <a href="login.html" class="link-highlight">Faça Login</a></p>
+                <p>Ainda não tem conta? <a href="login.html#register" class="link-highlight">Cadastre-se</a></p> </div>
+        </div>
+    </main>
+
+    <footer class="auth-page-footer">
+        <p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p>
+    </footer>
+
+    <script src="js/main.js"></script> <script src="js/auth-forms.js"></script> </body>
+</html>

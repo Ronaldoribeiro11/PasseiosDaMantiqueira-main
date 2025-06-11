@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Meta tags e links como no template base -->
+    <title>Pesquisar Passeios - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+     <!-- Link para o Font Awesome (versão gratuita) -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header como no template base -->
+    
+    <main id="main-content">
+        <section class="search-section">
+            <div class="container">
+                <div class="search-header animate-on-scroll" data-animation="fadeIn">
+                    <h1>Encontre seu passeio perfeito</h1>
+                    <p>Explore as melhores experiências em Campos do Jordão</p>
+                </div>
+                
+                <div class="search-container">
+                    <div class="search-filters animate-on-scroll" data-animation="slideInLeft">
+                        <div class="filters-header">
+                            <h3>Filtros</h3>
+                            <button class="btn btn-link" id="reset-filters">Limpar tudo</button>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <h4 class="filter-title">Categorias</h4>
+                            <div class="filter-options">
+                                <label class="filter-option">
+                                    <input type="checkbox" name="category" value="aventura">
+                                    <span>Aventura</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="category" value="cultural">
+                                    <span>Cultural</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="category" value="gastronomia">
+                                    <span>Gastronomia</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="category" value="natureza">
+                                    <span>Natureza</span>
+                                </label>
+                                <label class="filter-option">
+                                    <input type="checkbox" name="category" value="familia">
+                                    <span>Família</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <h4 class="filter-title">Preço</h4>
+                            <div class="price-range">
+                                <div class="range-values">
+                                    <span id="min-price">R$ 0</span>
+                                    <span id="max-price">R$ 500+</span>
+                                </div>
+                                <input type="range" id="price-slider" min="0" max="500" step="50" value="500">
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <h4 class="filter-title">Avaliação</h4>
+                            <div class="rating-filter">
+                                <label class="rating-option">
+                                    <input type="radio" name="rating" value="5">
+                                    <span class="stars">★★★★★</span>
+                                    <span>5 estrelas</span>
+                                </label>
+                                <label class="rating-option">
+                                    <input type="radio" name="rating" value="4">
+                                    <span class="stars">★★★★☆</span>
+                                    <span>4+ estrelas</span>
+                                </label>
+                                <label class="rating-option">
+                                    <input type="radio" name="rating" value="3">
+                                    <span class="stars">★★★☆☆</span>
+                                    <span>3+ estrelas</span>
+                                </label>
+                                <label class="rating-option">
+                                    <input type="radio" name="rating" value="0" checked>
+                                    <span>Todas</span>
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <h4 class="filter-title">Data</h4>
+                            <div class="date-filter">
+                                <input type="date" id="filter-date" min="">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="search-results animate-on-scroll" data-animation="slideInRight">
+                        <div class="results-header">
+                            <div class="results-count">
+                                <span id="results-number">12</span> passeios encontrados
+                            </div>
+                            <div class="results-sort">
+                                <label for="sort-by">Ordenar por:</label>
+                                <select id="sort-by">
+                                    <option value="relevance">Relevância</option>
+                                    <option value="price-asc">Preço: menor primeiro</option>
+                                    <option value="price-desc">Preço: maior primeiro</option>
+                                    <option value="rating">Melhor avaliados</option>
+                                    <option value="date">Data mais próxima</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="results-grid">
+                            <!-- Passeio 1 -->
+                            <div class="passeio-card card-zoom">
+                                <div class="card-image">
+                                    <img src="assets/images/ImagenPasseioTrilhaPedraDoBau.jpeg" alt="Trilha da Pedra do Baú" class="card-bg">
+                                    <span class="card-badge">Popular</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3>Trilha da Pedra do Baú</h3>
+                                    <div class="card-rating">
+                                        <div class="stars" data-rating="4.5">
+                                            <span>★★★★★</span>
+                                        </div>
+                                        <span class="rating-text">4.5 (128)</span>
+                                    </div>
+                                    <p class="card-description">Uma aventura incrível pela famosa formação rochosa de São Bento do Sapucaí.</p>
+                                    <div class="card-meta">
+                                        <span><i class="fas fa-calendar-alt"></i> 15 Out 2023</span>
+                                        <span><i class="fas fa-users"></i> 8-12 pessoas</span>
+                                    </div>
+                                    <div class="card-footer">
+                                        <span class="card-price">R$ 120,00</span>
+                                        <a href="passeio.html" class="btn btn-primary btn-sm">Detalhes</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Passeio 2 -->
+                            <div class="passeio-card card-zoom">
+                                <!-- IMAGEM A SER INSERIDA: Imagem do passeio 2 -->
+                                <div class="card-image" style="background-image: url('assets/images/ImagemPasseioGastronomico.jpg')">
+                                    <span class="card-badge">Novidade</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3>Tour Gastronômico</h3>
+                                    <div class="card-rating">
+                                        <div class="stars" data-rating="5">
+                                            <span>★★★★★</span>
+                                        </div>
+                                        <span class="rating-text">5.0 (87)</span>
+                                    </div>
+                                    <p class="card-description">Descubra os sabores da serra em um tour pelos melhores restaurantes e chocolatiers.</p>
+                                    <div class="card-meta">
+                                        <span><i class="fas fa-calendar-alt"></i> 20 Out 2023</span>
+                                        <span><i class="fas fa-users"></i> 4-8 pessoas</span>
+                                    </div>
+                                    <div class="card-footer">
+                                        <span class="card-price">R$ 180,00</span>
+                                        <a href="passeio.html" class="btn btn-primary btn-sm">Detalhes</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Passeio 3 -->
+                            <div class="passeio-card card-zoom">
+                                <!-- IMAGEM A SER INSERIDA: Imagem do passeio 3 -->
+                                <div class="card-image" style="background-image: url('assets/images/ImagemPasseioTremPasseiosDaSerra.jpg')">
+                                    <span class="card-badge">Família</span>
+                                </div>
+                                <div class="card-content">
+                                    <h3>Passeio de Trem</h3>
+                                    <div class="card-rating">
+                                        <div class="stars" data-rating="4.8">
+                                            <span>★★★★★</span>
+                                        </div>
+                                        <span class="rating-text">4.8 (215)</span>
+                                    </div>
+                                    <p class="card-description">Uma viagem encantadora pela história e paisagens de Campos do Jordão.</p>
+                                    <div class="card-meta">
+                                        <span><i class="fas fa-calendar-alt"></i> 18 Out 2023</span>
+                                        <span><i class="fas fa-users"></i> 10-20 pessoas</span>
+                                    </div>
+                                    <div class="card-footer">
+                                        <span class="card-price">R$ 90,00</span>
+                                        <a href="passeio.html" class="btn btn-primary btn-sm">Detalhes</a>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Mais passeios... -->
+                        </div>
+                        
+                        <div class="pagination">
+                            <button class="btn btn-secondary" disabled>Anterior</button>
+                            <div class="page-numbers">
+                                <button class="active">1</button>
+                                <button>2</button>
+                                <button>3</button>
+                            </div>
+                            <button class="btn btn-secondary">Próxima</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Footer como no template base -->
+    
+    <!-- Scripts específicos da pesquisa -->
+    <script src="js/passeios.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Configurar date picker com data mínima de hoje
+            const dateInput = document.getElementById('filter-date');
+            if (dateInput) {
+                const today = new Date();
+                const dd = String(today.getDate()).padStart(2, '0');
+                const mm = String(today.getMonth() + 1).padStart(2, '0');
+                const yyyy = today.getFullYear();
+                
+                dateInput.min = `${yyyy}-${mm}-${dd}`;
+            }
+            
+            // Atualizar exibição do range de preço
+            const priceSlider = document.getElementById('price-slider');
+            if (priceSlider) {
+                priceSlider.addEventListener('input', function() {
+                    const minPrice = document.getElementById('min-price');
+                    const maxPrice = document.getElementById('max-price');
+                    
+                    minPrice.textContent = 'R$ 0';
+                    if (this.value === '500') {
+                        maxPrice.textContent = 'R$ 500+';
+                    } else {
+                        maxPrice.textContent = `R$ ${this.value}`;
+                    }
+                });
+            }
+            
+            // Resetar filtros
+            const resetFiltersBtn = document.getElementById('reset-filters');
+            if (resetFiltersBtn) {
+                resetFiltersBtn.addEventListener('click', function() {
+                    // Resetar checkboxes
+                    document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                        checkbox.checked = false;
+                    });
+                    
+                    // Resetar radios
+                    document.querySelector('input[name="rating"][value="0"]').checked = true;
+                    
+                    // Resetar slider de preço
+                    if (priceSlider) {
+                        priceSlider.value = 500;
+                        document.getElementById('max-price').textContent = 'R$ 500+';
+                    }
+                    
+                    // Resetar data
+                    if (dateInput) {
+                        dateInput.value = '';
+                    }
+                });
+            }
+            
+            // Ordenar resultados
+            const sortSelect = document.getElementById('sort-by');
+            if (sortSelect) {
+                sortSelect.addEventListener('change', function() {
+                    // Lógica para ordenar os resultados
+                    console.log('Ordenar por:', this.value);
+                    // Implementar lógica de ordenação conforme necessário
+                });
+            }
+        });
+    </script>
+</body>
+</html>

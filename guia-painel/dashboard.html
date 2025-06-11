@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel do Guia - Passeios da Serra</title>
+    <link rel="stylesheet" href="../css/style.css"> <link rel="stylesheet" href="../css/admin.css">  <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/animation.css">
+    <link rel="stylesheet" href="css/guia-painel.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.css">
+</head>
+<body class="guide-panel-body"> <nav class="admin-sidebar guide-sidebar" id="guideSidebar">
+        <div class="admin-sidebar-content">
+            <div class="admin-sidebar-profile guide-sidebar-profile">
+                <img src="../assets/images/DonoPasseio.jpg" alt="Foto do Guia Yohan"> <h4>Yohan Montanhista</h4> <p><span class="badge badge-guide">Guia Verificado</span></p>
+            </div>
+            
+            <ul class="admin-sidebar-menu">
+                <li class="active">
+                    <a href="dashboard.html">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <span>Painel Inicial</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="meus-passeios.html">
+                        <i class="fas fa-map-signs"></i>
+                        <span>Meus Passeios</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="minhas-reservas.html">
+                        <i class="fas fa-calendar-alt"></i>
+                        <span>Minhas Reservas</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="calendario-guia.html"> <i class="fas fa-calendar-day"></i>
+                        <span>Meu Calendário</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="meu-financeiro.html">
+                        <i class="fas fa-wallet"></i>
+                        <span>Meu Financeiro</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="minhas-avaliacoes-guia.html">
+                        <i class="fas fa-star-half-alt"></i>
+                        <span>Minhas Avaliações</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="mensagens-guia.html"> <i class="fas fa-comments"></i>
+                        <span>Mensagens <span class="notification-badge-inline">2</span></span>
+                    </a>
+                </li>
+                <li>
+                    <a href="editar-perfil-guia.html">
+                        <i class="fas fa-user-edit"></i>
+                        <span>Editar Perfil de Guia</span>
+                    </a>
+                </li>
+            </ul>
+            
+            <div class="admin-sidebar-footer">
+                <a href="../index.html" class="btn btn-outline" target="_blank">
+                    <i class="fas fa-globe"></i>
+                    <span>Ver Site</span>
+                </a>
+                <a href="../login.html" id="guideLogoutButton" class="btn btn-outline"> <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="guide-panel-header">
+        <button class="menu-toggle guide-menu-toggle" id="guideMenuToggle" aria-label="Abrir menu do guia">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="guide-header-title">
+            Painel do Guia
+        </div>
+        <div class="guide-header-actions">
+            <a href="mensagens-guia.html" class="notification-btn" aria-label="Mensagens">
+                <i class="fas fa-comments"></i>
+                <span class="notification-badge">2</span>
+            </a>
+            <div class="guide-profile-dropdown">
+                <img src="../assets/images/DonoPasseio.jpg" alt="Guia Yohan" class="guide-avatar-sm">
+                <span>Yohan M.</span>
+                <i class="fas fa-chevron-down"></i>
+                </div>
+        </div>
+    </header>
+
+    <main class="admin-main guide-main-content" id="guideMainContent">
+        <div class="container-fluid"> <div class="admin-page-header">
+                <h1>Bem-vindo de volta, Yohan!</h1>
+                <p class="text-muted">Aqui está um resumo da sua atividade na Passeios da Serra.</p>
+            </div>
+
+            <div class="admin-kpi-grid guide-kpi-grid">
+                <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Próximas Reservas (7 dias)</h3>
+                        <div class="kpi-value">8</div>
+                        <a href="minhas-reservas.html?periodo=7dias" class="kpi-link">Ver Detalhes <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                    <div class="kpi-icon" style="background-color: rgba(var(--admin-info-rgb), 0.1); color: var(--admin-info);"><i class="fas fa-calendar-check"></i></div>
+                </div>
+                <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Ganhos Pendentes</h3>
+                        <div class="kpi-value">R$ 1.250,50</div>
+                        <a href="meu-financeiro.html#pendentes" class="kpi-link">Ver Extrato <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                    <div class="kpi-icon" style="background-color: rgba(var(--admin-warning-rgb), 0.1); color: var(--admin-warning);"><i class="fas fa-hourglass-half"></i></div>
+                </div>
+                <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Avaliação Média</h3>
+                        <div class="kpi-value">4.8 <i class="fas fa-star" style="color: #FFD700;"></i></div>
+                        <a href="minhas-avaliacoes-guia.html" class="kpi-link">Ver Avaliações <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                    <div class="kpi-icon" style="background-color: rgba(var(--admin-success-rgb), 0.1); color: var(--admin-success);"><i class="fas fa-star-half-alt"></i></div>
+                </div>
+                <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Passeios Ativos</h3>
+                        <div class="kpi-value">5</div>
+                        <a href="meus-passeios.html" class="kpi-link">Gerenciar Passeios <i class="fas fa-arrow-circle-right"></i></a>
+                    </div>
+                    <div class="kpi-icon"><i class="fas fa-map-signs"></i></div> </div>
+            </div>
+
+            <div class="admin-chart-row" style="gap: var(--space-lg);">
+                <div class="admin-chart-card guide-panel-card">
+                    <div class="chart-header">
+                        <h3>Reservas nos Próximos 30 Dias</h3>
+                    </div>
+                    <div class="chart-container" style="height: 320px;">
+                        <canvas id="guideBookingsChart"></canvas>
+                    </div>
+                </div>
+                <div class="admin-chart-card guide-panel-card">
+                    <div class="chart-header">
+                        <h3>Próximos Passeios Agendados</h3>
+                    </div>
+                    <ul class="quick-list" id="upcomingToursList">
+                        <li>
+                            <span class="quick-list-date">15 JUN</span>
+                            <div class="quick-list-info">
+                                <strong>Trilha da Pedra do Baú</strong>
+                                <span><i class="fas fa-users"></i> 5 participantes</span>
+                            </div>
+                            <a href="minhas-reservas.html?passeioId=1&data=2025-06-15" class="btn btn-sm btn-outline">Detalhes</a>
+                        </li>
+                        <li>
+                            <span class="quick-list-date">18 JUN</span>
+                             <div class="quick-list-info">
+                                <strong>Passeio de Trem Histórico</strong>
+                                <span><i class="fas fa-users"></i> 12 participantes</span>
+                            </div>
+                            <a href="minhas-reservas.html?passeioId=3&data=2025-06-18" class="btn btn-sm btn-outline">Detalhes</a>
+                        </li>
+                         <li>
+                            <span class="quick-list-date">22 JUN</span>
+                             <div class="quick-list-info">
+                                <strong>Trilha da Pedra do Baú</strong>
+                                <span><i class="fas fa-users"></i> 8 participantes</span>
+                            </div>
+                            <a href="minhas-reservas.html?passeioId=1&data=2025-06-22" class="btn btn-sm btn-outline">Detalhes</a>
+                        </li>
+                        <li class="empty-list-item" style="display:none;">Nenhum passeio agendado em breve.</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="guide-panel-actions-quick">
+                 <a href="criar-passeio.html" class="btn btn-primary btn-lg"><i class="fas fa-plus-circle"></i> Criar Novo Passeio</a>
+                 <a href="calendario-guia.html" class="btn btn-secondary btn-lg"><i class="fas fa-calendar-alt"></i> Ver Meu Calendário Completo</a>
+            </div>
+
+        </div> </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="../js/auth.js"></script> <script src="../js/passeios.js"></script> <script src="js/guia-painel.js"></script> </body>
+</html>

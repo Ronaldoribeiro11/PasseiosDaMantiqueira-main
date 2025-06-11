@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meu Perfil - Passeios da Serra</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link rel="stylesheet" href="css/animation.css">
+    <link rel="stylesheet" href="css/perfil-features.css"> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">
+        <span></span><span></span><span></span>
+    </button>
+
+    <nav class="sidebar-menu" id="sidebarMenuPerfil">
+        <div class="profile-section" id="sidebarProfileSectionPerfil">
+            <img src="assets/images/ImagemUsuario.jpg" alt="Perfil" id="sidebarProfileImgPerfil" style="display:none;">
+            <h4 id="sidebarProfileNamePerfil">Visitante</h4>
+            <p id="sidebarProfileEmailPerfil">Faça login ou cadastre-se</p>
+        </div>
+        <ul class="sidebar-nav">
+            <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
+            <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar Passeios</a></li>
+            
+            <li id="sidebarLinkMeuPerfilPerfil" style="display: none;"><a href="perfil.html" class="active"><i class="fas fa-user"></i> Meu Perfil</a></li>
+            <li id="sidebarLinkCriarPasseioPerfil" style="display: none;"><a href="criar-passeio.html" class="protected-creator-link"><i class="fas fa-plus-circle"></i> Criar Passeio</a></li>
+            <li id="sidebarLinkAvaliacoesPerfil" style="display: none;"><a href="minhas-avaliacoes.html"><i class="fas fa-star"></i> Minhas Avaliações</a></li>
+            <li id="sidebarLinkFavoritosPerfil" style="display: none;"><a href="favoritos.html"><i class="fas fa-heart"></i> Favoritos</a></li>
+            <li id="sidebarLinkConfiguracoesPerfil" style="display: none;"><a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a></li>
+            
+            <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
+            
+            <li id="sidebarLinkAuthPerfil"><a href="login.html"><i class="fas fa-sign-in-alt"></i> Login / Cadastro</a></li>
+        </ul>
+    </nav>
+    <div class="menu-overlay" id="menuOverlayPerfil"></div>
+
+    <main id="main-content" class="profile-page-main">
+        <section class="profile-section">
+            <div class="container">
+                <div class="profile-header animate-on-scroll" data-animation="fadeIn">
+                    <h1>Meu Perfil</h1>
+                    <p>Gerencie suas informações e atividades</p>
+                </div>
+                
+                <div id="creatorStatusBanner" class="creator-status-banner" style="display:none;"></div>
+
+                <div class="profile-container">
+                    <aside class="profile-sidebar">
+                        <div class="profile-card animate-on-scroll" data-animation="slideInLeft">
+                            <div class="profile-avatar">
+                                <img src="assets/images/ImagemUsuario.jpg" alt="Meu Perfil" id="profileAvatarDisplay">
+                                <input type="file" id="avatarUploadInput" accept="image/*" style="display:none;">
+                                <button class="btn-edit-avatar" id="editAvatarButton" aria-label="Editar foto de perfil"><i class="fas fa-camera"></i></button>
+                            </div>
+                            
+                            <div class="profile-info">
+                                <h3 id="profileDisplayName">Nome do Usuário</h3>
+                                <p class="profile-email" id="profileDisplayEmail">usuario@email.com</p>
+                            </div>
+                            
+                            <div class="profile-stats">
+                                <div class="stat-item">
+                                    <span class="stat-number" id="statPasseiosCriados">0</span>
+                                    <span class="stat-label">Passeios Criados</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="statPasseiosReservados">0</span>
+                                    <span class="stat-label">Passeios Reservados</span>
+                                </div>
+                                <div class="stat-item">
+                                    <span class="stat-number" id="statAvaliacoesFeitas">0</span>
+                                    <span class="stat-label">Avaliações Feitas</span>
+                                </div>
+                            </div>
+                            
+
+                            <button class="btn btn-primary btn-block">Editar Perfil</button>
+                        </div>
+                        
+                        <nav class="profile-menu animate-on-scroll" data-animation="slideInLeft" data-delay="0.2s">
+                            <ul>
+                                <li><a href="#" class="profile-nav-link active" data-tab-target="infoPessoaisContent"><i class="fas fa-user-edit"></i> Informações Pessoais</a></li>
+                                <li><a href="#" class="profile-nav-link" data-tab-target="meusPasseiosContent"><i class="fas fa-map-marked-alt"></i> Meus Passeios</a></li>
+                                <li><a href="favoritos.html"><i class="fas fa-heart"></i> Favoritos</a></li>
+                                <li><a href="minhas-avaliacoes.html"><i class="fas fa-comment-dots"></i> Minhas Avaliações</a></li>
+                                <li><a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações da Conta</a></li>
+                                <li><a href="#" id="profileLogoutLink"><i class="fas fa-sign-out-alt"></i> Sair</a></li>
+                            </ul>
+                        </nav>
+                    </aside>
+                    
+                    <div class="profile-content">
+                        <div class="content-section animate-on-scroll active" data-animation="slideInRight" id="infoPessoaisContent">
+                            <h2>Informações Pessoais</h2>
+                            <form class="profile-form" id="profileEditForm">
+                                <div id="profileFormStatus" class="form-status-message-profile" style="display:none;"></div>
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="profile-name">Nome Completo*</label>
+                                        <input type="text" id="profile-name" name="name" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profile-email-form">Email (não editável)</label>
+                                        <input type="email" id="profile-email-form" name="email" readonly disabled>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group">
+                                        <label for="profile-phone">Telefone</label>
+                                        <input type="tel" id="profile-phone" name="phone" placeholder="(XX) XXXXX-XXXX">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="profile-birthdate">Data de Nascimento</label>
+                                        <input type="date" id="profile-birthdate" name="birthDate">
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="profile-bio">Sobre Mim (Biografia)</label>
+                                    <textarea id="profile-bio" name="bio" rows="4" placeholder="Conte um pouco sobre você, seus interesses em passeios..."></textarea>
+                                </div>
+                                
+                                <div class="form-actions">
+                                    <button type="button" class="btn btn-secondary">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Salvar Alterações</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <div class="content-section animate-on-scroll" data-animation="slideInRight" id="meusPasseiosContent" style="display: none;">
+                            <h2>Meus Passeios</h2>
+                            <div class="tabs">
+                                <button class="tab-btn active" data-content-id="passeiosCriadosTab">Criados por Mim</button>
+                                <button class="tab-btn" data-content-id="passeiosReservadosTab">Minhas Reservas</button>
+                            </div>
+                            
+                            <div class="tab-content active" id="passeiosCriadosTab">
+                                <div id="listaPasseiosCriados">
+                                </div>
+                                <div class="empty-state" id="emptyPasseiosCriados" style="display:none;">
+                                    <i class="fas fa-plus-circle"></i>
+                                    <p>Você ainda não criou nenhum passeio.</p>
+                                    <a href="criar-passeio.html" class="btn btn-primary protected-creator-link">Criar Primeiro Passeio</a>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-content" id="passeiosReservadosTab">
+                                 <div id="listaPasseiosReservados">
+                                 </div>
+                                <div class="empty-state" id="emptyPasseiosReservados" style="display:none;">
+                                    <i class="fas fa-search"></i>
+                                    <p>Você ainda não reservou nenhum passeio.</p>
+                                    <a href="pesquisa.html" class="btn btn-primary">Explorar Passeios</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section about"><h3>Sobre Nós</h3><p>Passeios da Serra é a melhor plataforma para encontrar e reservar experiências únicas em Campos do Jordão e região.</p></div>
+                <div class="footer-section links"><h3>Links Úteis</h3><ul><li><a href="index.html">Home</a></li><li><a href="pesquisa.html">Passeios</a></li><li><a href="contato.html">Contato</a></li></ul></div>
+                <div class="footer-section contact"><h3>Contato</h3><ul><li><i class="fas fa-map-marker-alt"></i> Av. Dr. Januário Miraglia, 1000</li><li><i class="fas fa-phone"></i> (12) 99671-1961</li><li><i class="fas fa-envelope"></i> contato@passeiosdaserra.com</li></ul></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p></div>
+        </div>
+    </footer>
+    
+    <script src="js/auth.js"></script>
+    <script src="js/passeios.js"></script>
+    <script src="js/sidebarMenuHandler.js"></script>
+    <script src="js/main.js"></script> 
+    <script src="js/perfil-features.js"></script> 
+</body>
+</html>

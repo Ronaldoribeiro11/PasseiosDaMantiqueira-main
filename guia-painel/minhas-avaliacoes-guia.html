@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Avaliações Recebidas - Painel do Guia - Passeios da Serra</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/animation.css">
+    <link rel="stylesheet" href="css/guia-painel.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="guide-panel-body">
+
+    <nav class="admin-sidebar guide-sidebar" id="guideSidebar">
+        <div class="admin-sidebar-content">
+            <div class="admin-sidebar-profile guide-sidebar-profile">
+                <img src="../assets/images/DonoPasseio.jpg" alt="Foto do Guia Yohan">
+                <h4>Yohan Montanhista</h4>
+                <p><span class="badge badge-guide">Guia Verificado</span></p>
+            </div>
+            <ul class="admin-sidebar-menu">
+                <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i><span>Painel Inicial</span></a></li>
+                <li><a href="meus-passeios.html"><i class="fas fa-map-signs"></i><span>Meus Passeios</span></a></li>
+                <li><a href="minhas-reservas.html"><i class="fas fa-calendar-alt"></i><span>Minhas Reservas</span></a></li>
+                <li><a href="calendario-guia.html"><i class="fas fa-calendar-day"></i><span>Meu Calendário</span></a></li>
+                <li><a href="meu-financeiro.html"><i class="fas fa-wallet"></i><span>Meu Financeiro</span></a></li>
+                <li class="active"><a href="minhas-avaliacoes-guia.html"><i class="fas fa-star-half-alt"></i><span>Minhas Avaliações</span></a></li>
+                <li><a href="mensagens-guia.html"><i class="fas fa-comments"></i><span>Mensagens <span class="notification-badge-inline">2</span></span></a></li>
+                <li><a href="editar-perfil-guia.html"><i class="fas fa-user-edit"></i><span>Editar Perfil de Guia</span></a></li>
+            </ul>
+            <div class="admin-sidebar-footer">
+                <a href="../index.html" class="btn btn-outline" target="_blank"><i class="fas fa-globe"></i><span>Ver Site</span></a>
+                <a href="../login.html" id="guideLogoutButton" class="btn btn-outline"><i class="fas fa-sign-out-alt"></i><span>Sair</span></a>
+            </div>
+        </div>
+    </nav>
+
+    <header class="guide-panel-header">
+        <button class="menu-toggle guide-menu-toggle" id="guideMenuToggle" aria-label="Abrir menu do guia">
+            <span></span><span></span><span></span>
+        </button>
+        <div class="guide-header-title">
+            Minhas Avaliações Recebidas
+        </div>
+        <div class="guide-header-actions">
+            <a href="mensagens-guia.html" class="notification-btn" aria-label="Mensagens"><i class="fas fa-comments"></i><span class="notification-badge">2</span></a>
+            <div class="guide-profile-dropdown">
+                <img src="../assets/images/DonoPasseio.jpg" alt="Guia Yohan" class="guide-avatar-sm">
+                <span>Yohan M.</span> <i class="fas fa-chevron-down"></i>
+            </div>
+        </div>
+    </header>
+
+    <main class="admin-main guide-main-content" id="guideMainContent">
+        <div class="container-fluid">
+            <div class="admin-page-header">
+                <h1>Avaliações dos Meus Passeios</h1>
+                <p class="text-muted">Veja o que os clientes estão dizendo sobre suas experiências e responda aos feedbacks.</p>
+            </div>
+
+            <div class="admin-kpi-grid guide-kpi-grid short-kpi-grid guide-reviews-kpis">
+                 <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Avaliação Média Geral</h3>
+                        <div class="kpi-value" id="kpiAvgRating">4.8 <i class="fas fa-star"></i></div>
+                    </div>
+                </div>
+                <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Total de Avaliações</h3>
+                        <div class="kpi-value" id="kpiTotalReviews">87</div>
+                    </div>
+                </div>
+                <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Avaliações 5 <i class="fas fa-star"></i></h3>
+                        <div class="kpi-value" id="kpi5StarReviews">70</div>
+                    </div>
+                </div>
+                 <div class="admin-kpi-card">
+                    <div class="kpi-content">
+                        <h3>Não Respondidas</h3>
+                        <div class="kpi-value" id="kpiUnansweredReviews">5</div>
+                         <p class="kpi-subtext text-warning">Responda para melhorar o engajamento!</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="guide-panel-card reviews-distribution-card">
+                <h4>Distribuição das Avaliações</h4>
+                <div class="rating-bars-summary" id="guideRatingBarsSummary">
+                    </div>
+            </div>
+
+
+            <div class="admin-actions-bar guide-actions-bar">
+                <div class="filter-group">
+                    <label for="filterGuideReviewPasseio">Filtrar por Passeio:</label>
+                    <select id="filterGuideReviewPasseio" class="form-control">
+                        <option value="all">Todos os Meus Passeios</option>
+                        </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterGuideReviewRating">Filtrar por Nota:</label>
+                    <select id="filterGuideReviewRating" class="form-control">
+                        <option value="all">Todas as Notas</option>
+                        <option value="5">5 Estrelas</option>
+                        <option value="4">4 Estrelas</option>
+                        <option value="3">3 Estrelas</option>
+                        <option value="2">2 Estrelas</option>
+                        <option value="1">1 Estrela</option>
+                        <option value="unanswered">Não Respondidas</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filterGuideReviewDate">Período:</label>
+                    <input type="text" id="filterGuideReviewDate" class="form-control" placeholder="Selecione o período">
+                </div>
+            </div>
+
+            <div class="guide-reviews-list-container" id="guideReviewsListContainer">
+                <div class="guide-review-item card-style animate-on-scroll" data-animation="fadeInUp">
+                    <div class="review-item-header">
+                        <div class="review-item-passeio">
+                            Passeio: <a href="../passeio.html?id=1" class="link-highlight">Trilha da Pedra do Baú</a>
+                        </div>
+                        <div class="review-item-meta">
+                            <div class="stars" data-rating="5" style="--rating: 5;"></div>
+                            <span class="review-date">por Cliente Anônimo em 28/05/2025</span>
+                        </div>
+                    </div>
+                    <div class="review-item-content">
+                        <h4>Experiência Fantástica!</h4>
+                        <p>"O Yohan é um guia excepcional, conhece tudo da região e tornou a trilha muito segura e divertida. As vistas são de tirar o fôlego. Recomendo 100%!"</p>
+                    </div>
+                    <div class="review-item-actions">
+                        <button class="btn btn-sm btn-primary btn-respond-review" data-review-id="revG1"><i class="fas fa-reply"></i> Responder</button>
+                        </div>
+                    <div class="review-response-area" id="response-area-revG1" style="display: none;">
+                        <textarea class="form-control" rows="3" placeholder="Sua resposta..."></textarea>
+                        <button class="btn btn-sm btn-success btn-submit-response" data-review-id="revG1">Enviar Resposta</button>
+                        <button class="btn btn-sm btn-secondary btn-cancel-response" data-review-id="revG1">Cancelar</button>
+                    </div>
+                    <div class="guide-response-display" id="guide-response-revG1">
+                        </div>
+                </div>
+                </div>
+            <div id="emptyGuideReviewsState" class="empty-state" style="display:none; padding: var(--space-xl); border: 1px solid var(--admin-gray); border-radius:var(--border-radius-md);">
+                 <div class="empty-state-icon"><i class="fas fa-comment-slash" style="font-size: 3rem;"></i></div>
+                 <h2 class="empty-state-title">Nenhuma avaliação recebida ainda</h2>
+                 <p class="empty-state-text">Continue oferecendo ótimas experiências! Suas avaliações aparecerão aqui.</p>
+            </div>
+            <div class="table-pagination guide-reviews-pagination" style="display:none;">
+                </div>
+
+        </div> </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1/dist/chart.min.js"></script>
+    <script src="../js/auth.js"></script>
+    <script src="../js/passeios.js"></script>
+    <script src="js/guia-painel.js"></script>
+    <script src="js/guia-minhas-avaliacoes.js"></script> </body>
+</html>
