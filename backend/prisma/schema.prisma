@@ -8,175 +8,421 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+// -------------------------------------------
+// ENUMS (Tipos reutilizáveis para os modelos)
+// -------------------------------------------
 
-// --- INÍCIO DOS MODELOS DO BANCO DE DADOS ---
+enum TipoUsuario {
+  cliente
+  guia
+  admin
+}
 
-// Apenas o modelo Usuario está ativo. O resto está "desligado" com //
+enum StatusVerificacao {
+  pendente
+  verificado
+  rejeitado
+}
 
+enum TipoDocumento {
+  RG_FRENTE
+  RG_VERSO
+  CNH_FRENTE
+  COMPROVANTE_RESIDENCIA
+  SELFIE_COM_DOC
+  CERTIFICADO_CURSO
+}
+
+enum DificuldadePasseio {
+  facil
+  moderado
+  dificil
+}
+
+enum PoliticaCancelamento {
+  flexivel
+  moderada
+  rigorosa
+  nao_reembolsavel
+}
+
+enum StatusPasseio {
+  ativo
+  rascunho
+  inativo
+  pendente_aprovacao
+  rejeitado
+}
+
+enum StatusReserva {
+  confirmada
+  pendente_pagamento
+  cancelada_pelo_usuario
+  cancelada_pelo_guia
+  concluida
+  nao_compareceu
+}
+
+enum StatusPagamento {
+  pendente
+  aprovado
+  recusado
+  reembolsado
+  chargeback
+}
+
+enum StatusRepasse {
+  pendente
+  pago
+  agendado
+  falhou
+}
+
+enum StatusAvaliacao {
+  pendente_aprovacao
+  aprovada
+  rejeitada
+}
+
+enum CategoriaCusto {
+  MARKETING
+  OPERACAO
+  EQUIPAMENTO
+  TAXAS
+  OUTROS
+}
+
+enum TipoConsentimento {
+  TERMOS_DE_USO
+  POLITICA_DE_PRIVACIDADE
+  COMUNICACOES_MARKETING
+}
+
+// -------------------------------------------
+// MODELOS DO BANCO DE DADOS
+// -------------------------------------------
+
+// APENAS O MODELO USUARIO ESTÁ ATIVO PARA A PRIMEIRA MIGRAÇÃO
 model Usuario {
   id                         BigInt    @id @default(autoincrement())
   nome_completo              String
   email                      String    @unique
   senha_hash                 String
   telefone                   String?
+  cpf                        String?   @unique
   data_nascimento            DateTime?
   avatar_url                 String?
   bio                        String?
-  tipo_de_usuario            String    @default("cliente") // 'cliente', 'guia', 'admin'
+  endereco_cep               String?
+  endereco_logradouro        String?
+  endereco_numero            String?
+  endereco_complemento       String?
+  endereco_bairro            String?
+  endereco_cidade            String?
+  endereco_estado            String?
+  tipo_de_usuario            TipoUsuario @default(cliente)
   preferencias_notificacao   Json?
   email_verificado_em        DateTime?
   criado_em                  DateTime  @default(now())
   atualizado_em              DateTime  @updatedAt
   deleted_at                 DateTime?
 
-  // Relações (Comentadas para a primeira migração)
-  // perfil_de_guia             PerfilDeGuia?
+  // --- Relações comentadas para a primeira migração ---
+  // dependentes                Dependente[]
+  // perfil_guia                PerfilDeGuia?
   // reservas                   Reserva[]
   // avaliacoes                 Avaliacao[]
   // favoritos                  Favorito[]
+  // conversa_participantes     ConversaParticipante[]
   // mensagens_enviadas         Mensagem[]
-  // participacao_em_conversas  ConversaParticipante[]
   // notificacoes               Notificacao[]
+  // consentimentos             ConsentimentoUsuario[]
+  // historico_modificacoes     HistoricoAlteracao[]
+  // reserva_participantes      ReservaParticipante[]
+  // password_reset             PasswordReset?
 }
+
 
 // --- O RESTANTE DOS MODELOS ESTÁ COMENTADO POR ENQUANTO ---
 
+// model Dependente {
+//   id                       BigInt    @id @default(autoincrement())
+//   responsavel              Usuario   @relation(fields: [responsavel_usuario_id], references: [id])
+//   responsavel_usuario_id   BigInt
+//   nome_completo            String
+//   data_nascimento          DateTime
+//   documento_identidade     String?
+//   observacoes_medicas      String?
+//   criado_em                DateTime  @default(now())
+//   participacoes_reserva    ReservaParticipante[]
+// }
+
 // model PerfilDeGuia {
-//   id                   BigInt    @id @default(autoincrement())
+//   id                   BigInt       @id @default(autoincrement())
+//   usuario              Usuario      @relation(fields: [usuario_id], references: [id])
+//   usuario_id           BigInt       @unique
 //   nome_publico         String
 //   tagline              String?
 //   bio_publica          String?
-//   numero_cadastur      String?   @unique
-//   status_verificacao   String    @default("pendente") // "pendente", "verificado", "rejeitado"
-//   informacoes_bancarias Json?
-//   criado_em            DateTime  @default(now())
-//   atualizado_em        DateTime  @updatedAt
-//   // Relação 1-para-1 com Usuario
-//   usuario_id           BigInt    @unique
-//   usuario              Usuario   @relation(fields: [usuario_id], references: [id])
-//   // Relações
+//   numero_cadastur      String?      @unique
+//   status_verificacao   StatusVerificacao @default(pendente)
+//   criado_em            DateTime     @default(now())
+//   atualizado_em        DateTime     @updatedAt
+//   documentos           Documento[]
 //   passeios             Passeio[]
-//   documentos_guia      DocumentoGuia[]
+//   repasses             Repasse[]
 // }
-// model Passeio {
-//   id                    BigInt    @id @default(autoincrement())
-//   titulo                String
-//   descricao_curta       String
-//   descricao_longa       String
-//   preco                 Float
-//   duracao_horas         Float
-//   dificuldade           String    // 'facil', 'moderado', 'dificil'
-//   localizacao_geral     String
-//   ponto_encontro        String
-//   instrucoes_local      String?
-//   latitude              Float?
-//   longitude             Float?
-//   status                String    @default("rascunho") // 'rascunho', 'ativo', 'inativo'
-//   itens_inclusos        Json?
-//   requisitos            String?
-//   imagem_principal_url  String?
-//   galeria_imagens_urls  Json?
-//   politica_cancelamento String
-//   criado_em             DateTime  @default(now())
-//   atualizado_em         DateTime  @updatedAt
-//   deleted_at            DateTime?
-//   // Relações
-//   guia_id               BigInt
-//   guia                  PerfilDeGuia  @relation(fields: [guia_id], references: [id])
-//   categoria_id          BigInt
-//   categoria             Categoria     @relation(fields: [categoria_id], references: [id])
-//   tags                  PasseioTag[]
-//   datas_disponiveis     DataDisponivel[]
-//   avaliacoes            Avaliacao[]
-//   reservas              Reserva[]
-//   usuarios_favoritos    Favorito[]
+
+// model Documento {
+//   id                  BigInt            @id @default(autoincrement())
+//   perfil_de_guia      PerfilDeGuia      @relation(fields: [perfil_de_guia_id], references: [id])
+//   perfil_de_guia_id   BigInt
+//   tipo_documento      TipoDocumento
+//   url_arquivo         String
+//   status_verificacao  StatusVerificacao @default(pendente)
+//   observacoes_admin   String?
+//   criado_em           DateTime          @default(now())
+//   atualizado_em       DateTime          @updatedAt
 // }
+
 // model Categoria {
-//   id            BigInt    @id @default(autoincrement())
-//   nome          String    @unique
-//   slug          String    @unique
-//   passeios      Passeio[]
+//   id        Int       @id @default(autoincrement())
+//   nome      String    @unique
+//   slug      String    @unique
+//   icone     String?
+//   passeios  Passeio[]
 // }
+
 // model Tag {
-//   id        BigInt       @id @default(autoincrement())
+//   id        Int          @id @default(autoincrement())
 //   nome      String       @unique
+//   slug      String       @unique
 //   passeios  PasseioTag[]
 // }
+
+// model Passeio {
+//   id                       BigInt               @id @default(autoincrement())
+//   guia                     PerfilDeGuia         @relation(fields: [guia_id], references: [id])
+//   guia_id                  BigInt
+//   categoria                Categoria            @relation(fields: [categoria_id], references: [id])
+//   categoria_id             Int
+//   titulo                   String
+//   descricao_curta          String
+//   descricao_longa          String
+//   preco                    Decimal
+//   duracao_horas            Decimal
+//   dificuldade              DificuldadePasseio
+//   localizacao_geral        String
+//   localizacao_detalhada    String?
+//   link_Maps                String?
+//   politica_cancelamento    PoliticaCancelamento
+//   status                   StatusPasseio        @default(rascunho)
+//   itens_inclusos           Json?
+//   requisitos               String?
+//   imagem_principal_url     String?
+//   galeria_imagens_urls     Json?
+//   criado_em                DateTime             @default(now())
+//   atualizado_em            DateTime             @updatedAt
+//   deleted_at               DateTime?
+//   tags                     PasseioTag[]
+//   datas_disponiveis        DataDisponivel[]
+//   reservas                 Reserva[]
+//   avaliacoes               Avaliacao[]
+//   favoritos                Favorito[]
+//   conversa                 Conversa?
+// }
+
 // model PasseioTag {
-//   passeio_id  BigInt
-//   passeio     Passeio @relation(fields: [passeio_id], references: [id], onDelete: Cascade)
-//   tag_id      BigInt
-//   tag         Tag     @relation(fields: [tag_id], references: [id], onDelete: Cascade)
+//   passeio      Passeio @relation(fields: [passeio_id], references: [id])
+//   passeio_id   BigInt
+//   tag          Tag     @relation(fields: [tag_id], references: [id])
+//   tag_id       Int
 //   @@id([passeio_id, tag_id])
 // }
+
 // model DataDisponivel {
-//   id              BigInt    @id @default(autoincrement())
+//   id               BigInt    @id @default(autoincrement())
+//   passeio          Passeio   @relation(fields: [passeio_id], references: [id])
+//   passeio_id       BigInt
 //   data_hora_inicio DateTime
-//   vagas_totais     Int
+//   vagas_maximas    Int
 //   vagas_ocupadas   Int       @default(0)
-//   passeio_id      BigInt
-//   passeio         Passeio   @relation(fields: [passeio_id], references: [id], onDelete: Cascade)
-//   reservas        Reserva[]
+//   reservas         Reserva[]
+//   @@unique([passeio_id, data_hora_inicio])
 // }
+
 // model Reserva {
-//   id                      BigInt    @id @default(autoincrement())
-//   codigo_reserva          String    @unique
-//   numero_participantes    Int
-//   valor_total             Float
-//   status_reserva          String    // 'confirmada', 'pendente_pagamento', 'cancelada_usuario', 'cancelada_guia', 'concluida', 'nao_compareceu'
-//   observacoes_cliente     String?
-//   data_reserva            DateTime  @default(now())
-//   usuario_id              BigInt
-//   usuario                 Usuario   @relation(fields: [usuario_id], references: [id])
-//   passeio_id              BigInt
-//   passeio                 Passeio   @relation(fields: [passeio_id], references: [id])
-//   data_disponivel_id      BigInt
-//   data_disponivel         DataDisponivel @relation(fields: [data_disponivel_id], references: [id])
-//   pagamento               Pagamento?
+//   id                     BigInt                @id @default(autoincrement())
+//   codigo_reserva         String                @unique
+//   usuario                Usuario               @relation(fields: [usuario_id], references: [id])
+//   usuario_id             BigInt
+//   passeio                Passeio               @relation(fields: [passeio_id], references: [id])
+//   passeio_id             BigInt
+//   data_disponivel        DataDisponivel        @relation(fields: [data_disponivel_id], references: [id])
+//   data_disponivel_id     BigInt
+//   valor_total            Decimal
+//   status_reserva         StatusReserva         @default(pendente_pagamento)
+//   observacoes_cliente    String?
+//   data_reserva           DateTime              @default(now())
+//   atualizado_em          DateTime              @updatedAt
+//   participantes          ReservaParticipante[]
+//   pagamento              Pagamento?
+//   avaliacao              Avaliacao?
+//   repasses               Repasse[]
 // }
+
+// model ReservaParticipante {
+//   id            BigInt      @id @default(autoincrement())
+//   reserva       Reserva     @relation(fields: [reserva_id], references: [id])
+//   reserva_id    BigInt
+//   usuario       Usuario?    @relation(fields: [usuario_id], references: [id])
+//   usuario_id    BigInt?
+//   dependente    Dependente? @relation(fields: [dependente_id], references: [id])
+//   dependente_id BigInt?
+//   @@index([usuario_id])
+//   @@index([dependente_id])
+// }
+
 // model Pagamento {
-//   id                  String   @id @default(cuid())
-//   status_pagamento    String   // 'aprovado', 'recusado', 'pendente', 'reembolsado'
-//   valor               Float
-//   metodo_pagamento    String?
-//   gateway_transacao_id String   @unique
-//   dados_pagamento     Json?
-//   criado_em           DateTime @default(now())
-//   reserva_id          BigInt   @unique
-//   reserva             Reserva  @relation(fields: [reserva_id], references: [id])
+//   id                     BigInt        @id @default(autoincrement())
+//   reserva                Reserva       @relation(fields: [reserva_id], references: [id])
+//   reserva_id             BigInt        @unique
+//   gateway_nome           String
+//   gateway_transacao_id   String        @unique
+//   status                 StatusPagamento @default(pendente)
+//   valor                  Decimal
+//   metodo_pagamento       String?
+//   dados_pagamento        Json?
+//   criado_em              DateTime      @default(now())
+//   atualizado_em          DateTime      @updatedAt
+//   repasse                Repasse?
 // }
+
+// model Repasse {
+//   id                            BigInt        @id @default(autoincrement())
+//   pagamento                     Pagamento     @relation(fields: [pagamento_id], references: [id])
+//   pagamento_id                  BigInt        @unique
+//   reserva                       Reserva       @relation(fields: [reserva_id], references: [id])
+//   reserva_id                    BigInt
+//   guia                          PerfilDeGuia  @relation(fields: [guia_id], references: [id])
+//   guia_id                       BigInt
+//   valor_bruto_transacao         Decimal
+//   percentual_comissao_aplicado  Decimal
+//   valor_comissao_sistema        Decimal
+//   valor_liquido_guia            Decimal
+//   status_repasse                StatusRepasse @default(pendente)
+//   data_prevista_repasse         DateTime?
+//   data_efetiva_repasse          DateTime?
+//   gateway_repasse_id            String?
+//   criado_em                     DateTime      @default(now())
+//   atualizado_em                 DateTime      @updatedAt
+// }
+
 // model Avaliacao {
-//   id                BigInt    @id @default(autoincrement())
+//   id                BigInt          @id @default(autoincrement())
+//   usuario           Usuario         @relation(fields: [usuario_id], references: [id])
+//   usuario_id        BigInt
+//   passeio           Passeio         @relation(fields: [passeio_id], references: [id])
+//   passeio_id        BigInt
+//   reserva           Reserva?        @relation(fields: [reserva_id], references: [id])
+//   reserva_id        BigInt?         @unique
 //   nota              Int
 //   titulo            String?
 //   comentario        String?
 //   resposta_do_guia  String?
-//   status            String    @default("pendente_aprovacao")
-//   data_avaliacao    DateTime  @default(now())
-//   usuario_id        BigInt
-//   usuario           Usuario   @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
-//   passeio_id        BigInt
-//   passeio           Passeio   @relation(fields: [passeio_id], references: [id], onDelete: Cascade)
+//   status            StatusAvaliacao @default(pendente_aprovacao)
+//   data_avaliacao    DateTime        @default(now())
+//   data_resposta     DateTime?
 // }
+
 // model Favorito {
-//   usuario_id  BigInt
-//   usuario     Usuario @relation(fields: [usuario_id], references: [id], onDelete: Cascade)
-//   passeio_id  BigInt
-//   passeio     Passeio @relation(fields: [passeio_id], references: [id], onDelete: Cascade)
+//   usuario      Usuario @relation(fields: [usuario_id], references: [id])
+//   usuario_id   BigInt
+//   passeio      Passeio @relation(fields: [passeio_id], references: [id])
+//   passeio_id   BigInt
+//   criado_em    DateTime @default(now())
 //   @@id([usuario_id, passeio_id])
 // }
-// model DocumentoGuia {
-//   id                  BigInt    @id @default(autoincrement())
-//   tipo_documento      String
-//   url_arquivo         String
-//   status_verificacao  String    @default("pendente")
-//   observacoes_admin   String?
-//   criado_em           DateTime  @default(now())
-//   perfil_de_guia_id   BigInt
-//   perfil_de_guia      PerfilDeGuia @relation(fields: [perfil_de_guia_id], references: [id], onDelete: Cascade)
-// }
+
 // model Conversa {
-//   id            BigInt    @id @default(autoincrement())
-//   criado_em     DateTime  @default(now())
-//   participantes ConversaParticipante[]
-//   mens
+//   id                   BigInt                 @id @default(autoincrement())
+//   passeio              Passeio?               @relation(fields: [passeio_id], references: [id])
+//   passeio_id           BigInt?                @unique
+//   criado_em            DateTime               @default(now())
+//   atualizado_em        DateTime               @updatedAt
+//   participantes        ConversaParticipante[]
+//   mensagens            Mensagem[]
+// }
+
+// model ConversaParticipante {
+//   conversa           Conversa @relation(fields: [conversa_id], references: [id])
+//   conversa_id        BigInt
+//   usuario            Usuario  @relation(fields: [usuario_id], references: [id])
+//   usuario_id         BigInt
+//   data_ultima_leitura DateTime?
+//   @@id([conversa_id, usuario_id])
+// }
+
+// model Mensagem {
+//   id           BigInt   @id @default(autoincrement())
+//   conversa     Conversa @relation(fields: [conversa_id], references: [id])
+//   conversa_id  BigInt
+//   remetente    Usuario  @relation(fields: [remetente_id], references: [id])
+//   remetente_id BigInt
+//   conteudo     String
+//   criado_em    DateTime @default(now())
+// }
+
+// model Notificacao {
+//   id                String    @id @default(uuid())
+//   destinatario      Usuario   @relation(fields: [destinatario_id], references: [id])
+//   destinatario_id   BigInt
+//   tipo_notificacao  String?
+//   mensagem          String
+//   link_url          String?
+//   data_leitura      DateTime?
+//   criado_em         DateTime  @default(now())
+//   @@index([destinatario_id, data_leitura])
+// }
+
+// model CustoOperacional {
+//   id                BigInt         @id @default(autoincrement())
+//   descricao         String
+//   valor             Decimal
+//   categoria         CategoriaCusto
+//   data_custo        DateTime
+//   comprovante_url   String?
+//   observacoes       String?
+//   criado_em         DateTime       @default(now())
+// }
+
+// model PasswordReset {
+//   email        String   @id @unique
+//   usuario      Usuario  @relation(fields: [email], references: [email])
+//   token_hash   String
+//   expires_at   DateTime
+//   criado_em    DateTime @default(now())
+// }
+
+// model ConsentimentoUsuario {
+//   id                  BigInt            @id @default(autoincrement())
+//   usuario             Usuario           @relation(fields: [usuario_id], references: [id])
+//   usuario_id          BigInt
+//   tipo_consentimento  TipoConsentimento
+//   versao              String?
+//   status              Boolean // true para concedido, false para revogado
+//   ip_address          String?
+//   user_agent          String?
+//   data_registro       DateTime          @default(now())
+// }
+
+// model HistoricoAlteracao {
+//   id                        BigInt   @id @default(autoincrement())
+//   usuario_modificador       Usuario? @relation(fields: [usuario_modificador_id], references: [id])
+//   usuario_modificador_id    BigInt?
+//   tabela_modificada         String
+//   registro_id               BigInt
+//   valor_antigo              String?
+//   valor_novo                String?
+//   data_modificacao          DateTime @default(now())
+// }

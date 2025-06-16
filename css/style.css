@@ -6228,3 +6228,32 @@ input:checked + .slider:before {
 #saveCookiePreferencesBtn i {
     margin-right: var(--space-xs);
 }
+/* Adicionar em css/perfil-features.css ou style.css */
+.form-row {
+    display: flex;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.form-row .form-group {
+    flex: 1;
+    min-width: 150px;
+}
+
+.form-group.flex-2 {
+    flex: 2;
+}
+
+.form-group.flex-3 {
+    flex: 3;
+}
+
+.cep-group {
+    display: flex;
+    align-items: flex-end;
+    gap: 10px;
+}
+
+.cep-group input {
+    flex: 1;
+}
