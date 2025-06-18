@@ -5,19 +5,50 @@ document.addEventListener('DOMContentLoaded', function() {
     let currentUser = auth.getCurrentUser();
 
     // --- Autenticação e Verificação de Criador ---
-    const urlParamsForAuthCheck = new URLSearchParams(window.location.search);
-    const tourIdForAuthCheck = urlParamsForAuthCheck.get('edit');
+    // --- Autenticação e Verificação de Criador (VERSÃO CORRIGIDA) ---
 
-    if (!currentUser) {
-        alert('Você precisa estar logado para criar ou editar um passeio. Redirecionando para login...');
-        window.location.href = `login.html?redirect=${encodeURIComponent(window.location.pathname + window.location.search)}`;
-        return; 
-    }
-    if (!tourIdForAuthCheck && currentUser.creatorStatus !== 'verified') {
-        alert('Seu cadastro de criador ainda não foi aprovado. Para criar novos passeios, por favor, complete seu cadastro e aguarde a aprovação.');
-        window.location.href = (currentUser.creatorStatus === 'none' || !currentUser.creatorStatus) ? 'cadastro-criador.html' : 'perfil.html';
+// Esta função será executada assim que a página carregar
+async function verificarAcessoGuia() {
+    const token = auth.getTokenFromStorage();
+
+    // 1. Se não há token, não está logado. Redireciona.
+    if (!token) {
+        alert('Você precisa estar logado para acessar esta página.');
+        window.location.href = `login.html?redirect=criar-passeio.html`;
         return;
     }
+
+    try {
+        // 2. Busca os dados mais recentes do usuário na API de perfil
+        const response = await fetch('http://localhost:3000/api/perfil', {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) {
+            // Se o token for inválido ou expirado, o back-end dará erro.
+            // Limpamos o login antigo e redirecionamos.
+            auth.logout();
+            return;
+        }
+
+        const usuario = await response.json();
+
+        // 3. AGORA SIM, checamos o dado FRESCO do banco de dados!
+        if (usuario.tipo_de_usuario !== 'guia') {
+            alert('Acesso negado. Apenas guias podem acessar esta página.');
+            window.location.href = 'perfil.html';
+        }
+        // Se for um guia, a página continua a carregar normalmente.
+
+    } catch (error) {
+        console.error("Erro ao verificar perfil:", error);
+        // Redireciona em caso de erro de rede
+        window.location.href = 'index.html';
+    }
+}
+
+// Chama a função de verificação ao carregar a página
+verificarAcessoGuia();
 
     new SidebarMenuHandler({
         menuToggleSelector: '.page-menu-toggle',

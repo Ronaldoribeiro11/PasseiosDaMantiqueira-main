@@ -57,6 +57,63 @@ document.addEventListener('DOMContentLoaded', function() {
         element.addEventListener('mouseenter', showTooltip);
         element.addEventListener('mouseleave', hideTooltip);
     });
+
+    // COLE ESTE CÓDIGO DENTRO DO SEU addEventListener para 'DOMContentLoaded' em js/main.js
+
+// Função assíncrona para verificar o token e atualizar a UI do cabeçalho
+async function updateUserHeaderStatus() {
+    const headerActions = document.querySelector('.main-header .header-actions');
+    const loginButton = document.querySelector('.header-actions .btn-login');
+
+    if (!headerActions) return; // Se não encontrar a área de ações, para aqui
+
+    const token = auth.getTokenFromStorage(); // Pega o token do localStorage
+
+    if (token) {
+        // Se existe um token, vamos validá-lo com o back-end
+        try {
+            const response = await fetch('http://localhost:3000/api/perfil', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (response.ok) {
+                const user = await response.json();
+                // Sucesso! O token é válido e temos os dados frescos do usuário
+
+                // Remove o botão de login existente
+                if (loginButton) loginButton.remove();
+
+                // Cria e insere o link do perfil se ele ainda não existir
+                if (!document.querySelector('.user-profile-link')) {
+                    const profileHTML = `
+                        <a href="perfil.html" class="user-profile-link">
+                            <img src="${user.avatar_url || 'assets/images/default-profile.png'}" alt="Foto de Perfil" class="profile-pic-small">
+                            <span>Olá, ${user.nome_completo.split(' ')[0]}</span>
+                        </a>
+                        <a href="#" id="logout-link" class="btn btn-logout">Sair</a>
+                    `;
+                    // Adiciona o novo HTML no início da div 'header-actions'
+                    headerActions.insertAdjacentHTML('afterbegin', profileHTML);
+                    
+                    // Adiciona o evento de logout ao novo link
+                    document.getElementById('logout-link').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        auth.logout();
+                    });
+                }
+            } else {
+                // O token é inválido ou expirado, então limpamos o login antigo
+                auth.logout();
+            }
+        } catch (error) {
+            console.error('Erro ao contatar o servidor para verificar o token:', error);
+            // Se o back-end estiver offline, não faz nada, deixa o botão de login visível
+        }
+    }
+}
+
+// Chama a função para ser executada assim que a página carregar
+updateUserHeaderStatus();
     
     function showTooltip(e) {
         const tooltipText = this.getAttribute('data-tooltip');

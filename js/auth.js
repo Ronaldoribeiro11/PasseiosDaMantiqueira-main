@@ -6,6 +6,12 @@ class Auth {
         this.currentUser = JSON.parse(localStorage.getItem('passeios-da-serra-current-user')) || null;
     }
 
+    // ADICIONE ESTE NOVO MÉTODO DENTRO DA CLASS AUTH
+getTokenFromStorage() {
+    return localStorage.getItem('passeios-da-serra-token');
+    }
+    
+
     register(userData) {
         const userExists = this.users.some(user => user.email === userData.email);
         if (userExists) {
@@ -70,12 +76,12 @@ class Auth {
     localStorage.removeItem('passeios-da-serra-current-user');
     localStorage.removeItem('passeios-da-serra-token'); // <-- Linha nova importante
     window.location.href = 'index.html';
+
 }
 
 isAuthenticated() {
-    return !!this.getTokenFromStorage(); // <-- Lógica alterada
+    return !!this.getTokenFromStorage();
 }
-
     getCurrentUser() {
         // Garante que estamos sempre lendo a versão mais atual do localStorage,
         // especialmente se o status for modificado em outra parte.
