@@ -1,23 +1,25 @@
-// --- COLE TODO ESTE CÓDIGO NO SEU server.js ---
+// --- VERSÃO CORRIGIDA E COMPLETA DO server.js ---
 
-// 1. Importação das bibliotecas que vamos usar
+// 1. Importação das bibliotecas
 const express = require('express');
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcrypt');
-const authMiddleware = require('./middlewares/authMiddleware');
 const cors = require('cors');
+const authMiddleware = require('./middlewares/authMiddleware');
+const jwt = require('jsonwebtoken');
+
+// Correção para o erro do BigInt ao converter para JSON
 BigInt.prototype.toJSON = function() {       
   return this.toString();
 };
 
-// 2. Inicialização do servidor e do Prisma
+// 2. Inicialização
 const app = express();
 const prisma = new PrismaClient();
 const port = 3000;
 
-// 3. Middleware para o servidor entender JSON
-// Essencial para receber os dados do formulário de cadastro
-app.use(cors()); // Permite requisições de outros domínios (CORS)
+// 3. Middlewares
+app.use(cors());
 app.use(express.json());
 
 // 4. Definição das Rotas da API
@@ -27,108 +29,94 @@ app.get('/', (req, res) => {
   res.send('Servidor do Passeios da Serra está no ar e pronto para receber requisições!');
 });
 
-/**
- * ROTA PARA CRIAR UM NOVO USUÁRIO (Cadastro)
- */
+// Rota de Cadastro
 app.post('/api/usuarios', async (req, res) => {
   try {
     const { nome_completo, email, senha } = req.body;
-
-    // Criptografa a senha antes de salvar no banco
     const saltRounds = 10;
     const senha_hash = await bcrypt.hash(senha, saltRounds);
-
-    // Usa o Prisma para criar o novo usuário no banco de dados
     const novoUsuario = await prisma.usuario.create({
-      data: {
-        nome_completo: nome_completo,
-        email: email,
-        senha_hash: senha_hash,
-      },
+      data: { nome_completo, email, senha_hash },
     });
-
-    // Retorna uma resposta de sucesso com os dados do usuário criado
-    // (removendo a senha da resposta por segurança)
     const { senha_hash: _, ...usuarioSemSenha } = novoUsuario;
     res.status(201).json(usuarioSemSenha);
-
   } catch (error) {
-    // Se der erro (ex: email já existe), retorna um erro
     console.error(error);
-    res.status(400).json({ message: 'Não foi possível criar o usuário. O e-mail já pode estar em uso.' });
+    if (error.code === 'P2002') {
+      return res.status(400).json({ message: 'O e-mail fornecido já está em uso.' });
+    }
+    res.status(500).json({ message: 'Não foi possível criar o usuário.' });
   }
 });
 
-// 5. Comando para iniciar o servidor
-app.listen(port, () => {
-  console.log(`Servidor rodando em http://localhost:${port}`);
-});
-
-/**
- * ROTA PARA FAZER LOGIN DE UM USUÁRIO
- */
+// Rota de Login
 app.post('/api/login', async (req, res) => {
   try {
     const { email, senha } = req.body;
-
-    // 1. Encontrar o usuário pelo email no banco de dados
-    const usuario = await prisma.usuario.findUnique({
-      where: { email: email }
-    });
-
-    // Se o usuário não for encontrado, retorna um erro genérico por segurança
+    const usuario = await prisma.usuario.findUnique({ where: { email } });
     if (!usuario) {
       return res.status(401).json({ message: "Email ou senha inválidos." });
     }
-
-    // 2. Compara a senha enviada com a senha criptografada no banco
     const senhaValida = await bcrypt.compare(senha, usuario.senha_hash);
-
-    // Se a senha não for válida, retorna o mesmo erro genérico
     if (!senhaValida) {
       return res.status(401).json({ message: "Email ou senha inválidos." });
     }
-
-    // 3. Se a senha for válida, gera o Token JWT (o "crachá")
-    const jwt = require('jsonwebtoken');
-    const segredo = 'NOSSO_SEGREDO_SUPER_SECRETO'; // IMPORTANTE: No futuro, isso deve ir para o arquivo .env!
-
-    const token = jwt.sign(
-      { id: usuario.id, email: usuario.email }, // Informações que vão dentro do token
-      segredo,
-      { expiresIn: '8h' } // Duração do token (ex: 8 horas)
-    );
-
-    // 4. Envia o token de volta como resposta de sucesso
+    const segredo = 'NOSSO_SEGREDO_SUPER_SECRETO';
+    const token = jwt.sign({ id: usuario.id, email: usuario.email }, segredo, { expiresIn: '8h' });
     res.status(200).json({ message: "Login bem-sucedido!", token: token });
-
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Ocorreu um erro no servidor." });
   }
 });
 
-/**
- * ROTA PROTEGIDA PARA BUSCAR DADOS DO PERFIL
- */
+// Rota de Perfil
 app.get('/api/perfil', authMiddleware, async (req, res) => {
   try {
-    // O ID do usuário foi adicionado ao 'req' pelo nosso authMiddleware
-    const userId = req.userId;
-
-    const usuario = await prisma.usuario.findUnique({
-      where: { id: parseInt(userId) },
-    });
-
-    if (!usuario) {
-      return res.status(404).json({ message: 'Usuário não encontrado.' });
-    }
-
-    const { senha_hash: _, ...perfil } = usuario;
+    const { senha_hash: _, ...perfil } = req.user;
     res.status(200).json(perfil);
-
   } catch (error) {
     res.status(500).json({ message: 'Erro ao buscar perfil.' });
   }
 });
 
+// Rota de Criação de Passeios
+app.post('/api/passeios', authMiddleware, async (req, res) => {
+  try {
+    const usuario = req.user;
+    if (usuario.tipo_de_usuario !== 'guia') {
+      return res.status(403).json({ message: 'Acesso negado. Apenas guias podem criar passeios.' });
+    }
+    const perfilGuia = await prisma.perfilDeGuia.findUnique({
+      where: { usuario_id: usuario.id }
+    });
+    if (!perfilGuia) {
+      return res.status(400).json({ message: 'Perfil de guia não encontrado.' });
+    }
+    const dadosDoPasseio = req.body;
+    const novoPasseio = await prisma.passeio.create({
+      data: {
+        titulo: dadosDoPasseio.titulo,
+        descricao_curta: dadosDoPasseio.descricao_curta,
+        descricao_longa: dadosDoPasseio.descricao_longa,
+        preco: parseFloat(dadosDoPasseio.preco),
+        duracao_horas: parseFloat(dadosDoPasseio.duracao_horas),
+        dificuldade: dadosDoPasseio.dificuldade,
+        localizacao_geral: dadosDoPasseio.localizacao_geral,
+        politica_cancelamento: dadosDoPasseio.politica_cancelamento,
+        guia_id: perfilGuia.id,
+        categoria_id: parseInt(dadosDoPasseio.categoria_id) || 1,
+      }
+    });
+    res.status(201).json(novoPasseio);
+  } catch (error) {
+    console.error("Erro ao criar passeio:", error);
+    res.status(500).json({ message: 'Erro interno ao criar passeio.' });
+  }
+});
+
+
+// 5. Comando para iniciar o servidor (AGORA NO LUGAR CERTO, NO FINAL DE TUDO)
+app.listen(port, () => {
+  console.log(`Servidor rodando em http://localhost:${port}`);
+});

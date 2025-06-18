@@ -127,9 +127,10 @@ model Usuario {
   atualizado_em              DateTime  @updatedAt
   deleted_at                 DateTime?
 
+
   // --- Relações comentadas para a primeira migração ---
   // dependentes                Dependente[]
-  // perfil_guia                PerfilDeGuia?
+  perfil_guia                PerfilDeGuia?
   // reservas                   Reserva[]
   // avaliacoes                 Avaliacao[]
   // favoritos                  Favorito[]
@@ -157,21 +158,21 @@ model Usuario {
 //   participacoes_reserva    ReservaParticipante[]
 // }
 
-// model PerfilDeGuia {
-//   id                   BigInt       @id @default(autoincrement())
-//   usuario              Usuario      @relation(fields: [usuario_id], references: [id])
-//   usuario_id           BigInt       @unique
-//   nome_publico         String
-//   tagline              String?
-//   bio_publica          String?
-//   numero_cadastur      String?      @unique
-//   status_verificacao   StatusVerificacao @default(pendente)
-//   criado_em            DateTime     @default(now())
-//   atualizado_em        DateTime     @updatedAt
-//   documentos           Documento[]
-//   passeios             Passeio[]
-//   repasses             Repasse[]
-// }
+model PerfilDeGuia {
+id                   BigInt       @id @default(autoincrement())
+   usuario              Usuario      @relation(fields: [usuario_id], references: [id])
+   usuario_id           BigInt       @unique
+   nome_publico         String
+   tagline              String?
+   bio_publica          String?
+   numero_cadastur      String?      @unique
+  status_verificacao   StatusVerificacao @default(pendente)
+  criado_em            DateTime     @default(now())
+  atualizado_em        DateTime     @updatedAt
+  //documentos           Documento[]
+  passeios             Passeio[]
+  //repasses             Repasse[]
+  }
 
 // model Documento {
 //   id                  BigInt            @id @default(autoincrement())
@@ -185,60 +186,60 @@ model Usuario {
 //   atualizado_em       DateTime          @updatedAt
 // }
 
-// model Categoria {
-//   id        Int       @id @default(autoincrement())
-//   nome      String    @unique
-//   slug      String    @unique
-//   icone     String?
-//   passeios  Passeio[]
-// }
+ model Categoria {
+   id        Int       @id @default(autoincrement())
+   nome      String    @unique
+   slug      String    @unique
+   icone     String?
+   passeios  Passeio[]
+ }
 
-// model Tag {
-//   id        Int          @id @default(autoincrement())
-//   nome      String       @unique
-//   slug      String       @unique
-//   passeios  PasseioTag[]
-// }
+ model Tag {
+   id        Int          @id @default(autoincrement())
+   nome      String       @unique
+   slug      String       @unique
+   passeios  PasseioTag[]
+ }
 
-// model Passeio {
-//   id                       BigInt               @id @default(autoincrement())
-//   guia                     PerfilDeGuia         @relation(fields: [guia_id], references: [id])
-//   guia_id                  BigInt
-//   categoria                Categoria            @relation(fields: [categoria_id], references: [id])
-//   categoria_id             Int
-//   titulo                   String
-//   descricao_curta          String
-//   descricao_longa          String
-//   preco                    Decimal
-//   duracao_horas            Decimal
-//   dificuldade              DificuldadePasseio
-//   localizacao_geral        String
-//   localizacao_detalhada    String?
-//   link_Maps                String?
-//   politica_cancelamento    PoliticaCancelamento
-//   status                   StatusPasseio        @default(rascunho)
-//   itens_inclusos           Json?
-//   requisitos               String?
-//   imagem_principal_url     String?
-//   galeria_imagens_urls     Json?
-//   criado_em                DateTime             @default(now())
-//   atualizado_em            DateTime             @updatedAt
-//   deleted_at               DateTime?
-//   tags                     PasseioTag[]
-//   datas_disponiveis        DataDisponivel[]
-//   reservas                 Reserva[]
-//   avaliacoes               Avaliacao[]
-//   favoritos                Favorito[]
-//   conversa                 Conversa?
-// }
+ model Passeio {
+   id                       BigInt               @id @default(autoincrement())
+   guia                     PerfilDeGuia         @relation(fields: [guia_id], references: [id])
+   guia_id                  BigInt
+   categoria                Categoria            @relation(fields: [categoria_id], references: [id])
+   categoria_id             Int
+   titulo                   String
+   descricao_curta          String
+   descricao_longa          String
+   preco                    Decimal
+   duracao_horas            Decimal
+   dificuldade              DificuldadePasseio
+   localizacao_geral        String
+   localizacao_detalhada    String?
+   link_Maps                String?
+   politica_cancelamento    PoliticaCancelamento
+   status                   StatusPasseio        @default(rascunho)
+   itens_inclusos           Json?
+   requisitos               String?
+   imagem_principal_url     String?
+   galeria_imagens_urls     Json?
+   criado_em                DateTime             @default(now())
+   atualizado_em            DateTime             @updatedAt
+   deleted_at               DateTime?
+   tags                     PasseioTag[]
+   //datas_disponiveis        DataDisponivel[]
+   //reservas                 Reserva[]
+   //avaliacoes               Avaliacao[]
+   //favoritos                Favorito[]
+   //conversa                 Conversa?
+ }
 
-// model PasseioTag {
-//   passeio      Passeio @relation(fields: [passeio_id], references: [id])
-//   passeio_id   BigInt
-//   tag          Tag     @relation(fields: [tag_id], references: [id])
-//   tag_id       Int
-//   @@id([passeio_id, tag_id])
-// }
+ model PasseioTag {
+   passeio      Passeio @relation(fields: [passeio_id], references: [id])
+   passeio_id   BigInt
+   tag          Tag     @relation(fields: [tag_id], references: [id])
+   tag_id       Int
+   @@id([passeio_id, tag_id])
+ }
 
 // model DataDisponivel {
 //   id               BigInt    @id @default(autoincrement())
