@@ -543,78 +543,95 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    function handleFormSubmission(isDraft = false) {
-        const originalPublishText = publishButton.innerHTML;
-        const originalDraftText = saveDraftButton.innerHTML;
-        publishButton.disabled = true;
-        saveDraftButton.disabled = true;
+    // Em js/criar-passeio-features.js, substitua a função inteira
 
-        if (isDraft) {
-            saveDraftButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Salvando Rascunho...';
-        } else {
-            publishButton.innerHTML = editingTourId ? '<i class="fas fa-spinner fa-spin"></i> Salvando Alterações...' : '<i class="fas fa-spinner fa-spin"></i> Publicando...';
-            if (!validateStep(5)) { // Valida a última etapa (revisão), que implicitamente valida as anteriores se o usuário chegou lá.
-                                    // Ou valide todas as etapas aqui: for (let i = 1; i <= 5; i++) { if (!validateStep(i)) { /* ... */ } }
-                displayGlobalFormStatus('<i class="fas fa-exclamation-circle"></i> Por favor, corrija os erros no formulário e confirme as informações.', 'error');
-                publishButton.disabled = false; saveDraftButton.disabled = false;
-                publishButton.innerHTML = originalPublishText; saveDraftButton.innerHTML = originalDraftText;
-                // Leva para a primeira etapa com erro
-                for (let i = 1; i <= formSteps.length; i++) {
-                    if (formSteps[i-1].querySelector('.error, .field-validation-message.error.visible')) {
-                        currentStep = i;
-                        updateStepDisplay();
-                        break;
-                    }
-                }
-                return;
+async function handleFormSubmission(isDraft = false) {
+    // Pega o token para autenticação
+    const token = auth.getTokenFromStorage();
+    if (!token) {
+        alert('Sessão expirada. Por favor, faça login novamente para continuar.');
+        window.location.href = `login.html?redirect=criar-passeio.html`;
+        return;
+    }
+
+    // Validação final dos campos antes de enviar
+    if (!isDraft && !validateStep(5)) { 
+        displayGlobalFormStatus('<i class="fas fa-exclamation-circle"></i> Por favor, corrija os erros no formulário.', 'error');
+        for (let i = 1; i <= formSteps.length; i++) {
+            if (formSteps[i-1].querySelector('.error, .field-validation-message.error.visible')) {
+                currentStep = i;
+                updateStepDisplay();
+                break;
             }
         }
-
-        const formData = {
-            title: titleInput.value.trim() || (isDraft && !editingTourId ? "Rascunho Sem Título - " + new Date().toLocaleTimeString('pt-BR', {hour12:false}) : (editingTourData?.title || "Passeio Sem Título")),
-            category: categoryInput.value,
-            shortDesc: shortDescInput.value.trim(),
-            tags: [...tagsArray],
-            longDesc: longDescInput.value.trim(),
-            requirements: requirementsInput.value.trim(),
-            includedItems: Array.from(includedItemsCheckboxes).filter(cb => cb.checked).map(cb => cb.value),
-            mainImage: uploadedMainImageFile ? uploadedMainImageFile.name : (editingTourData ? editingTourData.mainImage : null),
-            galleryImages: [...new Set([...existingGalleryImageNames, ...uploadedGalleryImageFiles.map(f => f.name)])],
-            locationDetailed: locationDetailedInput.value.trim(),
-            mapsLink: mapsLinkInput.value.trim(),
-            locationInstructions: locationInstructionsInput.value.trim(),
-            duration: parseFloat(durationInput.value) || 0,
-            difficulty: difficultyInput.value,
-            price: parseFloat(priceInput.value) || 0,
-            maxParticipants: parseInt(maxParticipantsInput.value) || 1,
-            datesAvailability: [...datesAvailabilityArray],
-            cancelationPolicy: cancelationPolicyInput.value,
-            creatorId: currentUser.id,
-            status: isDraft ? 'draft' : (editingTourData?.status === 'draft' ? 'active' : (editingTourData?.status || 'active'))
-        };
-        
-        let result;
-        let successMessage = '';
-
-        if (editingTourId) {
-            result = passeiosManager.updatePasseio(editingTourId, formData);
-            successMessage = isDraft ? '<i class="fas fa-check-circle"></i> Rascunho atualizado! Redirecionando...' : '<i class="fas fa-check-circle"></i> Passeio atualizado com sucesso! Redirecionando...';
-        } else {
-            result = passeiosManager.addPasseio(formData); // Retorna o novo passeio com ID
-            successMessage = isDraft ? '<i class="fas fa-check-circle"></i> Rascunho salvo! Redirecionando...' : '<i class="fas fa-check-circle"></i> Passeio publicado! Redirecionando...';
-        }
-
-        if (result) {
-            displayGlobalFormStatus(successMessage, 'success');
-            setTimeout(() => {
-                window.location.href = 'perfil.html#meusPasseiosContent-passeiosCriadosTab';
-            }, 2500);
-        } else {
-            displayGlobalFormStatus('<i class="fas fa-exclamation-circle"></i> Ocorreu um erro ao salvar. Tente novamente.', 'error');
-            publishButton.disabled = false; saveDraftButton.disabled = false;
-            publishButton.innerHTML = originalPublishText; saveDraftButton.innerHTML = originalDraftText;
-        }
+        return;
     }
+
+    // 1. Criar um FormData para empacotar texto e arquivos juntos
+    const formData = new FormData();
+
+    // 2. Adicionar todos os campos de texto ao FormData
+    formData.append('titulo', titleInput.value.trim());
+    formData.append('categoria_id', categoryInput.value);
+    formData.append('descricao_curta', shortDescInput.value.trim());
+    formData.append('descricao_longa', longDescInput.value.trim());
+    formData.append('requisitos', requirementsInput.value.trim());
+    formData.append('localizacao_geral', document.getElementById('passeio-location').value.trim());
+    formData.append('localizacao_detalhada', locationDetailedInput.value.trim());
+    formData.append('link_Maps', mapsLinkInput.value.trim());
+    formData.append('instrucoes_local', locationInstructionsInput.value.trim());
+    formData.append('duracao_horas', parseFloat(durationInput.value) || 0);
+    formData.append('dificuldade', difficultyInput.value);
+    formData.append('preco', parseFloat(priceInput.value) || 0);
+    formData.append('max_participantes', parseInt(maxParticipantsInput.value) || 1);
+    formData.append('politica_cancelamento', cancelationPolicyInput.value);
+    formData.append('status', isDraft ? 'rascunho' : 'ativo');
+    
+    // 3. Adicionar a imagem principal (que está na variável 'uploadedMainImageFile' do seu código)
+    if (uploadedMainImageFile) {
+        formData.append('imagem_principal', uploadedMainImageFile);
+    }
+
+    // 4. Adicionar as imagens da galeria (da variável 'uploadedGalleryImageFiles')
+    uploadedGalleryImageFiles.forEach(file => {
+        formData.append('galeria_imagens', file);
+    });
+
+    // Mostrando feedback de carregamento no botão
+    publishButton.disabled = true;
+    saveDraftButton.disabled = true;
+    publishButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publicando...';
+
+    try {
+        const response = await fetch('http://localhost:3000/api/passeios', {
+            method: 'POST',
+            headers: {
+                // IMPORTANTE: NÃO definimos 'Content-Type'. O navegador faz isso
+                // automaticamente quando enviamos um FormData.
+                'Authorization': `Bearer ${token}`
+            },
+            body: formData
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Não foi possível salvar o passeio.');
+        }
+
+        const novoPasseio = await response.json();
+        displayGlobalFormStatus(`<i class="fas fa-check-circle"></i> Passeio "${novoPasseio.titulo}" salvo com sucesso! Redirecionando...`, 'success');
+        setTimeout(() => {
+            window.location.href = 'guia-painel/meus-passeios.html';
+        }, 2500);
+
+    } catch (error) {
+        // Restaura os botões em caso de erro
+        displayGlobalFormStatus(`<i class="fas fa-exclamation-circle"></i> Erro: ${error.message}`, 'error');
+        publishButton.disabled = false;
+        saveDraftButton.disabled = false;
+        publishButton.innerHTML = '<i class="fas fa-rocket"></i> Publicar Passeio';
+    }
+}
 
     form?.addEventListener('submit', (e) => { e.preventDefault(); handleFormSubmission(false); });
     saveDraftButton?.addEventListener('click', () => { handleFormSubmission(true); });
