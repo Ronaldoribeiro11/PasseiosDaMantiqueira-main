@@ -140,40 +140,7 @@ updateUserHeaderStatus();
     // ... (código existente do menu toggle, etc.) ...
 
     // Proteção para links que levam à criação de passeios
-    const protectedCreatorLinks = document.querySelectorAll('.protected-creator-link');
-    protectedCreatorLinks.forEach(link => {
-        link.addEventListener('click', function(event) {
-            event.preventDefault(); // Sempre impede a navegação padrão primeiro
-
-            const auth = new Auth(); // Assume que Auth está disponível globalmente ou é importado
-            const currentUser = auth.getCurrentUser();
-            const targetUrl = this.href; // URL original do link
-
-            if (!currentUser) {
-                alert('Você precisa estar logado para criar um passeio.');
-                const destinationPageName = new URL(targetUrl).pathname.substring(1); // Ex: 'criar-passeio.html'
-                window.location.href = `login.html?redirect=${encodeURIComponent(destinationPageName)}`;
-                return;
-            }
-
-            if (currentUser.creatorStatus === 'verified') {
-                window.location.href = targetUrl; // Permite a navegação
-            } else {
-                let message = 'Para criar um passeio, seu cadastro de criador precisa ser completado e aprovado.';
-                let redirectUrl = 'cadastro-criador.html';
-
-                if (currentUser.creatorStatus === 'pending_verification') {
-                    message = 'Seu cadastro de criador está em análise. Você será notificado quando for aprovado.';
-                    redirectUrl = 'perfil.html'; // O perfil pode mostrar o status
-                } else if (currentUser.creatorStatus === 'rejected') {
-                    message = 'Seu cadastro de criador foi rejeitado. Verifique seu perfil para mais detalhes ou contate o suporte.';
-                    redirectUrl = 'perfil.html';
-                }
-                alert(message);
-                window.location.href = redirectUrl;
-            }
-        });
-    });
+    
 });
 
 // Função para carregar conteúdo dinâmico

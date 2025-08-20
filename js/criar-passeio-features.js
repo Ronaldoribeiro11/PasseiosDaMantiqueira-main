@@ -14,6 +14,7 @@ async function verificarAcessoGuia() {
     // 1. Se não há token, não está logado. Redireciona.
     if (!token) {
         alert('Você precisa estar logado para acessar esta página.');
+        // Redireciona para login, guardando a página de destino
         window.location.href = `login.html?redirect=criar-passeio.html`;
         return;
     }
@@ -24,25 +25,30 @@ async function verificarAcessoGuia() {
             headers: { 'Authorization': `Bearer ${token}` }
         });
 
+        // Se o token for inválido/expirado, o back-end retorna erro
         if (!response.ok) {
-            // Se o token for inválido ou expirado, o back-end dará erro.
-            // Limpamos o login antigo e redirecionamos.
-            auth.logout();
+            auth.logout(); // Limpa o login antigo
+            alert('Sua sessão expirou. Por favor, faça login novamente.');
+            window.location.href = `login.html?redirect=criar-passeio.html`;
             return;
         }
 
         const usuario = await response.json();
 
-        // 3. AGORA SIM, checamos o dado FRESCO do banco de dados!
+        // 3. AQUI ESTÁ A CORREÇÃO: Verificar o campo `tipo_de_usuario`
         if (usuario.tipo_de_usuario !== 'guia') {
             alert('Acesso negado. Apenas guias podem acessar esta página.');
-            window.location.href = 'perfil.html';
+            // Redireciona para a página de perfil ou para a home
+            window.location.href = 'index.html'; 
+            return;
         }
-        // Se for um guia, a página continua a carregar normalmente.
+        
+        // Se chegou até aqui, o usuário é um guia verificado e a página pode continuar a carregar.
+        console.log('Acesso de guia verificado com sucesso.');
 
     } catch (error) {
-        console.error("Erro ao verificar perfil:", error);
-        // Redireciona em caso de erro de rede
+        console.error("Erro ao verificar o perfil do usuário:", error);
+        alert("Ocorreu um erro ao verificar suas permissões. Tente novamente mais tarde.");
         window.location.href = 'index.html';
     }
 }
@@ -576,8 +582,18 @@ verificarAcessoGuia();
     
     // Em js/criar-passeio-features.js, substitua a função inteira
 
+    // NO SEU ARQUIVO: js/criar-passeio-features.js
+
+// ... (todo o código existente acima da função handleFormSubmission permanece o mesmo)
+
+/**
+ * Lida com a submissão final do formulário, tanto para salvar como rascunho
+ * quanto para publicar o passeio.
+ * @param {boolean} isDraft - True se o botão "Salvar Rascunho" foi clicado.
+ */
+// SUBSTITUA A FUNÇÃO INTEIRA NO SEU js/criar-passeio-features.js
+
 async function handleFormSubmission(isDraft = false) {
-    // Pega o token para autenticação
     const token = auth.getTokenFromStorage();
     if (!token) {
         alert('Sessão expirada. Por favor, faça login novamente para continuar.');
@@ -585,7 +601,6 @@ async function handleFormSubmission(isDraft = false) {
         return;
     }
 
-    // Validação final dos campos antes de enviar
     if (!isDraft && !validateStep(5)) { 
         displayGlobalFormStatus('<i class="fas fa-exclamation-circle"></i> Por favor, corrija os erros no formulário.', 'error');
         for (let i = 1; i <= formSteps.length; i++) {
@@ -598,37 +613,28 @@ async function handleFormSubmission(isDraft = false) {
         return;
     }
 
-    // 1. Criar um FormData para empacotar texto e arquivos juntos
-    const formData = new FormData();
+    // --- A CORREÇÃO ESTÁ AQUI ---
+    // Agora estamos buscando o ID CORRETO: 'createPasseioForm'
+    const formElement = document.getElementById('createPasseioForm');
+    if (!formElement) {
+        console.error('Elemento do formulário #createPasseioForm não encontrado!');
+        return;
+    }
+    const formData = new FormData(formElement);
+    // --- FIM DA CORREÇÃO ---
 
-    // 2. Adicionar todos os campos de texto ao FormData
-    formData.append('titulo', titleInput.value.trim());
-    formData.append('categoria_id', categoryInput.value);
-    formData.append('descricao_curta', shortDescInput.value.trim());
-    formData.append('descricao_longa', longDescInput.value.trim());
-    formData.append('requisitos', requirementsInput.value.trim());
-    formData.append('localizacao_geral', document.getElementById('passeio-location').value.trim());
-    formData.append('localizacao_detalhada', locationDetailedInput.value.trim());
-    formData.append('link_Maps', mapsLinkInput.value.trim());
-    formData.append('instrucoes_local', locationInstructionsInput.value.trim());
-    formData.append('duracao_horas', parseFloat(durationInput.value) || 0);
-    formData.append('dificuldade', difficultyInput.value);
-    formData.append('preco', parseFloat(priceInput.value) || 0);
-    formData.append('max_participantes', parseInt(maxParticipantsInput.value) || 1);
-    formData.append('politica_cancelamento', cancelationPolicyInput.value);
-    formData.append('status', isDraft ? 'rascunho' : 'ativo');
-    
-    // 3. Adicionar a imagem principal (que está na variável 'uploadedMainImageFile' do seu código)
+
+    // Adiciona o status correto ao FormData
+    formData.append('status', isDraft ? 'rascunho' : 'pendente_aprovacao');
+
+    // Adiciona os arquivos de imagem
     if (uploadedMainImageFile) {
         formData.append('imagem_principal', uploadedMainImageFile);
     }
-
-    // 4. Adicionar as imagens da galeria (da variável 'uploadedGalleryImageFiles')
     uploadedGalleryImageFiles.forEach(file => {
         formData.append('galeria_imagens', file);
     });
 
-    // Mostrando feedback de carregamento no botão
     publishButton.disabled = true;
     saveDraftButton.disabled = true;
     publishButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Publicando...';
@@ -637,32 +643,32 @@ async function handleFormSubmission(isDraft = false) {
         const response = await fetch('http://localhost:3000/api/passeios', {
             method: 'POST',
             headers: {
-                // IMPORTANTE: NÃO definimos 'Content-Type'. O navegador faz isso
-                // automaticamente quando enviamos um FormData.
                 'Authorization': `Bearer ${token}`
             },
             body: formData
         });
 
+        const result = await response.json();
+
         if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'Não foi possível salvar o passeio.');
+            throw new Error(result.message || 'Não foi possível salvar o passeio.');
         }
 
-        const novoPasseio = await response.json();
-        displayGlobalFormStatus(`<i class="fas fa-check-circle"></i> Passeio "${novoPasseio.titulo}" salvo com sucesso! Redirecionando...`, 'success');
+        displayGlobalFormStatus(`<i class="fas fa-check-circle"></i> Passeio "${result.titulo}" salvo com sucesso! Redirecionando...`, 'success');
+        
         setTimeout(() => {
             window.location.href = 'guia-painel/meus-passeios.html';
         }, 2500);
 
     } catch (error) {
-        // Restaura os botões em caso de erro
         displayGlobalFormStatus(`<i class="fas fa-exclamation-circle"></i> Erro: ${error.message}`, 'error');
         publishButton.disabled = false;
         saveDraftButton.disabled = false;
         publishButton.innerHTML = '<i class="fas fa-rocket"></i> Publicar Passeio';
     }
 }
+
+// ... (o restante do seu código, como os event listeners dos botões, permanece o mesmo)
 
     form?.addEventListener('submit', (e) => { e.preventDefault(); handleFormSubmission(false); });
     saveDraftButton?.addEventListener('click', () => { handleFormSubmission(true); });

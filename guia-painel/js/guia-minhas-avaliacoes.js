@@ -14,9 +14,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const emptyState = document.getElementById('emptyGuideReviewsState');
     const paginationContainer = document.querySelector('.guide-reviews-pagination');
 
-    const auth = new Auth();
-    const passeiosManager = new PasseiosManager();
-    const currentUser = auth.getCurrentUser();
 
     let guideReviews = []; // Armazenará todas as avaliações dos passeios do guia
     let myPasseios = [];
