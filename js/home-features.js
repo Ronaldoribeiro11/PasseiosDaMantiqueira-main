@@ -21,9 +21,12 @@ document.addEventListener('DOMContentLoaded', function() {
         const sidebarProfileName = document.getElementById('sidebarProfileName');
         const sidebarProfileEmail = document.getElementById('sidebarProfileEmail');
         const sidebarLinkAuth = document.getElementById('sidebarLinkAuth');
+        const sidebarLinkTornarGuia = document.getElementById('sidebarLinkTornarGuia'); // NOVO: Link para se tornar guia
+        const sidebarLinkCriarPasseio = document.getElementById('sidebarLinkCriarPasseio'); // Link existente para criar passeio
         const userSpecificLinks = [
             document.getElementById('sidebarLinkMeuPerfil'),
-            document.getElementById('sidebarLinkCriarPasseio'),
+            sidebarLinkTornarGuia, // Adicionado ao array para facilitar a gestão
+            sidebarLinkCriarPasseio, // Adicionado ao array
             document.getElementById('sidebarLinkAvaliacoes'),
             document.getElementById('sidebarLinkFavoritos'),
             document.getElementById('sidebarLinkConfiguracoes')
@@ -64,10 +67,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Mostra/esconde links com base no tipo de usuário
                 userSpecificLinks.forEach(link => {
                     if (link) {
-                        // O link "Criar Passeio" só aparece para o tipo 'guia'
-                        if (link.id === 'sidebarLinkCriarPasseio') {
-                            link.style.display = user.tipo_de_usuario === 'guia' ? 'block' : 'none';
-                        } else {
+                        // Oculta todos os links primeiro
+                        link.style.display = 'none';
+
+                        // Lógica para o link "Criar Passeio"
+                        if (link.id === 'sidebarLinkCriarPasseio' && user.tipo_de_usuario === 'guia') {
+                            link.style.display = 'block';
+                        }
+                        // Lógica para o link "Tornar-se Guia"
+                        else if (link.id === 'sidebarLinkTornarGuia' && user.tipo_de_usuario === 'cliente') {
+                            link.style.display = 'block';
+                        }
+                        // Lógica para os outros links
+                        else if (link.id !== 'sidebarLinkCriarPasseio' && link.id !== 'sidebarLinkTornarGuia') {
                             link.style.display = 'block';
                         }
                     }

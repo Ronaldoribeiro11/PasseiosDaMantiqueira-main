@@ -2,10 +2,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('creatorSignupForm');
     if (!form) return;
 
+    const authInstance = new Auth();
     const stepIndicators = form.querySelectorAll('.step-indicator');
     const formSteps = form.querySelectorAll('.form-step');
     const nextStepBtns = form.querySelectorAll('[data-next-step]');
     const prevStepBtns = form.querySelectorAll('[data-prev-step]');
+
     let currentStep = 1;
 
     function updateActiveStep(targetStep) {
@@ -25,39 +27,67 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         currentStep = targetStep;
-        window.scrollTo(0, form.offsetTop - 20); // Rola para o topo do formulário
+        window.scrollTo(0, form.offsetTop - 20);
+    }
+    
+    function showFieldError(input, message) {
+        input.classList.add('error');
+        const errorElement = input.closest('.form-group').querySelector('.field-validation-message');
+        if (errorElement) {
+            errorElement.textContent = message;
+            errorElement.style.display = 'block';
+        }
+    }
+    
+    function hideFieldError(input) {
+        input.classList.remove('error');
+        const errorElement = input.closest('.form-group').querySelector('.field-validation-message');
+        if (errorElement) {
+            errorElement.textContent = '';
+            errorElement.style.display = 'none';
+        }
+    }
+
+    // Lógica para validar a etapa atual
+    function validateCurrentStep() {
+        const currentFormStep = form.querySelector(`.form-step[data-step="${currentStep}"]`);
+        let isValid = true;
+        
+        currentFormStep.querySelectorAll('input[required], textarea[required], select[required]').forEach(input => {
+            if (input.type === 'file') {
+                if (input.files.length === 0) {
+                    isValid = false;
+                    const previewer = document.getElementById(input.id + '-preview');
+                    if (previewer) previewer.classList.add('error-upload');
+                } else {
+                    const previewer = document.getElementById(input.id + '-preview');
+                    if (previewer) previewer.classList.remove('error-upload');
+                }
+            } else if (input.type === 'checkbox') {
+                if (!input.checked) {
+                    isValid = false;
+                    showFieldError(input, 'Você deve concordar com os termos.');
+                } else {
+                    hideFieldError(input);
+                }
+            } else if (!input.value.trim()) {
+                isValid = false;
+                showFieldError(input, 'Este campo é obrigatório.');
+            } else {
+                hideFieldError(input);
+            }
+        });
+        
+        return isValid;
     }
 
     nextStepBtns.forEach(button => {
         button.addEventListener('click', () => {
-            const currentFormStep = form.querySelector(`.form-step[data-step="${currentStep}"]`);
-            let isValid = true;
-            // Validação simples dos campos obrigatórios da etapa atual
-            currentFormStep.querySelectorAll('input[required], textarea[required], select[required]').forEach(input => {
-                if (!input.value.trim() && input.type !== 'file') { // Arquivos são validados de forma diferente
-                    isValid = false;
-                    input.classList.add('error'); // Você precisará de estilos para .error
-                    // Adicionar mensagem de erro perto do input se desejar
-                } else if (input.type === 'checkbox' && !input.checked) {
-                    isValid = false;
-                    input.classList.add('error');
-                    // Para o checkbox de termos, pode-se adicionar um alerta ou mensagem específica
-                } else if (input.type === 'file' && input.required && input.files.length === 0) {
-                    isValid = false;
-                    // Encontrar o .upload-preview associado e adicionar classe de erro
-                    const previewer = document.getElementById(input.id + '-preview');
-                    if (previewer) previewer.classList.add('error-upload'); // Estilo para .error-upload
+            if (validateCurrentStep()) {
+                if (currentStep < formSteps.length) {
+                    updateActiveStep(currentStep + 1);
                 }
-                else {
-                    input.classList.remove('error');
-                     const previewer = document.getElementById(input.id + '-preview');
-                    if (previewer) previewer.classList.remove('error-upload');
-                }
-            });
-
-            if (isValid && currentStep < formSteps.length) {
-                updateActiveStep(currentStep + 1);
-            } else if (!isValid) {
+            } else {
                 alert('Por favor, preencha todos os campos obrigatórios (*) antes de prosseguir.');
             }
         });
@@ -71,7 +101,30 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Preview de Upload de Arquivos (Singular)
+    // Formatação de CPF e Telefone em tempo real
+    const cpfInput = document.getElementById('creator-cpf');
+    if (cpfInput) {
+        cpfInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 3) value = value.substring(0, 3) + '.' + value.substring(3);
+            if (value.length > 7) value = value.substring(0, 7) + '.' + value.substring(7);
+            if (value.length > 11) value = value.substring(0, 11) + '-' + value.substring(11, 13);
+            e.target.value = value;
+        });
+    }
+
+    const phoneInput = document.getElementById('creator-phone');
+    if (phoneInput) {
+        phoneInput.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 0) value = '(' + value;
+            if (value.length > 3) value = value.substring(0, 3) + ') ' + value.substring(3);
+            if (value.length > 10) value = value.substring(0, 10) + '-' + value.substring(10, 14);
+            e.target.value = value;
+        });
+    }
+
+    // Preview de Upload de Arquivos
     const fileUploadPreviews = form.querySelectorAll('.upload-preview');
     fileUploadPreviews.forEach(previewLabel => {
         const inputId = previewLabel.htmlFor;
@@ -85,20 +138,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     const placeholderText = previewLabel.querySelector('.placeholder-text');
                     
                     reader.onload = function(e) {
-                        if(placeholderText) placeholderText.style.display = 'none'; // Esconde placeholder
-                        
+                        if(placeholderText) placeholderText.style.display = 'none';
                         if (file.type.startsWith('image/')) {
                             const img = document.createElement('img');
                             img.src = e.target.result;
                             img.classList.add('preview-image');
-                            previewLabel.innerHTML = ''; // Limpa qualquer conteúdo anterior
+                            previewLabel.innerHTML = '';
                             previewLabel.appendChild(img);
                         } else if (file.type === 'application/pdf') {
-                            previewLabel.innerHTML = ''; // Limpa
+                            previewLabel.innerHTML = '';
                             const icon = document.createElement('i');
                             icon.className = 'fas fa-file-pdf';
                             icon.style.fontSize = '3rem';
-                            icon.style.color = '#DE2C2C'; // Cor típica para PDF
+                            icon.style.color = '#DE2C2C';
                             
                             const fileName = document.createElement('p');
                             fileName.textContent = file.name;
@@ -108,24 +160,21 @@ document.addEventListener('DOMContentLoaded', function() {
                             previewLabel.appendChild(icon);
                             previewLabel.appendChild(fileName);
                         } else {
-                             if(placeholderText) placeholderText.style.display = 'flex'; // Mostra placeholder se não for imagem/pdf
-                             previewLabel.innerHTML = '<span class="placeholder-text"><i class="fas fa-cloud-upload-alt"></i>Arquivo não suportado</span>';
+                            if(placeholderText) placeholderText.style.display = 'flex';
+                            previewLabel.innerHTML = '<span class="placeholder-text"><i class="fas fa-cloud-upload-alt"></i>Arquivo não suportado</span>';
                         }
                     }
                     reader.readAsDataURL(file);
-                    previewLabel.classList.remove('error-upload'); // Remove erro ao selecionar arquivo
+                    previewLabel.classList.remove('error-upload');
                 }
             });
         }
     });
 
-    // Lista de arquivos para upload múltiplo (certificados)
-    const certificatesInput = document.getElementById('doc-certificates');
-    const certificateFileList = document.getElementById('certificate-file-list');
-
-    if (certificatesInput && certificateFileList) {
+    if (certificatesInput) {
         certificatesInput.addEventListener('change', function(event) {
-            certificateFileList.innerHTML = ''; // Limpa a lista anterior
+            const certificateFileList = document.getElementById('certificate-file-list');
+            certificateFileList.innerHTML = '';
             if (event.target.files.length > 0) {
                 const title = document.createElement('p');
                 title.innerHTML = '<strong>Arquivos selecionados:</strong>';
@@ -135,57 +184,63 @@ document.addEventListener('DOMContentLoaded', function() {
                     const fileItem = document.createElement('div');
                     fileItem.classList.add('file-item');
                     fileItem.textContent = file.name;
-                    // Poderia adicionar um botão de remover aqui se necessário
                     certificateFileList.appendChild(fileItem);
                 });
             }
         });
     }
 
-
-    // Simulação de Envio do Formulário
     form.addEventListener('submit', function(event) {
         event.preventDefault();
-        // Última validação antes de submeter
-        const currentFormStep = form.querySelector(`.form-step[data-step="${currentStep}"]`);
-         let isFormValid = true;
-         currentFormStep.querySelectorAll('input[required], textarea[required], select[required]').forEach(input => {
-             if (input.type === 'checkbox' && !input.checked) {
-                isFormValid = false;
-                alert('Você deve concordar com os Termos e Condições para prosseguir.');
-                input.closest('.form-group').scrollIntoView({behavior: 'smooth', block: 'center'});
-             }
-         });
-
-        if (!isFormValid) return;
-
-        // Coletar dados do formulário (Exemplo)
-        const formData = new FormData(form);
-        const data = {};
-        for (let [key, value] of formData.entries()) {
-            // Para campos de arquivo, você pode querer apenas o nome ou lidar com o objeto File
-            if (value instanceof File) {
-                data[key] = value.name; // Ou value para o objeto File completo
-            } else {
-                data[key] = value;
-            }
+        
+        if (!validateCurrentStep()) {
+            alert('Por favor, preencha todos os campos obrigatórios antes de prosseguir.');
+            return;
         }
-        console.log('Dados do Formulário de Criador:', data);
-        alert('Cadastro de criador enviado para análise! Entraremos em contato em breve.');
-        // Aqui você redirecionaria ou limparia o formulário
-        // window.location.href = 'perfil.html'; // Exemplo
-        form.reset();
-        updateActiveStep(1); // Volta para a primeira etapa
-        // Limpar previews de arquivo
-        document.querySelectorAll('.upload-preview').forEach(p => {
-            p.innerHTML = '<span class="placeholder-text"><i class="fas fa-cloud-upload-alt"></i>Clique para enviar</span>';
-        });
-        if(certificateFileList) certificateFileList.innerHTML = '';
 
+        const token = authInstance.getTokenFromStorage();
+        if (!token) {
+            alert('Sessão expirada. Por favor, faça login novamente para continuar.');
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        const payload = {
+            nome_publico: data.creatorFullname,
+            bio_publica: data.creatorExperience,
+            cpf: data.creatorCpf,
+            numero_cadastur: data.creatorCadastur,
+            tagline: 'Anfitrião de Passeios na Serra',
+        };
+
+        fetch('http://localhost:3000/api/candidatar-guia', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(err => { throw new Error(err.message || 'Erro ao enviar o formulário.'); });
+            }
+            return response.json();
+        })
+        .then(result => {
+            alert('Cadastro de criador enviado para análise! Você será redirecionado para o seu perfil.');
+            window.location.href = 'perfil.html';
+        })
+        .catch(error => {
+            console.error('Erro na submissão do formulário:', error);
+            alert(error.message);
+        });
     });
 
-    // Lógica para o menu lateral (se já não estiver em main.js)
-    const menuToggle = document.querySelector('.page-menu-toggle'); // Ou a classe que você usar
+    const menuToggle = document.querySelector('.page-menu-toggle');
     const sidebarMenu = document.getElementById('sidebarMenu');
     const menuOverlay = document.getElementById('menuOverlay');
     const closeMenuBtn = document.getElementById('closeMenuBtn');
@@ -193,7 +248,6 @@ document.addEventListener('DOMContentLoaded', function() {
     function toggleMenu() {
         if (sidebarMenu) sidebarMenu.classList.toggle('open');
         if (menuOverlay) menuOverlay.classList.toggle('active');
-        // document.body.classList.toggle('no-scroll'); // Se quiser impedir scroll do body
     }
 
     if (menuToggle) {
@@ -206,59 +260,17 @@ document.addEventListener('DOMContentLoaded', function() {
         closeMenuBtn.addEventListener('click', toggleMenu);
     }
 
-     // Adicionar estilos de erro se não existirem no seu style.css principal
     const dynamicStyles = `
         .form-control.error { border-color: #e53935 !important; }
         .upload-preview.error-upload { border-color: #e53935 !important; }
         .filter-option input[type="checkbox"].error + span { color: #e53935 !important; }
+        .field-validation-message { display:none; color:#c62828; font-size: 0.8rem; margin-top: 4px;}
+        .form-group input.error + .field-validation-message,
+        .form-group textarea.error + .field-validation-message,
+        .form-group select.error + .field-validation-message { display: block; }
     `;
     const styleSheet = document.createElement("style");
     styleSheet.type = "text/css";
     styleSheet.innerText = dynamicStyles;
     document.head.appendChild(styleSheet);
-    // Dentro do form.addEventListener('submit', function(event) { ... });
-    // Após coletar os dados em const data = {};
-
-    // Supondo que 'auth' seja uma instância global de Auth ou que você a crie aqui.
-    // Para consistência, se 'auth' não for global, crie-a:
-    const authInstance = new Auth(); // Se não houver uma instância global acessível
-    
-    const creatorDataPayload = {
-        // Mapeie os campos de 'data' para os campos do objeto do usuário em auth.js
-        cpf: data.creatorCpf,
-        birthDate: data.creatorBirthdate,
-        fullAddress: { // Exemplo de como agrupar o endereço
-            cep: data.creatorCep,
-            street: data.creatorStreet,
-            number: data.creatorNumber,
-            complement: data.creatorComplement,
-            neighborhood: data.creatorNeighborhood,
-            city: data.creatorCity,
-            state: data.creatorState
-        },
-        phone: data.creatorPhone, // Se quiser atualizar/confirmar
-        // Para arquivos, você pode armazenar os nomes, ou futuramente, URLs após upload real
-        docIdFrontName: data.docIdFront,
-        docIdBackName: data.docIdBack,
-        docProofAddressName: data.docProofAddress,
-        docSelfieName: data.docSelfie,
-        cadasturNumber: data.creatorCadastur,
-        experience: data.creatorExperience,
-        // Os próprios arquivos de certificado podem ser tratados separadamente para upload
-        agreedToCreatorTerms: data.agreeTerms === 'on', // 'on' é o valor de um checkbox marcado
-        creatorStatus: 'pending_verification' // Define o status após o envio
-    };
-
-    if (authInstance.updateCurrentUserData(creatorDataPayload)) {
-        alert('Cadastro de criador enviado para análise! Você será redirecionado para o seu perfil.');
-        // Idealmente, redirecionar para uma página que mostre o status "Em Análise"
-        window.location.href = 'perfil.html';
-    } else {
-        alert('Erro ao enviar os dados. Verifique se você está logado e tente novamente.');
-    }
-    // Não reseta o formulário ou volta a etapa, pois há redirecionamento
-    // form.reset();
-    // updateActiveStep(1); 
-    // ...
-
 });

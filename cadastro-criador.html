@@ -10,41 +10,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <script src="js/auth.js"></script> <script>
-    (function() {
-        // Esta função é auto-executável para proteger a página
-        const auth = new Auth(); // Cria uma nova instância para verificar o usuário
-        const currentUser = auth.getCurrentUser();
-
-        if (!currentUser) {
-            // Se não estiver logado, redireciona para login, guardando o destino original
-            const currentPage = window.location.pathname.split('/').pop(); // Obtém 'criar-passeio.html'
-            alert('Você precisa estar logado para criar um passeio. Redirecionando para login...');
-            window.location.href = `login.html?redirect=${encodeURIComponent(currentPage)}`;
-            throw new Error("Usuário não logado. Acesso negado."); // Para a execução de scripts
-        }
-
-        // Para fins de teste, você pode descomentar a linha abaixo e rodar no console
-        // para marcar um usuário como verificado:
-        // auth.updateCurrentUserData({ creatorStatus: 'verified' });
-        // console.log('Current user for test:', auth.getCurrentUser());
-
-
-        if (currentUser.creatorStatus !== 'verified') {
-            alert('Seu cadastro de criador ainda não foi aprovado ou não foi completado. Para criar passeios, por favor, complete seu cadastro e aguarde a aprovação. Redirecionando...');
-            // Envia para a página de cadastro de criador se ainda não tiver tentado,
-            // ou para o perfil se já estiver pendente.
-            if (currentUser.creatorStatus === 'none') {
-                window.location.href = 'cadastro-criador.html';
-            } else { // 'pending_verification' ou 'rejected'
-                window.location.href = 'perfil.html'; // O perfil pode mostrar o status
-            }
-            throw new Error("Acesso negado: perfil de criador não verificado ou pendente."); // Para a execução de scripts
-        }
-        // Se chegou aqui, o usuário está logado e é um criador verificado.
-        // O restante do HTML da página criar-passeio.html pode ser renderizado.
-        console.log('Acesso permitido a criar-passeio.html');
-    })();
+    
 </script>
     <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">
         <span></span>
@@ -310,5 +276,5 @@
         </div>
     </footer>
 
-    <script src="js/main.js"></script> <script src="js/creator-form.js"></script> </body>
+    <script src="js/main.js"></script> <script src="js/auth.js"></script><script src="js/creator-form.js"></script> </body>
 </html>

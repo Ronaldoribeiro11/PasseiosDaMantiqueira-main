@@ -100,6 +100,46 @@ app.post('/api/login', async (req, res) => {
   }
 });
 
+// Rota para um usuário se candidatar a ser guia
+app.post('/api/candidatar-guia', authMiddleware, async (req, res) => {
+  try {
+    const usuarioId = req.usuario.id;
+
+    // Apenas os campos que a rota precisa para criar o perfil
+    const { nome_publico, tagline, bio_publica, numero_cadastur } = req.body;
+
+    const perfilExistente = await prisma.perfilDeGuia.findUnique({
+      where: { usuario_id: usuarioId },
+    });
+
+    if (perfilExistente) {
+      return res.status(409).json({ message: 'Você já se candidatou para ser um guia.' });
+    }
+
+    const novoPerfil = await prisma.perfilDeGuia.create({
+      data: {
+        usuario_id: usuarioId,
+        nome_publico,
+        tagline,
+        bio_publica,
+        numero_cadastur,
+        status_verificacao: 'pendente', // Inicia como pendente de verificação
+      },
+    });
+
+    // Atualize o tipo de usuário para 'guia'
+    await prisma.usuario.update({
+      where: { id: usuarioId },
+      data: { tipo_de_usuario: 'guia' },
+    });
+
+    res.status(201).json({ message: 'Candidatura enviada com sucesso!', perfil: novoPerfil });
+  } catch (error) {
+    console.error("Erro ao processar candidatura de guia:", error);
+    res.status(500).json({ message: 'Erro interno no servidor.' });
+  }
+});
+
 // Rota de Perfil (PROTEGIDA)
 // **A CORREÇÃO ESTÁ AQUI: O middleware fica apenas nas rotas que precisam de login**
 app.get('/api/perfil', authMiddleware, async (req, res) => {
