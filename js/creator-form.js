@@ -1,14 +1,69 @@
+// js/creator-form.js
 document.addEventListener('DOMContentLoaded', function() {
+    const auth = new Auth();
+
+    // --- Autenticação e Verificação de Criador ---
+    async function verificarAcessoGuia() {
+        const token = auth.getTokenFromStorage();
+        if (!token) {
+            alert('Você precisa estar logado para acessar esta página.');
+            window.location.href = `login.html?redirect=cadastro-criador.html`;
+            return;
+        }
+
+        try {
+            const response = await fetch('http://localhost:3000/api/perfil', {
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+
+            if (!response.ok) {
+                auth.logout();
+                alert('Sua sessão expirou. Por favor, faça login novamente.');
+                window.location.href = `login.html?redirect=cadastro-criador.html`;
+                return;
+            }
+
+            const usuario = await response.json();
+            // Verifica se o usuário JÁ é um guia, se sim, redireciona para a página de criação de passeios
+            if (usuario.tipo_de_usuario === 'guia') {
+                window.location.href = 'criar-passeio.html';
+                return;
+            }
+            console.log('Acesso de cliente verificado com sucesso. Exibindo formulário de candidatura.');
+            // Carrega os dados do usuário para preencher a primeira etapa
+            loadUserData(usuario);
+
+        } catch (error) {
+            console.error("Erro ao verificar o perfil do usuário:", error);
+            alert("Ocorreu um erro ao verificar suas permissões. Tente novamente mais tarde.");
+            window.location.href = 'index.html';
+        }
+    }
+
     const form = document.getElementById('creatorSignupForm');
     if (!form) return;
 
-    const authInstance = new Auth();
     const stepIndicators = form.querySelectorAll('.step-indicator');
     const formSteps = form.querySelectorAll('.form-step');
     const nextStepBtns = form.querySelectorAll('[data-next-step]');
     const prevStepBtns = form.querySelectorAll('[data-prev-step]');
+    const submitButton = form.querySelector('button[type="submit"]');
 
     let currentStep = 1;
+
+    function loadUserData(user) {
+        document.getElementById('creator-fullname').value = user.nome_completo || '';
+        document.getElementById('creator-cpf').value = user.cpf || '';
+        document.getElementById('creator-birthdate').value = user.data_nascimento ? user.data_nascimento.split('T')[0] : '';
+        document.getElementById('creator-phone').value = user.telefone || '';
+        document.getElementById('creator-cep').value = user.endereco_cep || '';
+        document.getElementById('creator-street').value = user.endereco_logradouro || '';
+        document.getElementById('creator-number').value = user.endereco_numero || '';
+        document.getElementById('creator-complement').value = user.endereco_complemento || '';
+        document.getElementById('creator-neighborhood').value = user.endereco_bairro || '';
+        document.getElementById('creator-city').value = user.endereco_cidade || '';
+        document.getElementById('creator-state').value = user.endereco_estado || '';
+    }
 
     function updateActiveStep(targetStep) {
         formSteps.forEach(step => step.classList.remove('active'));
@@ -29,7 +84,7 @@ document.addEventListener('DOMContentLoaded', function() {
         currentStep = targetStep;
         window.scrollTo(0, form.offsetTop - 20);
     }
-    
+
     function showFieldError(input, message) {
         input.classList.add('error');
         const errorElement = input.closest('.form-group').querySelector('.field-validation-message');
@@ -38,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
             errorElement.style.display = 'block';
         }
     }
-    
+
     function hideFieldError(input) {
         input.classList.remove('error');
         const errorElement = input.closest('.form-group').querySelector('.field-validation-message');
@@ -48,13 +103,15 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Lógica para validar a etapa atual
     function validateCurrentStep() {
         const currentFormStep = form.querySelector(`.form-step[data-step="${currentStep}"]`);
         let isValid = true;
-        
-        currentFormStep.querySelectorAll('input[required], textarea[required], select[required]').forEach(input => {
+        const requiredInputs = currentFormStep.querySelectorAll('input[required], textarea[required], select[required]');
+
+        requiredInputs.forEach(input => {
+            let errorMsg = 'Este campo é obrigatório.';
             if (input.type === 'file') {
+                // A validação de arquivo é feita no evento 'change'
                 if (input.files.length === 0) {
                     isValid = false;
                     const previewer = document.getElementById(input.id + '-preview');
@@ -72,12 +129,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             } else if (!input.value.trim()) {
                 isValid = false;
-                showFieldError(input, 'Este campo é obrigatório.');
+                showFieldError(input, errorMsg);
             } else {
                 hideFieldError(input);
             }
         });
-        
+
         return isValid;
     }
 
@@ -101,7 +158,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Formatação de CPF e Telefone em tempo real
     const cpfInput = document.getElementById('creator-cpf');
     if (cpfInput) {
         cpfInput.addEventListener('input', function(e) {
@@ -123,8 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
             e.target.value = value;
         });
     }
-
-    // Preview de Upload de Arquivos
+    
     const fileUploadPreviews = form.querySelectorAll('.upload-preview');
     fileUploadPreviews.forEach(previewLabel => {
         const inputId = previewLabel.htmlFor;
@@ -171,6 +226,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
+    const certificatesInput = document.getElementById('doc-certificates');
     if (certificatesInput) {
         certificatesInput.addEventListener('change', function(event) {
             const certificateFileList = document.getElementById('certificate-file-list');
@@ -198,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
 
-        const token = authInstance.getTokenFromStorage();
+        const token = auth.getTokenFromStorage();
         if (!token) {
             alert('Sessão expirada. Por favor, faça login novamente para continuar.');
             window.location.href = 'login.html';
@@ -206,23 +262,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         const formData = new FormData(form);
-        const data = Object.fromEntries(formData.entries());
-        
-        const payload = {
-            nome_publico: data.creatorFullname,
-            bio_publica: data.creatorExperience,
-            cpf: data.creatorCpf,
-            numero_cadastur: data.creatorCadastur,
-            tagline: 'Anfitrião de Passeios na Serra',
-        };
+
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Enviando...';
 
         fetch('http://localhost:3000/api/candidatar-guia', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`
             },
-            body: JSON.stringify(payload)
+            body: formData
         })
         .then(response => {
             if (!response.ok) {
@@ -237,6 +286,8 @@ document.addEventListener('DOMContentLoaded', function() {
         .catch(error => {
             console.error('Erro na submissão do formulário:', error);
             alert(error.message);
+            submitButton.disabled = false;
+            submitButton.innerHTML = '<i class="fas fa-check-circle"></i> Enviar Cadastro para Análise';
         });
     });
 
@@ -274,3 +325,6 @@ document.addEventListener('DOMContentLoaded', function() {
     styleSheet.innerText = dynamicStyles;
     document.head.appendChild(styleSheet);
 });
+
+// Executa a verificação de acesso ao carregar a página.
+verificarAcessoGuia();
