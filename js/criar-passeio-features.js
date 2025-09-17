@@ -568,12 +568,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // SUBSTITUA A FUNÇÃO INTEIRA NO SEU js/criar-passeio-features.js
-
     async function handleFormSubmission(isDraft = false) {
         const token = auth.getTokenFromStorage();
         if (!token) {
-            displayGlobalFormStatus('Sessão expirada. Por favor, faça login novamente para continuar.', 'error');
+            displayGlobalFormStatus('Sua sessão expirou. Por favor, faça login novamente para continuar.', 'error');
             setTimeout(() => window.location.href = `login.html?redirect=criar-passeio.html`, 2500);
             return;
         }
@@ -602,7 +600,7 @@ document.addEventListener('DOMContentLoaded', function() {
         formData.append('longDesc', longDescInput.value);
         formData.append('requirements', requirementsInput.value);
         Array.from(includedItemsCheckboxes).filter(cb => cb.checked).forEach(cb => {
-            formData.append('includedItems[]', cb.value);
+            formData.append('includedItems', cb.value);
         });
 
         // Campos da Etapa 3
@@ -610,7 +608,7 @@ document.addEventListener('DOMContentLoaded', function() {
             formData.append('mainImageFile', uploadedMainImageFile);
         }
         uploadedGalleryImageFiles.forEach(file => {
-            formData.append('galleryImageFiles[]', file);
+            formData.append('galleryImageFiles', file);
         });
 
         // Campos da Etapa 4
@@ -643,10 +641,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const result = await response.json();
 
             if (!response.ok) {
+                // Se o token expirou, o middleware de auth retornará 401
+                if (response.status === 401) {
+                    throw new Error('Sua sessão expirou. Por favor, faça login novamente.');
+                }
                 throw new Error(result.message || 'Não foi possível salvar o passeio.');
             }
 
-            displayGlobalFormStatus(`<i class="fas fa-check-circle"></i> Passeio "${result.titulo}" salvo com sucesso! Redirecionando...`, 'success');
+            displayGlobalFormStatus(`<i class="fas fa-check-circle"></i> Passeio "${result.passeio.titulo}" salvo com sucesso! Redirecionando...`, 'success');
             
             setTimeout(() => {
                 window.location.href = 'guia-painel/meus-passeios.html';
@@ -654,6 +656,12 @@ document.addEventListener('DOMContentLoaded', function() {
 
         } catch (error) {
             displayGlobalFormStatus(`<i class="fas fa-exclamation-circle"></i> Erro: ${error.message}`, 'error');
+            
+            // Se o erro for de token expirado, redireciona para o login
+            if (error.message.includes('expirou')) {
+                 setTimeout(() => window.location.href = `login.html?redirect=criar-passeio.html`, 3000);
+            }
+
             publishButton.disabled = false;
             if(saveDraftButton) saveDraftButton.disabled = false;
             publishButton.innerHTML = '<i class="fas fa-rocket"></i> Publicar Passeio';

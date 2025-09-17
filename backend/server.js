@@ -188,56 +188,72 @@ app.post('/api/passeios', authMiddleware, upload.fields([
     { name: 'galleryImageFiles', maxCount: 5 },
 ]), async (req, res) => {
     try {
-        const guiaId = req.usuario.id;
+        const perfilGuia = await prisma.perfilDeGuia.findUnique({
+            where: { usuario_id: req.usuario.id }
+        });
+
+        if (!perfilGuia) {
+            return res.status(403).json({ message: 'Apenas guias podem criar passeios.' });
+        }
+        
+        const guiaId = perfilGuia.id;
+
         const {
             title, category, shortDesc, longDesc, requirements,
             locationDetailed, mapsLink, locationInstructions,
             duration, difficulty, price, maxParticipants,
-            cancelationPolicy, tags, includedItems, datesAvailability
+            cancelationPolicy, tags, includedItems, datesAvailability,
+            status
         } = req.body;
-
-        // Validação básica dos dados
+        
         if (!title || !category || !shortDesc || !longDesc || !price || !duration || !difficulty || !maxParticipants || !cancelationPolicy) {
             return res.status(400).json({ message: 'Todos os campos obrigatórios precisam ser preenchidos.' });
         }
 
-        // Converte os dados que são arrays/JSON
-        const parsedTags = tags ? tags.split(',').map(tag => tag.trim()) : [];
-        const parsedIncludedItems = includedItems ? includedItems.split(',') : [];
+        const categoriaDoPasseio = await prisma.categoria.findUnique({ where: { slug: category } });
+        if (!categoriaDoPasseio) {
+            return res.status(400).json({ message: `Categoria '${category}' inválida.` });
+        }
+
+        const parsedTags = tags ? tags.split(',').map(tag => tag.trim()).filter(t => t) : [];
+        const parsedIncludedItems = includedItems ? (Array.isArray(includedItems) ? includedItems : [includedItems]) : [];
         const parsedDatesAvailability = datesAvailability ? JSON.parse(datesAvailability) : [];
 
-        // Verifica se há arquivos
         const mainImageFile = req.files['mainImageFile'] ? req.files['mainImageFile'][0] : null;
         const galleryImageFiles = req.files['galleryImageFiles'] || [];
 
-        // Converte os dados do formulário para o formato do Prisma
         const novoPasseio = await prisma.passeio.create({
             data: {
                 guia_id: guiaId,
                 titulo: title,
-                categoria: { connect: { slug: category } }, // Usa a slug para conectar à categoria
+                categoria_id: categoriaDoPasseio.id,
                 descricao_curta: shortDesc,
                 descricao_longa: longDesc,
                 preco: parseFloat(price),
                 duracao_horas: parseFloat(duration),
                 dificuldade: difficulty,
-                localizacao_geral: req.usuario.endereco_cidade || '', // Exemplo, pode ser mais dinâmico
+                localizacao_geral: req.usuario.endereco_cidade || 'Serra da Mantiqueira',
                 localizacao_detalhada: locationDetailed,
                 link_Maps: mapsLink || null,
                 politica_cancelamento: cancelationPolicy,
-                status: 'pendente_aprovacao',
+                status: status || 'pendente_aprovacao',
                 itens_inclusos: parsedIncludedItems,
                 requisitos: requirements || null,
                 imagem_principal_url: mainImageFile ? mainImageFile.path : null,
                 galeria_imagens_urls: galleryImageFiles.map(file => file.path),
                 tags: {
-                    create: parsedTags.map(tag => ({
-                        tag: { connectOrCreate: { where: { slug: tag }, create: { nome: tag, slug: tag } } }
+                    create: parsedTags.map(tagNome => ({
+                        tag: {
+                            connectOrCreate: {
+                                where: { nome: tagNome },
+                                create: { nome: tagNome, slug: tagNome.toLowerCase().replace(/\s+/g, '-') }
+                            }
+                        }
                     }))
                 },
                 datas_disponiveis: {
                     create: parsedDatesAvailability.map(date => ({
-                        data_hora_inicio: new Date(date.date + 'T' + date.time + ':00Z'),
+                        data_hora_inicio: new Date(`${date.date}T${date.time}:00`),
                         vagas_maximas: parseInt(maxParticipants)
                     }))
                 }
@@ -253,7 +269,6 @@ app.post('/api/passeios', authMiddleware, upload.fields([
 
 
 // Rota de Perfil (PROTEGIDA)
-// **A CORREÇÃO ESTÁ AQUI: O middleware fica apenas nas rotas que precisam de login**
 app.get('/api/perfil', authMiddleware, async (req, res) => {
     try {
         const { senha_hash: _, ...perfil } = req.usuario;
