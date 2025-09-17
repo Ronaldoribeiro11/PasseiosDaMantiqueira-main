@@ -182,19 +182,23 @@ app.post('/api/candidatar-guia', authMiddleware, upload.fields([
   }
 });
 
-// Rota para um guia criar um novo passeio (PROTEGIDA)
+// Rota para um guia criar um novo passeio (PROTEGIDA E COM LOGS)
 app.post('/api/passeios', authMiddleware, upload.fields([
     { name: 'mainImageFile', maxCount: 1 },
     { name: 'galleryImageFiles', maxCount: 5 },
 ]), async (req, res) => {
+    console.log("LOG: Rota /api/passeios foi acessada.");
     try {
+        console.log("LOG: Verificando se o usuário é um guia...");
         const perfilGuia = await prisma.perfilDeGuia.findUnique({
             where: { usuario_id: req.usuario.id }
         });
 
         if (!perfilGuia) {
+            console.error("ERRO: Tentativa de criar passeio por um usuário que não é guia. ID do usuário:", req.usuario.id);
             return res.status(403).json({ message: 'Apenas guias podem criar passeios.' });
         }
+        console.log("LOG: Usuário é um guia verificado. ID do Perfil de Guia:", perfilGuia.id);
         
         const guiaId = perfilGuia.id;
 
@@ -206,14 +210,21 @@ app.post('/api/passeios', authMiddleware, upload.fields([
             status
         } = req.body;
         
+        console.log("LOG: Dados recebidos do formulário:", req.body);
+        console.log("LOG: Arquivos recebidos:", req.files);
+
         if (!title || !category || !shortDesc || !longDesc || !price || !duration || !difficulty || !maxParticipants || !cancelationPolicy) {
+            console.error("ERRO: Campos obrigatórios faltando.");
             return res.status(400).json({ message: 'Todos os campos obrigatórios precisam ser preenchidos.' });
         }
 
+        console.log(`LOG: Buscando categoria com slug: '${category}'...`);
         const categoriaDoPasseio = await prisma.categoria.findUnique({ where: { slug: category } });
         if (!categoriaDoPasseio) {
-            return res.status(400).json({ message: `Categoria '${category}' inválida.` });
+            console.error(`ERRO: Categoria com slug '${category}' não encontrada no banco de dados.`);
+            return res.status(400).json({ message: `Categoria '${category}' inválida. Verifique se o banco de dados foi populado (seeded).` });
         }
+        console.log(`LOG: Categoria encontrada: ID ${categoriaDoPasseio.id}, Nome: ${categoriaDoPasseio.nome}`);
 
         const parsedTags = tags ? tags.split(',').map(tag => tag.trim()).filter(t => t) : [];
         const parsedIncludedItems = includedItems ? (Array.isArray(includedItems) ? includedItems : [includedItems]) : [];
@@ -222,6 +233,7 @@ app.post('/api/passeios', authMiddleware, upload.fields([
         const mainImageFile = req.files['mainImageFile'] ? req.files['mainImageFile'][0] : null;
         const galleryImageFiles = req.files['galleryImageFiles'] || [];
 
+        console.log("LOG: Preparando para criar o passeio no banco de dados...");
         const novoPasseio = await prisma.passeio.create({
             data: {
                 guia_id: guiaId,
@@ -254,16 +266,18 @@ app.post('/api/passeios', authMiddleware, upload.fields([
                 datas_disponiveis: {
                     create: parsedDatesAvailability.map(date => ({
                         data_hora_inicio: new Date(`${date.date}T${date.time}:00`),
-                        vagas_maximas: parseInt(maxParticipants)
+                        vagas_maximas: parseInt(maxParticipants),
+                        vagas_ocupadas: 0 // Inicia com 0
                     }))
                 }
             }
         });
 
+        console.log("LOG: Passeio criado com sucesso no banco de dados! ID do Passeio:", novoPasseio.id);
         res.status(201).json({ message: 'Passeio criado com sucesso!', passeio: novoPasseio });
     } catch (error) {
-        console.error('Erro ao criar passeio:', error);
-        res.status(500).json({ message: 'Erro interno no servidor ao criar o passeio.' });
+        console.error('ERRO GERAL na rota /api/passeios:', error);
+        res.status(500).json({ message: 'Erro interno no servidor ao criar o passeio. Verifique os logs do console.' });
     }
 });
 
