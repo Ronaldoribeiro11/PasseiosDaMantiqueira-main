@@ -4,7 +4,7 @@ class PasseiosManager {
         this.passeios = JSON.parse(localStorage.getItem('passeios-da-serra-passeios')) || [];
         this.loadSampleData();
     }
-    
+
     // Carregar dados de exemplo se não houver passeios cadastrados
     loadSampleData() {
         if (this.passeios.length === 0) {
@@ -22,10 +22,10 @@ class PasseiosManager {
                     requirements: 'Levar água, lanche leve e usar calçado adequado para trilha.',
                     price: 120,
                     maxParticipants: 12,
-                    dates: ['2023-10-15', '2023-10-22', '2023-10-29'],
+                    dates: ['2025-10-15', '2025-10-22', '2025-10-29'],
                     cancelationPolicy: 'moderada',
-                    mainImage: 'passeio1.jpg',
-                    galleryImages: ['gallery1.jpg', 'gallery2.jpg', 'gallery3.jpg'],
+                    mainImage: 'assets/images/ImagenPasseioTrilhaPedraDoBau.jpeg',
+                    galleryImages: ['assets/images/ImagemTrilha1.jpeg', 'assets/images/ImagemTrilha2.jpg', 'assets/images/ImagemTrilha3.jpg'],
                     rating: 4.5,
                     reviews: 128,
                     creatorId: '101'
@@ -43,10 +43,10 @@ class PasseiosManager {
                     requirements: 'Trazer roupa confortável e avisar sobre restrições alimentares.',
                     price: 180,
                     maxParticipants: 8,
-                    dates: ['2023-10-20', '2023-10-27'],
+                    dates: ['2025-10-20', '2025-10-27'],
                     cancelationPolicy: 'flexivel',
-                    mainImage: 'passeio2.jpg',
-                    galleryImages: ['gallery4.jpg', 'gallery5.jpg'],
+                    mainImage: 'assets/images/ImagemTourGastronomico.jpg',
+                    galleryImages: [],
                     rating: 5,
                     reviews: 87,
                     creatorId: '102'
@@ -64,45 +64,45 @@ class PasseiosManager {
                     requirements: 'Chegar com 30 minutos de antecedência no ponto de encontro.',
                     price: 90,
                     maxParticipants: 20,
-                    dates: ['2023-10-18', '2023-10-25'],
+                    dates: ['2025-10-18', '2025-10-25'],
                     cancelationPolicy: 'rigorosa',
-                    mainImage: 'passeio3.jpg',
-                    galleryImages: ['gallery6.jpg'],
+                    mainImage: 'assets/images/ImagemPasseioTremPasseiosDaSerra.jpg',
+                    galleryImages: [],
                     rating: 4.8,
                     reviews: 215,
                     creatorId: '103'
                 }
             ];
-            
+
             this.savePasseios();
         }
     }
-    
+
     // Salvar passeios no localStorage
     savePasseios() {
         localStorage.setItem('passeios-da-serra-passeios', JSON.stringify(this.passeios));
     }
-    
+
     // Obter todos os passeios
     getAllPasseios() {
         return this.passeios;
     }
-    
+
     // Obter passeio por ID
     getPasseioById(id) {
         return this.passeios.find(passeio => passeio.id === id);
     }
-    
+
     // Obter passeios por categoria
     getPasseiosByCategory(category) {
         return this.passeios.filter(passeio => passeio.category === category);
     }
-    
+
     // Obter passeios criados por um usuário
     getPasseiosByUser(userId) {
         return this.passeios.filter(passeio => passeio.creatorId === userId);
     }
-    
+
     // Adicionar novo passeio
     addPasseio(passeioData) {
         const newPasseio = {
@@ -111,85 +111,85 @@ class PasseiosManager {
             reviews: 0,
             ...passeioData
         };
-        
+
         this.passeios.push(newPasseio);
         this.savePasseios();
         return newPasseio;
     }
-    
+
     // Atualizar passeio existente
     updatePasseio(id, updatedData) {
         const passeioIndex = this.passeios.findIndex(passeio => passeio.id === id);
-        
+
         if (passeioIndex !== -1) {
             this.passeios[passeioIndex] = {
                 ...this.passeios[passeioIndex],
                 ...updatedData
             };
-            
+
             this.savePasseios();
             return this.passeios[passeioIndex];
         }
-        
+
         return null;
     }
-    
+
     // Remover passeio
     removePasseio(id) {
         this.passeios = this.passeios.filter(passeio => passeio.id !== id);
         this.savePasseios();
     }
-    
+
     // Adicionar avaliação a um passeio
     addReview(passeioId, reviewData) {
         const passeio = this.getPasseioById(passeioId);
-        
+
         if (passeio) {
             // Simular cálculo da nova avaliação
             const newRating = ((passeio.rating * passeio.reviews) + reviewData.rating) / (passeio.reviews + 1);
-            
+
             passeio.rating = parseFloat(newRating.toFixed(1));
             passeio.reviews += 1;
-            
+
             this.savePasseios();
             return passeio;
         }
-        
+
         return null;
     }
-    
+
     // Filtrar passeios
     filterPasseios(filters) {
         return this.passeios.filter(passeio => {
             // Filtrar por categoria
-            if (filters.category && passeio.category !== filters.category) {
+            if (filters.category && filters.category.length > 0 && !filters.category.includes(passeio.category)) {
                 return false;
             }
-            
+
             // Filtrar por preço máximo
             if (filters.maxPrice && passeio.price > filters.maxPrice) {
                 return false;
             }
-            
+
             // Filtrar por avaliação mínima
             if (filters.minRating && passeio.rating < filters.minRating) {
                 return false;
             }
-            
+
             // Filtrar por data
             if (filters.date) {
                 const hasDate = passeio.dates.some(d => d === filters.date);
                 if (!hasDate) return false;
             }
-            
+
             return true;
         });
     }
-    
+
     // Ordenar passeios
     sortPasseios(passeios, sortBy) {
         const sorted = [...passeios];
-        
+
         switch (sortBy) {
             case 'price-asc':
                 sorted.sort((a, b) => a.price - b.price);
@@ -207,7 +207,7 @@ class PasseiosManager {
                 // Poderia usar algum algoritmo de relevância mais complexo
                 sorted.sort((a, b) => b.rating - a.rating);
         }
-        
+
         return sorted;
     }
 }
@@ -219,31 +219,31 @@ const passeiosManager = new PasseiosManager();
 function loadPasseios() {
     const passeiosContainer = document.querySelector('.results-grid');
     if (!passeiosContainer) return;
-    
+
     // Obter filtros da URL ou usar padrões
     const urlParams = new URLSearchParams(window.location.search);
     const filters = {
-        category: urlParams.get('category'),
+        category: urlParams.getAll('category'), // Usar getAll para múltiplas categorias
         maxPrice: urlParams.get('maxPrice') || 500,
         minRating: urlParams.get('minRating') || 0,
         date: urlParams.get('date')
     };
-    
+
     const sortBy = urlParams.get('sort') || 'relevance';
-    
+
     // Filtrar e ordenar passeios
     let passeios = passeiosManager.filterPasseios(filters);
     passeios = passeiosManager.sortPasseios(passeios, sortBy);
-    
+
     // Atualizar contador de resultados
     const resultsCount = document.getElementById('results-number');
     if (resultsCount) {
         resultsCount.textContent = passeios.length;
     }
-    
+
     // Limpar resultados anteriores
     passeiosContainer.innerHTML = '';
-    
+
     // Adicionar passeios filtrados
     if (passeios.length === 0) {
         passeiosContainer.innerHTML = `
@@ -254,7 +254,7 @@ function loadPasseios() {
                 <button class="btn btn-secondary" id="reset-filters-btn">Limpar Filtros</button>
             </div>
         `;
-        
+
         document.getElementById('reset-filters-btn').addEventListener('click', function() {
             window.location.href = 'pesquisa.html';
         });
@@ -263,11 +263,11 @@ function loadPasseios() {
             const passeioCard = document.createElement('div');
             passeioCard.className = 'passeio-card card-zoom animate-on-scroll';
             passeioCard.setAttribute('data-animation', 'slideUp');
-            
+
             // Determinar badge conforme categoria
             let badgeText = '';
             let badgeClass = '';
-            
+
             switch(passeio.category) {
                 case 'aventura':
                     badgeText = 'Aventura';
@@ -285,9 +285,9 @@ function loadPasseios() {
                     badgeText = 'Família';
                     break;
             }
-            
+
             passeioCard.innerHTML = `
-                <div class="card-image" style="background-image: url('images/${passeio.mainImage}')">
+                <div class="card-image" style="background-image: url('${passeio.mainImage}')">
                     ${badgeText ? `<span class="card-badge">${badgeText}</span>` : ''}
                 </div>
                 <div class="card-content">
@@ -309,11 +309,11 @@ function loadPasseios() {
                     </div>
                 </div>
             `;
-            
+
             passeiosContainer.appendChild(passeioCard);
         });
     }
-    
+
     // Atualizar estrelas de avaliação
     updateStarsRating();
 }
@@ -324,7 +324,7 @@ function updateStarsRating() {
         const rating = parseFloat(starContainer.getAttribute('data-rating'));
         const stars = starContainer.querySelector('span');
         const starPercentage = (rating / 5) * 100;
-        
+
         stars.style.width = `${starPercentage}%`;
     });
 }
@@ -333,53 +333,53 @@ function updateStarsRating() {
 function loadPasseioDetails() {
     const urlParams = new URLSearchParams(window.location.search);
     const passeioId = urlParams.get('id');
-    
+
     if (!passeioId) return;
-    
+
     const passeio = passeiosManager.getPasseioById(passeioId);
     if (!passeio) {
         // Passeio não encontrado, redirecionar ou mostrar mensagem
         window.location.href = 'pesquisa.html';
         return;
     }
-    
+
     // Preencher os dados do passeio na página
     document.title = `${passeio.title} - Passeios da Serra`;
-    
+
     // Hero section
     const heroSection = document.querySelector('.passeio-hero');
     if (heroSection) {
-        heroSection.querySelector('.hero-image').style.backgroundImage = `url('images/${passeio.mainImage}')`;
+        heroSection.querySelector('.hero-image').style.backgroundImage = `url('${passeio.mainImage}')`;
         heroSection.querySelector('h1').textContent = passeio.title;
-        
+
         const ratingElement = heroSection.querySelector('.rating');
         ratingElement.querySelector('.stars').setAttribute('data-rating', passeio.rating);
         ratingElement.querySelector('.rating-text').textContent = `${passeio.rating} (${passeio.reviews} avaliações)`;
-        
+
         heroSection.querySelector('.location span').textContent = passeio.location;
     }
-    
+
     // Sobre o passeio
     const aboutSection = document.querySelector('.passeio-section');
     if (aboutSection) {
         aboutSection.querySelector('p').textContent = passeio.longDesc;
-        
+
         // Destaques podem ser extraídos de partes específicas da descrição ou adicionados como campo separado
     }
-    
+
     // Galeria de imagens
     const gallerySection = document.querySelector('.passeio-gallery');
     if (gallerySection && passeio.galleryImages) {
         gallerySection.innerHTML = '';
-        
+
         passeio.galleryImages.forEach(image => {
             const galleryItem = document.createElement('div');
             galleryItem.className = 'gallery-item';
-            galleryItem.style.backgroundImage = `url('images/${image}')`;
+            galleryItem.style.backgroundImage = `url('${image}')`;
             gallerySection.appendChild(galleryItem);
         });
     }
-    
+
     // Informações detalhadas
     const infoGrid = document.querySelector('.info-grid');
     if (infoGrid) {
@@ -391,7 +391,7 @@ function loadPasseioDetails() {
                     <p>${passeio.duration} horas</p>
                 </div>
             </div>
-            
+
             <div class="info-item">
                 <i class="fas fa-users"></i>
                 <div>
@@ -399,7 +399,7 @@ function loadPasseioDetails() {
                     <p>Máximo de ${passeio.maxParticipants} pessoas</p>
                 </div>
             </div>
-            
+
             <div class="info-item">
                 <i class="fas fa-language"></i>
                 <div>
@@ -407,7 +407,7 @@ function loadPasseioDetails() {
                     <p>Português</p>
                 </div>
             </div>
-            
+
             <div class="info-item">
                 <i class="fas fa-utensils"></i>
                 <div>
@@ -415,7 +415,7 @@ function loadPasseioDetails() {
                     <p>${passeio.includedItems.includes('refeicoes') ? 'Incluídas' : 'Não incluídas'}</p>
                 </div>
             </div>
-            
+
             <div class="info-item">
                 <i class="fas fa-briefcase-medical"></i>
                 <div>
@@ -423,7 +423,7 @@ function loadPasseioDetails() {
                     <p>${passeio.category === 'aventura' ? 'Equipamentos certificados e guias treinados' : 'Guias treinados'}</p>
                 </div>
             </div>
-            
+
             <div class="info-item">
                 <i class="fas fa-child"></i>
                 <div>
@@ -433,15 +433,15 @@ function loadPasseioDetails() {
             </div>
         `;
     }
-    
+
     // Card de reserva
     const bookingCard = document.querySelector('.booking-card');
     if (bookingCard) {
         bookingCard.querySelector('.price').textContent = `R$ ${passeio.price.toFixed(2)}`;
-        
+
         const datesSelect = bookingCard.querySelector('#booking-date');
         datesSelect.innerHTML = '<option value="">Selecione uma data</option>';
-        
+
         passeio.dates.forEach(date => {
             const option = document.createElement('option');
             option.value = date;
@@ -449,7 +449,7 @@ function loadPasseioDetails() {
             datesSelect.appendChild(option);
         });
     }
-    
+
     // Atualizar estrelas de avaliação
     updateStarsRating();
 }
@@ -464,12 +464,12 @@ function formatDate(dateString) {
 function loadUserPasseios(userId) {
     const passeios = passeiosManager.getPasseiosByUser(userId);
     const passeiosContainer = document.querySelector('.tab-content[data-tab="created"]');
-    
+
     if (!passeiosContainer) return;
-    
+
     // Limpar conteúdo existente
     passeiosContainer.innerHTML = '';
-    
+
     if (passeios.length === 0) {
         passeiosContainer.innerHTML = `
             <div class="empty-state">
@@ -482,10 +482,10 @@ function loadUserPasseios(userId) {
         passeios.forEach(passeio => {
             const passeioItem = document.createElement('div');
             passeioItem.className = 'passeio-item';
-            
+
             passeioItem.innerHTML = `
                 <div class="passeio-image">
-                    <img src="images/${passeio.mainImage}" alt="${passeio.title}">
+                    <img src="${passeio.mainImage}" alt="${passeio.title}">
                 </div>
                 <div class="passeio-details">
                     <h3>${passeio.title}</h3>
@@ -500,7 +500,7 @@ function loadUserPasseios(userId) {
                     </div>
                 </div>
             `;
-            
+
             passeiosContainer.appendChild(passeioItem);
         });
     }
@@ -512,20 +512,20 @@ document.addEventListener('DOMContentLoaded', function() {
     if (document.querySelector('.search-results')) {
         loadPasseios();
     }
-    
+
     // Carregar detalhes do passeio na página individual
     if (document.querySelector('.passeio-detail')) {
         loadPasseioDetails();
     }
-    
+
     // Carregar passeios do usuário no perfil
     const auth = new Auth();
     const currentUser = auth.getCurrentUser();
-    
+
     if (currentUser && document.querySelector('.profile-content')) {
         loadUserPasseios(currentUser.id);
     }
-    
+
     // Configurar filtros na página de pesquisa
     const filterForm = document.querySelector('.search-filters');
     if (filterForm) {
@@ -535,7 +535,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // clicar em "Aplicar Filtros"
         });
     }
-    
+
     // Configurar ordenação na página de pesquisa
     const sortSelect = document.getElementById('sort-by');
     if (sortSelect) {

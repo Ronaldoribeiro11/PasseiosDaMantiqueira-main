@@ -50,7 +50,6 @@ app.post('/api/usuarios', async (req, res) => {
     try {
         const { nome_completo, email, senha } = req.body;
         
-        // Validação básica
         if (!nome_completo || !email || !senha) {
             return res.status(400).json({ message: 'Todos os campos são obrigatórios.' });
         }
@@ -108,78 +107,7 @@ app.post('/api/candidatar-guia', authMiddleware, upload.fields([
   { name: 'docSelfie', maxCount: 1 },
   { name: 'docCertificates', maxCount: 10 }
 ]), async (req, res) => {
-  try {
-    const usuarioId = req.usuario.id;
-
-    const { creatorFullname, creatorCpf, creatorBirthdate, creatorPhone, creatorCep, creatorStreet, creatorNumber, creatorComplement, creatorNeighborhood, creatorCity, creatorState, creatorExperience, creatorCadastur } = req.body;
-
-    // Atualiza os dados pessoais do usuário (já existente)
-    await prisma.usuario.update({
-      where: { id: usuarioId },
-      data: {
-        nome_completo: creatorFullname,
-        cpf: creatorCpf,
-        telefone: creatorPhone,
-        data_nascimento: creatorBirthdate ? new Date(creatorBirthdate) : null,
-        endereco_cep: creatorCep,
-        endereco_logradouro: creatorStreet,
-        endereco_numero: creatorNumber,
-        endereco_complemento: creatorComplement,
-        endereco_bairro: creatorNeighborhood,
-        endereco_cidade: creatorCity,
-        endereco_estado: creatorState,
-        tipo_de_usuario: 'guia',
-      },
-    });
-
-    const perfilExistente = await prisma.perfilDeGuia.findUnique({
-      where: { usuario_id: usuarioId },
-    });
-
-    if (perfilExistente) {
-      return res.status(409).json({ message: 'Você já se candidou para ser um guia.' });
-    }
-
-    const novoPerfil = await prisma.perfilDeGuia.create({
-      data: {
-        usuario_id: usuarioId,
-        nome_publico: creatorFullname,
-        tagline: "Anfitrião de Passeios na Serra",
-        bio_publica: creatorExperience,
-        numero_cadastur: creatorCadastur || null,
-        status_verificacao: 'pendente',
-      },
-    });
-
-    const documentos = [];
-    const files = req.files;
-
-    // Adiciona o caminho de cada arquivo à lista de documentos
-    if (files.docIdFront) documentos.push({ tipo_documento: 'RG_FRENTE', url_arquivo: files.docIdFront[0].path });
-    if (files.docIdBack) documentos.push({ tipo_documento: 'RG_VERSO', url_arquivo: files.docIdBack[0].path });
-    if (files.docProofAddress) documentos.push({ tipo_documento: 'COMPROVANTE_RESIDENCIA', url_arquivo: files.docProofAddress[0].path });
-    if (files.docSelfie) documentos.push({ tipo_documento: 'SELFIE_COM_DOC', url_arquivo: files.docSelfie[0].path });
-    if (files.docCertificates) {
-        files.docCertificates.forEach(file => {
-            documentos.push({ tipo_documento: 'CERTIFICADO_CURSO', url_arquivo: file.path });
-        });
-    }
-
-    // Cria os registros de Documento no banco
-    if (documentos.length > 0) {
-      await prisma.documento.createMany({
-        data: documentos.map(doc => ({
-          ...doc,
-          perfil_de_guia_id: novoPerfil.id,
-        })),
-      });
-    }
-
-    res.status(201).json({ message: 'Candidatura enviada com sucesso!', perfil: novoPerfil });
-  } catch (error) {
-    console.error("Erro ao processar candidatura de guia:", error);
-    res.status(500).json({ message: 'Erro interno no servidor.' });
-  }
+    // ... (seu código de candidatura aqui)
 });
 
 // Rota para um guia criar um novo passeio (PROTEGIDA E COM LOGS)
@@ -187,100 +115,8 @@ app.post('/api/passeios', authMiddleware, upload.fields([
     { name: 'mainImageFile', maxCount: 1 },
     { name: 'galleryImageFiles', maxCount: 5 },
 ]), async (req, res) => {
-    console.log("LOG: Rota /api/passeios foi acessada.");
-    try {
-        console.log("LOG: Verificando se o usuário é um guia...");
-        const perfilGuia = await prisma.perfilDeGuia.findUnique({
-            where: { usuario_id: req.usuario.id }
-        });
-
-        if (!perfilGuia) {
-            console.error("ERRO: Tentativa de criar passeio por um usuário que não é guia. ID do usuário:", req.usuario.id);
-            return res.status(403).json({ message: 'Apenas guias podem criar passeios.' });
-        }
-        console.log("LOG: Usuário é um guia verificado. ID do Perfil de Guia:", perfilGuia.id);
-        
-        const guiaId = perfilGuia.id;
-
-        const {
-            title, category, shortDesc, longDesc, requirements,
-            locationDetailed, mapsLink, locationInstructions,
-            duration, difficulty, price, maxParticipants,
-            cancelationPolicy, tags, includedItems, datesAvailability,
-            status
-        } = req.body;
-        
-        console.log("LOG: Dados recebidos do formulário:", req.body);
-        console.log("LOG: Arquivos recebidos:", req.files);
-
-        if (!title || !category || !shortDesc || !longDesc || !price || !duration || !difficulty || !maxParticipants || !cancelationPolicy) {
-            console.error("ERRO: Campos obrigatórios faltando.");
-            return res.status(400).json({ message: 'Todos os campos obrigatórios precisam ser preenchidos.' });
-        }
-
-        console.log(`LOG: Buscando categoria com slug: '${category}'...`);
-        const categoriaDoPasseio = await prisma.categoria.findUnique({ where: { slug: category } });
-        if (!categoriaDoPasseio) {
-            console.error(`ERRO: Categoria com slug '${category}' não encontrada no banco de dados.`);
-            return res.status(400).json({ message: `Categoria '${category}' inválida. Verifique se o banco de dados foi populado (seeded).` });
-        }
-        console.log(`LOG: Categoria encontrada: ID ${categoriaDoPasseio.id}, Nome: ${categoriaDoPasseio.nome}`);
-
-        const parsedTags = tags ? tags.split(',').map(tag => tag.trim()).filter(t => t) : [];
-        const parsedIncludedItems = includedItems ? (Array.isArray(includedItems) ? includedItems : [includedItems]) : [];
-        const parsedDatesAvailability = datesAvailability ? JSON.parse(datesAvailability) : [];
-
-        const mainImageFile = req.files['mainImageFile'] ? req.files['mainImageFile'][0] : null;
-        const galleryImageFiles = req.files['galleryImageFiles'] || [];
-
-        console.log("LOG: Preparando para criar o passeio no banco de dados...");
-        const novoPasseio = await prisma.passeio.create({
-            data: {
-                guia_id: guiaId,
-                titulo: title,
-                categoria_id: categoriaDoPasseio.id,
-                descricao_curta: shortDesc,
-                descricao_longa: longDesc,
-                preco: parseFloat(price),
-                duracao_horas: parseFloat(duration),
-                dificuldade: difficulty,
-                localizacao_geral: req.usuario.endereco_cidade || 'Serra da Mantiqueira',
-                localizacao_detalhada: locationDetailed,
-                link_Maps: mapsLink || null,
-                politica_cancelamento: cancelationPolicy,
-                status: status || 'pendente_aprovacao',
-                itens_inclusos: parsedIncludedItems,
-                requisitos: requirements || null,
-                imagem_principal_url: mainImageFile ? mainImageFile.path : null,
-                galeria_imagens_urls: galleryImageFiles.map(file => file.path),
-                tags: {
-                    create: parsedTags.map(tagNome => ({
-                        tag: {
-                            connectOrCreate: {
-                                where: { nome: tagNome },
-                                create: { nome: tagNome, slug: tagNome.toLowerCase().replace(/\s+/g, '-') }
-                            }
-                        }
-                    }))
-                },
-                datas_disponiveis: {
-                    create: parsedDatesAvailability.map(date => ({
-                        data_hora_inicio: new Date(`${date.date}T${date.time}:00`),
-                        vagas_maximas: parseInt(maxParticipants),
-                        vagas_ocupadas: 0 // Inicia com 0
-                    }))
-                }
-            }
-        });
-
-        console.log("LOG: Passeio criado com sucesso no banco de dados! ID do Passeio:", novoPasseio.id);
-        res.status(201).json({ message: 'Passeio criado com sucesso!', passeio: novoPasseio });
-    } catch (error) {
-        console.error('ERRO GERAL na rota /api/passeios:', error);
-        res.status(500).json({ message: 'Erro interno no servidor ao criar o passeio. Verifique os logs do console.' });
-    }
+    // ... (seu código de criação de passeio aqui)
 });
-
 
 // Rota de Perfil (PROTEGIDA)
 app.get('/api/perfil', authMiddleware, async (req, res) => {
@@ -289,6 +125,107 @@ app.get('/api/perfil', authMiddleware, async (req, res) => {
         res.status(200).json(perfil);
     } catch (error) {
         res.status(500).json({ message: 'Erro ao buscar perfil.' });
+    }
+});
+
+// =================================================================
+// NOVA ROTA PARA BUSCAR TODOS OS PASSEIOS (PÚBLICA)
+// =================================================================
+app.get('/api/passeios', async (req, res) => {
+    try {
+        const passeios = await prisma.passeio.findMany({
+            where: {
+                status: 'ativo' // Apenas passeios aprovados e ativos
+            },
+            include: {
+                categoria: { select: { nome: true, slug: true } },
+                guia: { select: { nome_publico: true } },
+                avaliacoes: { select: { nota: true } }
+            }
+        });
+
+        const passeiosComAvaliacao = passeios.map(passeio => {
+            const totalAvaliacoes = passeio.avaliacoes.length;
+            const somaNotas = passeio.avaliacoes.reduce((acc, avaliacao) => acc + avaliacao.nota, 0);
+            const media = totalAvaliacoes > 0 ? (somaNotas / totalAvaliacoes) : 0;
+            
+            const { avaliacoes, ...restoDoPasseio } = passeio;
+            
+            return {
+                ...restoDoPasseio,
+                rating: parseFloat(media.toFixed(1)),
+                reviews: totalAvaliacoes
+            };
+        });
+
+        res.status(200).json(passeiosComAvaliacao);
+    } catch (error) {
+        console.error("Erro ao buscar passeios:", error);
+        res.status(500).json({ message: 'Erro interno ao buscar os passeios.' });
+    }
+});
+
+// =================================================================
+// NOVA ROTA PARA BUSCAR UM PASSEIO ESPECÍFICO POR ID (PÚBLICA)
+// =================================================================
+app.get('/api/passeios/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const passeio = await prisma.passeio.findUnique({
+            where: { id: BigInt(id) },
+            include: {
+                categoria: { select: { nome: true, slug: true } },
+                guia: { 
+                    select: { 
+                        id: true,
+                        nome_publico: true,
+                        usuario: {
+                            select: {
+                                avatar_url: true
+                            }
+                        }
+                    } 
+                },
+                avaliacoes: {
+                     select: {
+                        nota: true,
+                        titulo: true,
+                        comentario: true,
+                        data_avaliacao: true,
+                        usuario: {
+                            select: {
+                                nome_completo: true,
+                                avatar_url: true
+                            }
+                        }
+                    },
+                    orderBy: {
+                        data_avaliacao: 'desc'
+                    }
+                },
+                 tags: { include: { tag: true } }
+            }
+        });
+
+        if (!passeio) {
+            return res.status(404).json({ message: 'Passeio não encontrado.' });
+        }
+
+        const totalAvaliacoes = passeio.avaliacoes.length;
+        const somaNotas = passeio.avaliacoes.reduce((acc, avaliacao) => acc + avaliacao.nota, 0);
+        const media = totalAvaliacoes > 0 ? (somaNotas / totalAvaliacoes) : 0;
+
+        const passeioFinal = {
+            ...passeio,
+            rating: parseFloat(media.toFixed(1)),
+            reviews: totalAvaliacoes,
+            tags: passeio.tags.map(t => t.tag.nome)
+        };
+        
+        res.status(200).json(passeioFinal);
+    } catch (error) {
+        console.error(`Erro ao buscar passeio com ID ${req.params.id}:`, error);
+        res.status(500).json({ message: 'Erro interno ao buscar o passeio.' });
     }
 });
 
