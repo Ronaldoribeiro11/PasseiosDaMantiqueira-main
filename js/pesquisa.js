@@ -30,6 +30,9 @@ document.addEventListener('DOMContentLoaded', function() {
         const rating = tour.rating || 0;
         const reviews = tour.reviews || 0;
         
+        // --- CORREÇÃO APLICADA AQUI ---
+        // Se a imagem_principal_url existir, montamos a URL completa.
+        // Caso contrário, usamos uma imagem placeholder.
         const imageUrl = tour.imagem_principal_url 
             ? `http://localhost:3000/${tour.imagem_principal_url.replace(/\\/g, '/')}`
             : 'assets/images/placeholder-passeio.jpg';
@@ -87,6 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 filteredTours.sort((a, b) => parseFloat(b.preco) - parseFloat(a.preco));
                 break;
             case 'rating':
+            default: // Trata 'relevance' e qualquer outro caso como default
                 filteredTours.sort((a, b) => (b.rating || 0) - (a.rating || 0));
                 break;
         }

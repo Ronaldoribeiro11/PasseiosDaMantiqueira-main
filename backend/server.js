@@ -129,13 +129,18 @@ app.get('/api/perfil', authMiddleware, async (req, res) => {
 });
 
 // =================================================================
-// NOVA ROTA PARA BUSCAR TODOS OS PASSEIOS (PÚBLICA)
+// NOVA ROTA PARA BUSCAR TODOS OS PASSEIOS (PÚBLICA) - CORRIGIDA
 // =================================================================
 app.get('/api/passeios', async (req, res) => {
     try {
         const passeios = await prisma.passeio.findMany({
             where: {
-                status: 'ativo' // Apenas passeios aprovados e ativos
+                // CORREÇÃO: Busca por status 'ativo' OU 'pendente_aprovacao'
+                // Em produção, você usaria apenas 'ativo'.
+                // Para desenvolvimento, isso permite que passeios recém-criados apareçam.
+                status: {
+                    in: ['ativo', 'pendente_aprovacao']
+                }
             },
             include: {
                 categoria: { select: { nome: true, slug: true } },
