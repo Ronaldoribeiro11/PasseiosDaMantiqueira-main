@@ -14,15 +14,7 @@ const multer = require('multer');
 const path = require('path');
 
 // 3. CONFIGURAÇÃO DO MULTER (UPLOAD DE ARQUIVOS)
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
-});
-const upload = multer({ storage: storage });
+
 
 // 4. INICIALIZAÇÃO
 const app = express();
@@ -110,12 +102,134 @@ app.post('/api/candidatar-guia', authMiddleware, upload.fields([
     // ... (código de candidatura aqui)
 });
 
+// Garante que o diretório de uploads exista
+const uploadDir = 'uploads/';
+if (!fs.existsSync(uploadDir)){
+    fs.mkdirSync(uploadDir);
+}
+
+// ... (configuração do Multer e outras rotas) ...
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage: storage });
+
 // Rota para um guia criar um novo passeio (PROTEGIDA E COM LOGS)
 app.post('/api/passeios', authMiddleware, upload.fields([
     { name: 'mainImageFile', maxCount: 1 },
     { name: 'galleryImageFiles', maxCount: 5 },
 ]), async (req, res) => {
-    // ... (código de criação de passeio aqui)
+    try {
+        const guia = await prisma.perfilDeGuia.findUnique({
+            where: { usuario_id: req.usuario.id }
+        });
+
+        if (!guia) {
+            return res.status(403).json({ message: 'Acesso negado. Perfil de guia não encontrado.' });
+        }
+
+        const {
+            title, category, shortDesc, tags, longDesc, requirements,
+            locationDetailed, mapsLink, locationInstructions, duration,
+            difficulty, price, maxParticipants, cancelationPolicy,
+            status, datesAvailability
+        } = req.body;
+
+        const includedItems = req.body.includedItems ? (Array.isArray(req.body.includedItems) ? req.body.includedItems : [req.body.includedItems]) : [];
+
+        // 1. Processar Categoria (encontrar o ID da categoria pelo slug)
+        const categoriaPasseio = await prisma.categoria.findUnique({
+            where: { slug: category }
+        });
+        if (!categoriaPasseio) {
+            return res.status(400).json({ message: 'Categoria inválida.' });
+        }
+
+        // 2. Processar Imagens
+        let imagemPrincipalUrl = null;
+        if (req.files && req.files.mainImageFile) {
+            imagemPrincipalUrl = req.files.mainImageFile[0].path;
+        }
+
+        let galeriaImagensUrls = [];
+        if (req.files && req.files.galleryImageFiles) {
+            galeriaImagensUrls = req.files.galleryImageFiles.map(file => file.path);
+        }
+        
+        // 3. Criar Passeio no Banco de Dados
+        const novoPasseio = await prisma.passeio.create({
+            data: {
+                guia_id: guia.id,
+                categoria_id: categoriaPasseio.id,
+                titulo: title,
+                descricao_curta: shortDesc,
+                descricao_longa: longDesc,
+                preco: parseFloat(price),
+                duracao_horas: parseFloat(duration),
+                dificuldade: dificuldade,
+                localizacao_geral: locationDetailed.split(',')[0], // Pega a primeira parte como geral
+                localizacao_detalhada: locationDetailed,
+                link_Maps: mapsLink || null,
+                politica_cancelamento: cancelationPolicy,
+                status: status, // 'rascunho' ou 'pendente_aprovacao'
+                itens_inclusos: includedItems,
+                requisitos: requirements || null,
+                imagem_principal_url: imagemPrincipalUrl,
+                galeria_imagens_urls: galeriaImagensUrls,
+            }
+        });
+
+        // 4. (Opcional) Processar e associar Tags
+        if (tags && tags.length > 0) {
+            const tagsArray = tags.split(',');
+            for (const tagName of tagsArray) {
+                const slug = tagName.trim().toLowerCase().replace(/\s+/g, '-');
+                const tag = await prisma.tag.upsert({
+                    where: { slug: slug },
+                    update: {},
+                    create: { nome: tagName.trim(), slug: slug }
+                });
+                await prisma.passeioTag.create({
+                    data: {
+                        passeio_id: novoPasseio.id,
+                        tag_id: tag.id
+                    }
+                });
+            }
+        }
+
+        // 5. Processar Datas de Disponibilidade
+        if (datesAvailability) {
+            const dates = JSON.parse(datesAvailability);
+            for (const item of dates) {
+                await prisma.dataDisponivel.create({
+                    data: {
+                        passeio_id: novoPasseio.id,
+                        data_hora_inicio: new Date(`${item.date}T${item.time}`),
+                        vagas_maximas: parseInt(maxParticipants),
+                        vagas_ocupadas: 0
+                    }
+                });
+            }
+        }
+
+        console.log(`Passeio '${novoPasseio.titulo}' criado com sucesso pelo guia ID: ${guia.id}.`);
+        res.status(201).json({ message: 'Passeio criado com sucesso!', passeio: novoPasseio });
+
+    } catch (error) {
+        console.error("Erro ao criar passeio:", error);
+        // Limpar arquivos enviados em caso de erro no banco de dados
+        if (req.files) {
+            if (req.files.mainImageFile) fs.unlinkSync(req.files.mainImageFile[0].path);
+            if (req.files.galleryImageFiles) req.files.galleryImageFiles.forEach(f => fs.unlinkSync(f.path));
+        }
+        res.status(500).json({ message: 'Erro interno ao criar o passeio.' });
+    }
 });
 
 // Rota de Perfil (PROTEGIDA)
@@ -249,4 +363,66 @@ app.get('/api/passeios/:id', async (req, res) => {
 // --- INICIALIZAÇÃO DO SERVIDOR ---
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
+});
+// ROTA PARA CRIAR UMA NOVA RESERVA (PROTEGIDA)
+app.post('/api/reservas', authMiddleware, async (req, res) => {
+    const { passeioId, dataDisponivelId, participantes, valorTotal, observacoesCliente } = req.body;
+    const usuarioId = req.usuario.id; // Obtido do authMiddleware
+
+    // Validação básica dos dados recebidos
+    if (!passeioId || !dataDisponivelId || !participantes || !valorTotal) {
+        return res.status(400).json({ message: 'Dados da reserva incompletos.' });
+    }
+
+    try {
+        const resultado = await prisma.$transaction(async (tx) => {
+            // 1. Encontra a data disponível e bloqueia o registro para evitar race conditions
+            const dataDisponivel = await tx.dataDisponivel.findFirst({
+                where: {
+                    id: BigInt(dataDisponivelId),
+                    passeio_id: BigInt(passeioId)
+                },
+ 
+            });
+            if (!dataDisponivel) {
+                throw new Error('Data ou horário não disponível para este passeio.');
+            }
+            // 2. Verifica se há vagas suficientes
+            const vagasDisponiveis = dataDisponivel.vagas_maximas - dataDisponivel.vagas_ocupadas;
+            if (vagasDisponiveis < participantes) {
+                throw new Error(`Não há vagas suficientes. Apenas ${vagasDisponiveis} disponíveis.`);
+            }
+            // 3. Atualiza o número de vagas ocupadas
+            const dataAtualizada = await tx.dataDisponivel.update({
+                where: {
+                    id: BigInt(dataDisponivelId),
+                },
+                data: {
+                    vagas_ocupadas: {
+                        increment: participantes
+                    }
+                }
+            })
+            // 4. Cria a reserva
+            const novaReserva = await tx.reserva.create({
+                data: {
+                    codigo_reserva: `PSR-${Date.now().toString().slice(-8)}`,
+                    usuario_id: BigInt(usuarioId),
+                    passeio_id: BigInt(passeioId),
+                    data_disponivel_id: BigInt(dataDisponivelId),
+                    valor_total: parseFloat(valorTotal),
+                    status_reserva: 'confirmada', // Ou 'pendente_pagamento' se houver integração com gateway
+                    observacoes_cliente: observacoesCliente || null,
+                }
+            });
+            return novaReserva;
+        });
+
+        // 5. Se a transação for bem-sucedida, retorna a nova reserva
+        res.status(201).json({ message: 'Reserva criada com sucesso!', reserva: resultado });
+
+    } catch (error) {
+        console.error("Erro ao criar reserva:", error);
+        res.status(400).json({ message: error.message || 'Não foi possível completar a reserva.' });
+    }
 });

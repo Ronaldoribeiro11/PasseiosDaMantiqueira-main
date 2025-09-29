@@ -3,17 +3,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const auth = new Auth();
     let currentUser = auth.getCurrentUser();
 
-    // Função para buscar dados do passeio da API
     async function fetchPasseioDetails(id) {
         try {
             const response = await fetch(`http://localhost:3000/api/passeios/${id}`);
             if (!response.ok) {
-                // Se o status for 404 ou outro erro, chama a função para exibir o estado de "não encontrado"
                 displayPasseioData(null);
                 return;
             }
             const passeioData = await response.json();
-            // Adiciona um log para podermos ver no console do navegador exatamente o que a API está retornando
             console.log("Dados recebidos da API:", passeioData); 
             displayPasseioData(passeioData);
         } catch (error) {
@@ -25,7 +22,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Função para exibir os dados na página (COM VERIFICAÇÕES DE SEGURANÇA)
     function displayPasseioData(passeio) {
         const titleElement = document.getElementById('passeioTitle');
         const containerElement = document.querySelector('.passeio-container');
@@ -45,12 +41,11 @@ document.addEventListener('DOMContentLoaded', function() {
             heroImage.style.backgroundImage = `url('http://localhost:3000/${passeio.imagem_principal_url.replace(/\\/g, '/')}')`;
         }
         
-        // Meta Info (Rating e Localização)
+        // Meta Info
         const ratingOverall = document.getElementById('passeioRatingOverall');
         if (ratingOverall) {
             const starsDiv = ratingOverall.querySelector('.stars');
             if (starsDiv) {
-                // A animação da estrela é feita via CSS com a variável --rating
                 starsDiv.style.setProperty('--rating', passeio.rating);
             }
             ratingOverall.querySelector('.rating-text').textContent = `(${passeio.reviews} avaliações)`;
@@ -71,8 +66,6 @@ document.addEventListener('DOMContentLoaded', function() {
         if (galleryContainer) {
             galleryContainer.innerHTML = '';
             
-            // --- CORREÇÃO CRÍTICA AQUI ---
-            // Verifica se galeria_imagens_urls é uma string e a converte para um array
             let galleryImages = [];
             if (typeof passeio.galeria_imagens_urls === 'string') {
                 try {
@@ -105,7 +98,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 <div class="info-item"><i class="fas fa-list-alt"></i><div><h4>Requisitos</h4><p>${passeio.requisitos || 'Nenhum requisito especial.'}</p></div></div>
             `;
             
-            // --- CORREÇÃO SIMILAR PARA ITENS INCLUSOS ---
             let includedItems = [];
              if (typeof passeio.itens_inclusos === 'string') {
                 try {
@@ -113,3 +105,60 @@ document.addEventListener('DOMContentLoaded', function() {
                 } catch(e) { console.error("Erro ao parsear itens inclusos:", e); }
             } else if (Array.isArray(passeio.itens_inclusos)) {
                 includedItems = passeio.itens_inclusos;
+            }
+
+            if(includedItems.length > 0) {
+                infoGrid.innerHTML += `<div class="info-item"><i class="fas fa-box-open"></i><div><h4>Itens Inclusos</h4><p>${includedItems.join(', ')}</p></div></div>`;
+            }
+        }
+
+        // Card do Guia
+        const guideCard = document.getElementById('guideCard');
+        if (guideCard) {
+            if (passeio.guia && passeio.guia.usuario) {
+                guideCard.style.display = 'block';
+                document.getElementById('guideName').textContent = passeio.guia.nome_publico;
+                const guideAvatar = document.getElementById('guideAvatar');
+                guideAvatar.src = passeio.guia.usuario.avatar_url 
+                    ? `http://localhost:3000/${passeio.guia.usuario.avatar_url.replace(/\\/g, '/')}`
+                    : 'assets/images/ImagemUsuarioPlaceholder.png';
+                document.getElementById('guideBioShort').textContent = (passeio.guia.bio_publica || 'Guia especialista na região.').substring(0, 150) + '...';
+                document.getElementById('guideProfileLink').href = `perfil-guia.html?id=${passeio.guia.id}`;
+            } else {
+                guideCard.style.display = 'none';
+            }
+        }
+
+        // Card de Reserva
+        const bookingCardPrice = document.getElementById('bookingCardPrice');
+        if (bookingCardPrice) {
+            bookingCardPrice.textContent = `R$ ${parseFloat(passeio.preco).toFixed(2).replace('.', ',')}`;
+        }
+        const bookingDateSelect = document.getElementById('booking-date');
+        if (bookingDateSelect) {
+            bookingDateSelect.innerHTML = '<option value="">Selecione data e horário</option>';
+            if (passeio.datas_disponiveis && passeio.datas_disponiveis.length > 0) {
+                passeio.datas_disponiveis.forEach(data => {
+                    const dataObj = new Date(data.data_hora_inicio);
+                    const dataFormatada = dataObj.toLocaleDateString('pt-BR', { day: '2-digit', month: 'long' });
+                    const horaFormatada = dataObj.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                    
+                    const option = document.createElement('option');
+                    option.value = data.data_hora_inicio;
+                    option.textContent = `${dataFormatada} às ${horaFormatada}`;
+                    bookingDateSelect.appendChild(option);
+                });
+            } else {
+                 bookingDateSelect.innerHTML = '<option value="" disabled>Nenhuma data disponível</option>';
+            }
+        }
+    }
+
+    // --- INICIALIZAÇÃO DA PÁGINA ---
+    const passeioId = new URLSearchParams(window.location.search).get('id');
+    if (passeioId) {
+        fetchPasseioDetails(passeioId);
+    } else {
+        displayPasseioData(null);
+    }
+});

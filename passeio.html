@@ -15,44 +15,27 @@
     <button class="menu-toggle page-menu-toggle" aria-label="Abrir menu">
         <span></span><span></span><span></span>
     </button>
-
     
     <nav class="sidebar-menu" id="sidebarMenuPasseio">
-        <div class="profile-section" id="sidebarProfileSectionPasseio">
-            <img src="assets/images/ImagemUsuario.jpg" alt="Perfil" id="sidebarProfileImgPasseio" style="display:none;">
-            <h4 id="sidebarProfileNamePasseio">Visitante</h4>
-            <p id="sidebarProfileEmailPasseio">Faça login ou cadastre-se</p>
-        </div>
-        <ul class="sidebar-nav">
-            <li><a href="index.html"><i class="fas fa-home"></i> Início</a></li>
-            <li><a href="pesquisa.html"><i class="fas fa-search"></i> Explorar Passeios</a></li>
-            <li id="sidebarLinkMeuPerfilPasseio" style="display: none;"><a href="perfil.html"><i class="fas fa-user"></i> Meu Perfil</a></li>
-            <li id="sidebarLinkCriarPasseioPasseio" style="display: none;"><a href="criar-passeio.html" class="protected-creator-link"><i class="fas fa-plus-circle"></i> Criar Passeio</a></li>
-            <li id="sidebarLinkAvaliacoesPasseio" style="display: none;"><a href="minhas-avaliacoes.html"><i class="fas fa-star"></i> Minhas Avaliações</a></li>
-            <li id="sidebarLinkFavoritosPasseio" style="display: none;"><a href="favoritos.html"><i class="fas fa-heart"></i> Favoritos</a></li>
-            <li id="sidebarLinkConfiguracoesPasseio" style="display: none;"><a href="configuracoes.html"><i class="fas fa-cog"></i> Configurações</a></li>
-            <li><a href="ajuda.html"><i class="fas fa-question-circle"></i> Ajuda</a></li>
-            <li id="sidebarLinkAuthPasseio"><a href="login.html"><i class="fas fa-sign-in-alt"></i> Login / Cadastro</a></li>
-        </ul>
-    </nav>
+        </nav>
     <div class="menu-overlay" id="menuOverlayPasseio"></div>
     
     <main id="main-content" class="passeio-detail-main">
         <section class="passeio-detail">
      
             <div class="passeio-hero">
-                <div class="hero-image" id="passeioHeroImage" style="background-image: url('assets/images/placeholder-passeio-grande.jpg');"></div>
+                <div class="hero-image" id="passeioHeroImage"></div>
                 <div class="hero-overlay"></div>
                 <div class="hero-content container">
-                    <h1 id="passeioTitle" data-placeholder="Carregando título...">Título do Passeio</h1>
+                    <h1 id="passeioTitle">Carregando...</h1>
                     <div class="hero-meta">
                         <div class="rating" id="passeioRatingOverall">
-                            <div class="stars" data-rating="0"><span>★★★★★</span></div>
-                            <span class="rating-text" data-placeholder="(0 avaliações)">(...)</span>
+                            <div class="stars" style="--rating: 0;"></div>
+                            <span class="rating-text"></span>
                         </div>
                         <div class="location" id="passeioLocationHeader">
                             <i class="fas fa-map-marker-alt"></i>
-                            <span data-placeholder="Carregando local...">Localização</span>
+                            <span></span>
                         </div>
                         <button class="favorite-btn-passeio-page" id="favoriteButtonPasseio" aria-label="Adicionar aos Favoritos">
                             <i class="far fa-heart"></i> <span>Favoritar</span>
@@ -66,70 +49,33 @@
                    
                     <div class="passeio-section" id="passeioAboutSection">
                         <h2>Sobre o Passeio</h2>
-                        <div id="passeioLongDesc" data-placeholder="Carregando descrição detalhada...">Conteúdo da descrição detalhada do passeio...</div>
-                        
-                        <h3>O que esperar</h3>
-                        <div id="passeioOQueEsperar" data-placeholder="Carregando o que esperar...">Detalhes sobre o que os participantes podem esperar...</div>
-                        
-                        <h3>Destaques</h3>
-                        <ul class="feature-list" id="passeioDestaquesList" data-placeholder="Carregando destaques...">
-                            <li><i class="fas fa-check"></i> Destaque de exemplo 1</li>
-                        </ul>
+                        <div id="passeioLongDesc"></div>
                     </div>
-                    
-                  
+                                        
                     <div class="passeio-section" id="passeioGallerySection">
                         <h2>Galeria de Imagens</h2>
-                        <div class="passeio-gallery" id="passeioGalleryContainer" data-placeholder="Carregando galeria...">
-                       
-                            <div class="gallery-item-placeholder" style="width:100px; height:80px; background:#eee; display:inline-block; margin:5px;"></div>
-                        </div>
+                        <div class="passeio-gallery" id="passeioGalleryContainer"></div>
                     </div>
                     
                     <div class="passeio-section" id="passeioInfoDetalhadaSection">
                         <h2>Informações Detalhadas</h2>
-                        <div class="info-grid" id="passeioInfoGrid" data-placeholder="Carregando informações...">
-             
-                        </div>
-                    </div>
-
-        
-                    <div class="passeio-section faq-section-passeio" id="passeioFaqSection" style="display:none;">
-                        <h2>Perguntas Frequentes</h2>
-                        <div id="passeioFaqItemsContainer">
-                           
-                            <p data-placeholder="Carregando FAQs..."></p>
-                        </div>
+                        <div class="info-grid" id="passeioInfoGrid"></div>
                     </div>
                     
-               
                     <div class="passeio-section" id="passeioReviewsSection">
                         <h2>Avaliações de Clientes</h2>
-                        <div class="reviews-summary" id="passeioReviewsSummaryContainer" data-placeholder="Carregando resumo das avaliações..."></div>
-                        <div class="reviews-list" id="passeioReviewsListContainer" data-placeholder="Carregando avaliações..."></div>
-                        <div id="addReviewContainer">
-                            
-                        </div>
-                    </div>
-
-      
-                    <div class="passeio-section social-share-buttons" id="socialShareSection">
-                        <strong>Compartilhe este passeio:</strong>
-                        <a href="#" id="shareFacebookBtn" class="share-btn facebook" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" id="shareTwitterBtn" class="share-btn twitter" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" id="shareWhatsAppBtn" class="share-btn whatsapp" target="_blank" rel="noopener noreferrer" aria-label="Compartilhar no WhatsApp"><i class="fab fa-whatsapp"></i></a>
-                        <a href="#" id="copyLinkBtnPasseio" class="share-btn copy-link" aria-label="Copiar Link"><i class="fas fa-link"></i></a>
-                        <span id="copyLinkStatusPasseio" class="copy-status-message"></span>
+                        <div class="reviews-summary" id="passeioReviewsSummaryContainer"></div>
+                        <div class="reviews-list" id="passeioReviewsListContainer"></div>
+                        <div id="addReviewContainer"></div>
                     </div>
                 </div>
                 
-              
                 <aside class="passeio-sidebar">
                     <div class="booking-card" id="bookingCard">
                         <div class="booking-header">
                             <h3>Reserve Agora</h3>
                             <div class="booking-price">
-                                <span class="price" id="bookingCardPrice" data-placeholder="R$ --,--">R$ 0,00</span>
+                                <span class="price" id="bookingCardPrice"></span>
                                 <span class="per-person">por pessoa</span>
                             </div>
                         </div>
@@ -139,33 +85,18 @@
                                 <select id="booking-date" name="bookingDate" class="form-control" required>
                                     <option value="">Carregando datas...</option>
                                 </select>
-                                <small id="bookingDateError" class="field-error-msg"></small>
                             </div>
                             <div class="form-group">
                                 <label for="booking-participants">Participantes*</label>
                                 <select id="booking-participants" name="bookingParticipants" class="form-control" required>
                                     <option value="1">1 pessoa</option> 
                                 </select>
-                                <small id="bookingParticipantsError" class="field-error-msg"></small>
                             </div>
-                           
-                            <div class="form-group" id="bookingTransportGroup" style="display:none;">
-                                <label for="booking-transport">Transporte (Opcional)</label>
-                                <select id="booking-transport" name="bookingTransport" class="form-control">
-                                    <option value="no">Sem transporte</option>
-                                    <option value="yes" data-price-adjustment="0">Com transporte (+ R$ X,XX)</option>
-                                </select>
-                            </div>
-                            */}
                             <div class="booking-total">
                                 <span>Total Estimado:</span>
                                 <span class="total-price" id="bookingTotalPrice">R$ 0,00</span>
                             </div>
                             <button type="submit" class="btn btn-primary btn-block" id="bookNowButton">Reservar Agora</button>
-                            <div id="bookingStatusMessage" class="booking-status-message"></div>
-                            <div class="booking-info">
-                                <p><i class="fas fa-info-circle"></i> <span id="bookingCancellationPolicyText" data-placeholder="Verifique a política de cancelamento."></span></p>
-                            </div>
                         </form>
                     </div>
                     
@@ -174,49 +105,19 @@
                         <div class="guide-profile">
                             <img src="assets/images/ImagemUsuarioPlaceholder.png" alt="Guia" id="guideAvatar">
                             <div>
-                                <h4 id="guideName" data-placeholder="Nome do Guia">Guia</h4>
-                                <div class="guide-rating" id="guideRatingDisplay">
-                                    <div class="stars" data-rating="0"><span>★★★★★</span></div>
-                                    <span class="rating-text" data-placeholder="(...)"></span>
-                                </div>
+                                <h4 id="guideName"></h4>
                             </div>
                         </div>
-                        <p class="guide-bio" id="guideBioShort" data-placeholder="Carregando bio do guia..."></p>
+                        <p class="guide-bio" id="guideBioShort"></p>
                         <a href="#" id="guideProfileLink" class="btn btn-secondary btn-block">Ver Perfil do Guia</a>
-                    </div>
-                    
-                    <div class="map-card" id="mapCard">
-                        <h3>Localização / Ponto de Encontro</h3>
-                        <div class="map-container" id="mapContainerPasseio">
-                            <img src="assets/images/MapPlaceholder.png" alt="Mapa da Localização" id="mapImagePasseio">
-                        </div>
-                        <div class="map-actions" id="mapDirectionsLinkContainer" style="display:none;">
-                            <a href="#" id="mapDirectionsLink" class="btn btn-link" target="_blank"><i class="fas fa-directions"></i> Como chegar (Google Maps)</a>
-                        </div>
-                        <p id="mapLocationAddress" style="text-align: center; margin-top: var(--space-xs); font-size: 0.9rem;"></p>
                     </div>
                 </aside>
             </div>
         </section>
-
-        <div id="imageLightboxModal" class="lightbox-modal">
-            <span class="lightbox-close-btn" id="lightboxClose">&times;</span>
-            <img class="lightbox-content" id="lightboxImage" alt="Imagem ampliada do passeio">
-            <a class="lightbox-prev" id="lightboxPrev" aria-label="Imagem anterior">&#10094;</a>
-            <a class="lightbox-next" id="lightboxNext" aria-label="Próxima imagem">&#10095;</a>
-        </div>
     </main>
     
     <footer class="site-footer">
-        <div class="container">
-            <div class="footer-content">
-                 <div class="footer-section about"><h3>Sobre Nós</h3><p>Passeios da Serra é a melhor plataforma para encontrar e reservar experiências únicas em Campos do Jordão e região.</p></div>
-                <div class="footer-section links"><h3>Links Úteis</h3><ul><li><a href="index.html">Home</a></li><li><a href="pesquisa.html">Passeios</a></li><li><a href="contato.html">Contato</a></li></ul></div>
-                <div class="footer-section contact"><h3>Contato</h3><ul><li><i class="fas fa-map-marker-alt"></i> Av. Dr. Januário Miraglia, 1000</li><li><i class="fas fa-phone"></i> (12) 99671-1961</li><li><i class="fas fa-envelope"></i> contato@passeiosdaserra.com</li></ul></div>
-            </div>
-             <div class="footer-bottom"><p>&copy; 2025 Passeios da Serra. Todos os direitos reservados.</p></div>
-        </div>
-    </footer>
+        </footer>
     
     <script src="js/auth.js"></script>
     <script src="js/passeios.js"></script>
