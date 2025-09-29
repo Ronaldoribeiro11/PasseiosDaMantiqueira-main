@@ -107,7 +107,7 @@ app.post('/api/candidatar-guia', authMiddleware, upload.fields([
   { name: 'docSelfie', maxCount: 1 },
   { name: 'docCertificates', maxCount: 10 }
 ]), async (req, res) => {
-    // ... (seu código de candidatura aqui)
+    // ... (código de candidatura aqui)
 });
 
 // Rota para um guia criar um novo passeio (PROTEGIDA E COM LOGS)
@@ -115,7 +115,7 @@ app.post('/api/passeios', authMiddleware, upload.fields([
     { name: 'mainImageFile', maxCount: 1 },
     { name: 'galleryImageFiles', maxCount: 5 },
 ]), async (req, res) => {
-    // ... (seu código de criação de passeio aqui)
+    // ... (código de criação de passeio aqui)
 });
 
 // Rota de Perfil (PROTEGIDA)
@@ -128,23 +128,17 @@ app.get('/api/perfil', authMiddleware, async (req, res) => {
     }
 });
 
-// =================================================================
-// NOVA ROTA PARA BUSCAR TODOS OS PASSEIOS (PÚBLICA) - CORRIGIDA
-// =================================================================
+// ROTA PARA BUSCAR TODOS OS PASSEIOS (PÚBLICA)
 app.get('/api/passeios', async (req, res) => {
     try {
         const passeios = await prisma.passeio.findMany({
             where: {
-                // CORREÇÃO: Busca por status 'ativo' OU 'pendente_aprovacao'
-                // Em produção, você usaria apenas 'ativo'.
-                // Para desenvolvimento, isso permite que passeios recém-criados apareçam.
                 status: {
                     in: ['ativo', 'pendente_aprovacao']
                 }
             },
             include: {
                 categoria: { select: { nome: true, slug: true } },
-                guia: { select: { nome_publico: true } },
                 avaliacoes: { select: { nota: true } }
             }
         });
@@ -176,6 +170,11 @@ app.get('/api/passeios', async (req, res) => {
 app.get('/api/passeios/:id', async (req, res) => {
     try {
         const { id } = req.params;
+        // Validação básica do ID
+        if (!id || isNaN(parseInt(id))) {
+            return res.status(400).json({ message: 'ID de passeio inválido.' });
+        }
+
         const passeio = await prisma.passeio.findUnique({
             where: { id: BigInt(id) },
             include: {
@@ -184,6 +183,8 @@ app.get('/api/passeios/:id', async (req, res) => {
                     select: { 
                         id: true,
                         nome_publico: true,
+                        bio_publica: true,
+                        tagline: true,
                         usuario: {
                             select: {
                                 avatar_url: true
@@ -208,7 +209,17 @@ app.get('/api/passeios/:id', async (req, res) => {
                         data_avaliacao: 'desc'
                     }
                 },
-                 tags: { include: { tag: true } }
+                tags: { include: { tag: true } },
+                datas_disponiveis: { // Incluindo as datas disponíveis
+                    select: {
+                        data_hora_inicio: true,
+                        vagas_maximas: true,
+                        vagas_ocupadas: true
+                    },
+                    orderBy: {
+                        data_hora_inicio: 'asc'
+                    }
+                }
             }
         });
 
@@ -233,6 +244,7 @@ app.get('/api/passeios/:id', async (req, res) => {
         res.status(500).json({ message: 'Erro interno ao buscar o passeio.' });
     }
 });
+
 
 // --- INICIALIZAÇÃO DO SERVIDOR ---
 app.listen(port, () => {
