@@ -12,11 +12,9 @@ const authMiddleware = require('./middlewares/authMiddleware');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');
 const path = require('path');
+const fs = require('fs');
 
-// 3. CONFIGURAÇÃO DO MULTER (UPLOAD DE ARQUIVOS)
-
-
-// 4. INICIALIZAÇÃO
+// 3. INICIALIZAÇÃO
 const app = express();
 const prisma = new PrismaClient();
 const port = 3000;
@@ -26,10 +24,27 @@ BigInt.prototype.toJSON = function() {
     return this.toString();
 };
 
-// 5. MIDDLEWARES GLOBAIS
+// 4. MIDDLEWARES GLOBAIS
 app.use(cors());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
+// 5. CONFIGURAÇÃO DO MULTER (UPLOAD DE ARQUIVOS)
+const uploadDir = 'uploads/';
+if (!fs.existsSync(uploadDir)){
+    fs.mkdirSync(uploadDir);
+}
+
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        cb(null, 'uploads/');
+    },
+    filename: function (req, file, cb) {
+        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+});
+const upload = multer({ storage: storage });
+
 
 // --- ROTAS DA API ---
 
@@ -99,25 +114,8 @@ app.post('/api/candidatar-guia', authMiddleware, upload.fields([
   { name: 'docSelfie', maxCount: 1 },
   { name: 'docCertificates', maxCount: 10 }
 ]), async (req, res) => {
-    // ... (código de candidatura aqui)
+    res.status(200).json({ message: "Candidatura recebida! (Rota em construção)"});
 });
-
-// Garante que o diretório de uploads exista
-const uploadDir = 'uploads/';
-if (!fs.existsSync(uploadDir)){
-    fs.mkdirSync(uploadDir);
-}
-
-// ... (configuração do Multer e outras rotas) ...
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'uploads/');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-    }
-});
-const upload = multer({ storage: storage });
 
 // Rota para um guia criar um novo passeio (PROTEGIDA E COM LOGS)
 app.post('/api/passeios', authMiddleware, upload.fields([
@@ -136,13 +134,13 @@ app.post('/api/passeios', authMiddleware, upload.fields([
         const {
             title, category, shortDesc, tags, longDesc, requirements,
             locationDetailed, mapsLink, locationInstructions, duration,
-            difficulty, price, maxParticipants, cancelationPolicy,
+            difficulty, // Variável `difficulty` agora está aqui
+            price, maxParticipants, cancelationPolicy,
             status, datesAvailability
         } = req.body;
 
         const includedItems = req.body.includedItems ? (Array.isArray(req.body.includedItems) ? req.body.includedItems : [req.body.includedItems]) : [];
 
-        // 1. Processar Categoria (encontrar o ID da categoria pelo slug)
         const categoriaPasseio = await prisma.categoria.findUnique({
             where: { slug: category }
         });
@@ -150,7 +148,6 @@ app.post('/api/passeios', authMiddleware, upload.fields([
             return res.status(400).json({ message: 'Categoria inválida.' });
         }
 
-        // 2. Processar Imagens
         let imagemPrincipalUrl = null;
         if (req.files && req.files.mainImageFile) {
             imagemPrincipalUrl = req.files.mainImageFile[0].path;
@@ -161,7 +158,6 @@ app.post('/api/passeios', authMiddleware, upload.fields([
             galeriaImagensUrls = req.files.galleryImageFiles.map(file => file.path);
         }
         
-        // 3. Criar Passeio no Banco de Dados
         const novoPasseio = await prisma.passeio.create({
             data: {
                 guia_id: guia.id,
@@ -171,12 +167,12 @@ app.post('/api/passeios', authMiddleware, upload.fields([
                 descricao_longa: longDesc,
                 preco: parseFloat(price),
                 duracao_horas: parseFloat(duration),
-                dificuldade: dificuldade,
-                localizacao_geral: locationDetailed.split(',')[0], // Pega a primeira parte como geral
+                dificuldade: difficulty, // Agora a variável existe
+                localizacao_geral: locationDetailed.split(',')[0],
                 localizacao_detalhada: locationDetailed,
                 link_Maps: mapsLink || null,
                 politica_cancelamento: cancelationPolicy,
-                status: status, // 'rascunho' ou 'pendente_aprovacao'
+                status: status,
                 itens_inclusos: includedItems,
                 requisitos: requirements || null,
                 imagem_principal_url: imagemPrincipalUrl,
@@ -184,7 +180,6 @@ app.post('/api/passeios', authMiddleware, upload.fields([
             }
         });
 
-        // 4. (Opcional) Processar e associar Tags
         if (tags && tags.length > 0) {
             const tagsArray = tags.split(',');
             for (const tagName of tagsArray) {
@@ -203,7 +198,6 @@ app.post('/api/passeios', authMiddleware, upload.fields([
             }
         }
 
-        // 5. Processar Datas de Disponibilidade
         if (datesAvailability) {
             const dates = JSON.parse(datesAvailability);
             for (const item of dates) {
@@ -223,7 +217,6 @@ app.post('/api/passeios', authMiddleware, upload.fields([
 
     } catch (error) {
         console.error("Erro ao criar passeio:", error);
-        // Limpar arquivos enviados em caso de erro no banco de dados
         if (req.files) {
             if (req.files.mainImageFile) fs.unlinkSync(req.files.mainImageFile[0].path);
             if (req.files.galleryImageFiles) req.files.galleryImageFiles.forEach(f => fs.unlinkSync(f.path));
@@ -261,9 +254,7 @@ app.get('/api/passeios', async (req, res) => {
             const totalAvaliacoes = passeio.avaliacoes.length;
             const somaNotas = passeio.avaliacoes.reduce((acc, avaliacao) => acc + avaliacao.nota, 0);
             const media = totalAvaliacoes > 0 ? (somaNotas / totalAvaliacoes) : 0;
-            
             const { avaliacoes, ...restoDoPasseio } = passeio;
-            
             return {
                 ...restoDoPasseio,
                 rating: parseFloat(media.toFixed(1)),
@@ -278,13 +269,10 @@ app.get('/api/passeios', async (req, res) => {
     }
 });
 
-// =================================================================
-// NOVA ROTA PARA BUSCAR UM PASSEIO ESPECÍFICO POR ID (PÚBLICA)
-// =================================================================
+// ROTA PARA BUSCAR UM PASSEIO ESPECÍFICO POR ID (PÚBLICA)
 app.get('/api/passeios/:id', async (req, res) => {
     try {
         const { id } = req.params;
-        // Validação básica do ID
         if (!id || isNaN(parseInt(id))) {
             return res.status(400).json({ message: 'ID de passeio inválido.' });
         }
@@ -324,7 +312,7 @@ app.get('/api/passeios/:id', async (req, res) => {
                     }
                 },
                 tags: { include: { tag: true } },
-                datas_disponiveis: { // Incluindo as datas disponíveis
+                datas_disponiveis: {
                     select: {
                         data_hora_inicio: true,
                         vagas_maximas: true,
@@ -359,41 +347,31 @@ app.get('/api/passeios/:id', async (req, res) => {
     }
 });
 
-
-// --- INICIALIZAÇÃO DO SERVIDOR ---
-app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
-});
 // ROTA PARA CRIAR UMA NOVA RESERVA (PROTEGIDA)
 app.post('/api/reservas', authMiddleware, async (req, res) => {
     const { passeioId, dataDisponivelId, participantes, valorTotal, observacoesCliente } = req.body;
-    const usuarioId = req.usuario.id; // Obtido do authMiddleware
+    const usuarioId = req.usuario.id;
 
-    // Validação básica dos dados recebidos
     if (!passeioId || !dataDisponivelId || !participantes || !valorTotal) {
         return res.status(400).json({ message: 'Dados da reserva incompletos.' });
     }
 
     try {
         const resultado = await prisma.$transaction(async (tx) => {
-            // 1. Encontra a data disponível e bloqueia o registro para evitar race conditions
             const dataDisponivel = await tx.dataDisponivel.findFirst({
                 where: {
                     id: BigInt(dataDisponivelId),
                     passeio_id: BigInt(passeioId)
                 },
- 
             });
             if (!dataDisponivel) {
                 throw new Error('Data ou horário não disponível para este passeio.');
             }
-            // 2. Verifica se há vagas suficientes
             const vagasDisponiveis = dataDisponivel.vagas_maximas - dataDisponivel.vagas_ocupadas;
             if (vagasDisponiveis < participantes) {
                 throw new Error(`Não há vagas suficientes. Apenas ${vagasDisponiveis} disponíveis.`);
             }
-            // 3. Atualiza o número de vagas ocupadas
-            const dataAtualizada = await tx.dataDisponivel.update({
+            await tx.dataDisponivel.update({
                 where: {
                     id: BigInt(dataDisponivelId),
                 },
@@ -402,8 +380,7 @@ app.post('/api/reservas', authMiddleware, async (req, res) => {
                         increment: participantes
                     }
                 }
-            })
-            // 4. Cria a reserva
+            });
             const novaReserva = await tx.reserva.create({
                 data: {
                     codigo_reserva: `PSR-${Date.now().toString().slice(-8)}`,
@@ -411,18 +388,23 @@ app.post('/api/reservas', authMiddleware, async (req, res) => {
                     passeio_id: BigInt(passeioId),
                     data_disponivel_id: BigInt(dataDisponivelId),
                     valor_total: parseFloat(valorTotal),
-                    status_reserva: 'confirmada', // Ou 'pendente_pagamento' se houver integração com gateway
+                    status_reserva: 'confirmada',
                     observacoes_cliente: observacoesCliente || null,
                 }
             });
             return novaReserva;
         });
 
-        // 5. Se a transação for bem-sucedida, retorna a nova reserva
         res.status(201).json({ message: 'Reserva criada com sucesso!', reserva: resultado });
 
     } catch (error) {
         console.error("Erro ao criar reserva:", error);
         res.status(400).json({ message: error.message || 'Não foi possível completar a reserva.' });
     }
+});
+
+
+// --- INICIALIZAÇÃO DO SERVIDOR ---
+app.listen(port, () => {
+    console.log(`Servidor rodando em http://localhost:${port}`);
 });

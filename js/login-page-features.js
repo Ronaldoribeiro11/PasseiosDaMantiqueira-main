@@ -1,8 +1,7 @@
-// js/login-page-features.js
+// /js/login-page-features.js
 document.addEventListener('DOMContentLoaded', function () {
     const auth = new Auth();
 
-    // Inicia o manipulador do menu lateral
     new SidebarMenuHandler({
         menuToggleSelector: '.page-menu-toggle',
         sidebarMenuId: 'sidebarMenuLogin',
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function getRedirectUrl() {
         const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('redirect');
+        return urlParams.get('redirect') ? decodeURIComponent(urlParams.get('redirect')) : null;
     }
 
     // --- LÓGICA DE LOGIN ---
@@ -38,12 +37,11 @@ document.addEventListener('DOMContentLoaded', function () {
             submitButton.disabled = true;
             submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Entrando...';
 
-            // Chama o método login da classe Auth, que agora se comunica com a API
             const result = await auth.login(email, password); 
 
             if (result.success) {
                 const redirectUrl = getRedirectUrl();
-                window.location.href = redirectUrl ? decodeURIComponent(redirectUrl) : 'index.html';
+                window.location.href = redirectUrl || 'index.html';
             } else {
                 displayFormStatus(loginStatusMsg, result.message, 'error');
                 submitButton.disabled = false;
@@ -63,7 +61,6 @@ document.addEventListener('DOMContentLoaded', function () {
             const terms = document.getElementById('agree-terms').checked;
             const submitButton = registerForm.querySelector('button[type="submit"]');
 
-            // Validações
             if (password !== confirmPassword) {
                 return displayFormStatus(registerStatusMsg, 'As senhas não coincidem.', 'error');
             }
@@ -74,41 +71,26 @@ document.addEventListener('DOMContentLoaded', function () {
             submitButton.disabled = true;
             submitButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Cadastrando...';
 
-            try {
-                // Chamada direta para a API de cadastro
-                const response = await fetch('http://localhost:3000/api/usuarios', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ nome_completo: nome, email: email, senha: password })
-                });
+            const registerResult = await auth.register(nome, email, password);
 
-                const data = await response.json();
-
-                if (!response.ok) {
-                    throw new Error(data.message || 'Erro ao cadastrar.');
-                }
-                
-                // Se o cadastro foi bem-sucedido, tenta fazer o login
+            if (registerResult.success) {
                 const loginResult = await auth.login(email, password);
                 if (loginResult.success) {
                     const redirectUrl = getRedirectUrl();
                     window.location.href = redirectUrl || 'index.html';
                 } else {
-                    // Se o login falhar por algum motivo, avisa o usuário
-                    sessionStorage.setItem('form-status-message', 'Cadastro realizado com sucesso! Por favor, faça o login.');
-                    window.location.hash = 'login'; // Muda para a aba de login
-                    location.reload();
+                    displayFormStatus(loginStatusMsg, 'Cadastro realizado com sucesso! Por favor, faça o login.', 'success');
+                    document.querySelector('.auth-tab[data-tab="login"]').click();
                 }
-
-            } catch (error) {
-                displayFormStatus(registerStatusMsg, error.message, 'error');
+            } else {
+                displayFormStatus(registerStatusMsg, registerResult.message, 'error');
                 submitButton.disabled = false;
                 submitButton.textContent = 'Finalizar Cadastro';
             }
         });
     }
 
-    // Lógica para mostrar/ocultar senha (pode manter a sua original, está ótima)
+    // Lógica para mostrar/ocultar senha
     document.querySelectorAll('.toggle-password').forEach(button => {
         button.addEventListener('click', function () {
             const passwordInput = this.previousElementSibling;
