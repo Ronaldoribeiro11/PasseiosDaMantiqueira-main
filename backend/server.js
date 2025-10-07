@@ -408,3 +408,4 @@ app.post('/api/reservas', authMiddleware, async (req, res) => {
 app.listen(port, () => {
     console.log(`Servidor rodando em http://localhost:${port}`);
 });
+// FIM DO ARQUIVO: backend/server.js
