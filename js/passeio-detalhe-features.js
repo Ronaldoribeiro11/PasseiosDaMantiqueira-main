@@ -1,7 +1,21 @@
 // js/passeio-detalhe-features.js
 document.addEventListener('DOMContentLoaded', function() {
+    const API_BASE_URL = (window.API_BASE_URL || 'http://localhost:3000').replace(/\/$/, '');
     const auth = new Auth();
     let currentUser = auth.getCurrentUser();
+
+    function resolveMediaUrl(path) {
+        if (!path) {
+            return null;
+        }
+
+        const normalizedPath = path.replace(/\\/g, '/');
+        if (/^https?:\/\//i.test(normalizedPath)) {
+            return normalizedPath;
+        }
+
+        return `${API_BASE_URL}/${normalizedPath.replace(/^\//, '')}`;
+    }
 
     async function fetchPasseioDetails(id) {
         try {
@@ -38,7 +52,10 @@ document.addEventListener('DOMContentLoaded', function() {
         if (titleElement) titleElement.textContent = passeio.titulo;
         const heroImage = document.getElementById('passeioHeroImage');
         if (heroImage && passeio.imagem_principal_url) {
-            heroImage.style.backgroundImage = `url('http://localhost:3000/${passeio.imagem_principal_url.replace(/\\/g, '/')}')`;
+            const heroUrl = resolveMediaUrl(passeio.imagem_principal_url);
+            if (heroUrl) {
+                heroImage.style.backgroundImage = `url('${heroUrl}')`;
+            }
         }
         
         // Meta Info
@@ -81,7 +98,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 galleryImages.forEach(imageUrl => {
                     const galleryItem = document.createElement('div');
                     galleryItem.className = 'gallery-item';
-                    galleryItem.style.backgroundImage = `url('http://localhost:3000/${imageUrl.replace(/\\/g, '/')}')`;
+                    const resolvedGalleryUrl = resolveMediaUrl(imageUrl);
+                    if (resolvedGalleryUrl) {
+                        galleryItem.style.backgroundImage = `url('${resolvedGalleryUrl}')`;
+                    }
                     galleryContainer.appendChild(galleryItem);
                 });
             } else {
@@ -119,9 +139,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 guideCard.style.display = 'block';
                 document.getElementById('guideName').textContent = passeio.guia.nome_publico;
                 const guideAvatar = document.getElementById('guideAvatar');
-                guideAvatar.src = passeio.guia.usuario.avatar_url 
-                    ? `http://localhost:3000/${passeio.guia.usuario.avatar_url.replace(/\\/g, '/')}`
-                    : 'assets/images/ImagemUsuarioPlaceholder.png';
+                const resolvedAvatarUrl = resolveMediaUrl(passeio.guia.usuario.avatar_url);
+                guideAvatar.src = resolvedAvatarUrl || 'assets/images/ImagemUsuarioPlaceholder.png';
                 document.getElementById('guideBioShort').textContent = (passeio.guia.bio_publica || 'Guia especialista na região.').substring(0, 150) + '...';
                 document.getElementById('guideProfileLink').href = `perfil-guia.html?id=${passeio.guia.id}`;
             } else {
