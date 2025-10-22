@@ -200,7 +200,7 @@ model Documento {
    guia_id                  BigInt
    categoria                Categoria            @relation(fields: [categoria_id], references: [id])
    categoria_id             Int
-   titulo                   String
+   titulo                   String @unique // Adicionar @unique aqui
    descricao_curta          String
    descricao_longa          String
    preco                    Decimal
