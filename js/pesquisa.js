@@ -1,5 +1,6 @@
 // js/pesquisa.js
 document.addEventListener('DOMContentLoaded', function() {
+    const API_BASE_URL = (window.API_BASE_URL || 'http://localhost:3000').replace(/\/$/, '');
     const resultsGrid = document.querySelector('.results-grid');
     const resultsCount = document.getElementById('results-number');
     
@@ -26,13 +27,25 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
+    function resolveImageUrl(imagePath) {
+        if (!imagePath) {
+            return null;
+        }
+
+        const normalizedPath = imagePath.replace(/\\/g, '/');
+        if (/^https?:\/\//i.test(normalizedPath)) {
+            return normalizedPath;
+        }
+
+        return `${API_BASE_URL}/${normalizedPath.replace(/^\//, '')}`;
+    }
+
     function createTourCard(tour) {
         const rating = tour.rating || 0;
         const reviews = tour.reviews || 0;
-        
-        const imageUrl = tour.imagem_principal_url 
-            ? `http://localhost:3000/${tour.imagem_principal_url.replace(/\\/g, '/')}`
-            : 'assets/images/placeholder-passeio.jpg';
+
+        const resolvedUrl = resolveImageUrl(tour.imagem_principal_url);
+        const imageUrl = resolvedUrl || 'assets/images/placeholder-passeio.jpg';
 
         const starStyle = `--rating: ${rating};`;
 
